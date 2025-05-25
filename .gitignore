@@ -1,0 +1,60 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Caches
+.cache/
+*.log
+
+# Virtual Environments
+venv/
+.env
+.env.*
+
+# VS Code
+.vscode/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Python packages
+*.egg-info/
+dist/
+build/
+
+# Migrations
+backend/alembic/versions/
+
+# Frontend build artifacts
+frontend/build/
+frontend/node_modules/
+
+# Test coverage
+.coverage
+htmlcov/
+coverage.xml
+.pytest_cache/
+
+# Docker
+*.pid
+*.db
+docker-compose.override.yml
+
+# IDEs
+.idea/
+
+# Mac system files
+*.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Output and local SQLite (if used)
+*.sqlite3
+
+# Planning docs, if private
+docs/*.private.*
+
