@@ -1,0 +1,16 @@
+{
+  "name": "game-decider-app",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:backend": "cd backend && uvicorn app.main:app --reload",
+    "build": "cd frontend && npm run build",
+    "test": "cd frontend && npm test && cd ../backend && python -m pytest",
+    "lint": "cd frontend && npm run lint",
+    "clean": "cd frontend && rm -rf .next out coverage && cd ../backend && rm -rf __pycache__ .pytest_cache"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+} 

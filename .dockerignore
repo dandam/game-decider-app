@@ -1,0 +1,93 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Dependencies
+node_modules
+**/node_modules
+.pnp
+.pnp.js
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env
+venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Testing
+coverage
+.coverage
+htmlcov
+.tox
+.pytest_cache
+.hypothesis
+
+# Development
+.env
+.env.*
+*.log
+npm-debug.log*
+.pnpm-debug.log*
+.DS_Store
+.idea
+.vscode
+*.swp
+*.swo
+
+# Build
+dist
+build
+*.egg-info
+
+# Documentation
+docs
+*.md
+!README.md
+
+# Docker
+.docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Next.js
+.next/
+out/
+
+# Production
+dist
+
+# Debug
+npm-debug.log*
+.pnpm-debug.log*
+
+# Local env files
+.env*.local
+.env
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv
+venv/
+ENV/
+
+# VS Code
+.vscode/
+
+# macOS
+.DS_Store 
