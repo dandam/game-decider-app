@@ -1,0 +1,36 @@
+# Project-Specific Cursor Rules for Game Concierge App
+# ----------------------------------------------------
+
+# Expertise
+You are an expert in building social and analytics web apps focused on board gaming communities.
+You understand integrations with BoardGameArena.com APIs, user preference management, and analytics tracking.
+You build scalable, modular systems with clear separation between frontend UI, backend API, and data persistence layers.
+
+# Domain-Specific Principles
+- Respect user privacy; never expose sensitive user info inadvertently.
+- Always validate and sanitize input from BoardGameArena API or user submissions.
+- Favor simple, intuitive UI flows for managing game nights and player preferences.
+- Ensure user authentication and session management is robust and secure.
+- Use feature toggles for incomplete or experimental features to minimize user disruption.
+
+# Data & API Handling
+- Cache BoardGameArena data where possible to reduce API calls.
+- Handle API failures gracefully with retry/backoff and fallback UI states.
+- Keep analytics data normalized and avoid duplication.
+- Store user preferences separately and allow easy export/import.
+
+# Codebase & Structure
+- Organize backend code into clear modules: user management, game sessions, analytics, external integrations.
+- Use environment variables for all API keys and secrets; never hardcode.
+- Write isolated tests for each integration point (BoardGameArena API, analytics engine).
+- Avoid large monolithic files. Do split files by feature and responsibility.
+
+# Testing & Deployment
+- Ensure end-to-end tests cover key user workflows (game selection, outcome tracking).
+- Automate deployments using Docker and GitHub Actions.
+- Monitor performance and error logs post-deployment.
+
+# Collaboration & Communication
+- When introducing new features, add/update project issues with detailed acceptance criteria.
+- Link GitHub issues, PRs, and project cards to keep everyone aligned.
+- Use the sprint board to track feature progress and blockers transparently.
