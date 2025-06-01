@@ -14,9 +14,9 @@ Sprint 1 focuses on setting up the basic project infrastructure, including Docke
 | 6 | Create frontend React project with TypeScript | P0 | Complete | S |
 | 7 | Configure frontend dev environment with hot reload | P0 | Complete | S |
 | 8 | Set up frontend testing framework (Jest + RTL) | P1 | To Do | S |
-| 9 | Set up backend testing framework (pytest) | P1 | To Do | S |
+| 9 | Set up backend testing framework (pytest) | P1 | Complete | S |
 | 10 | Configure ESLint and Prettier for frontend | P1 | Complete | XS |
-| 11 | Configure black and flake8 for backend | P1 | To Do | XS |
+| 11 | Configure black and flake8 for backend | P1 | Complete | XS |
 | 12 | Create GitHub Actions workflow for frontend tests | P1 | To Do | S |
 | 13 | Create GitHub Actions workflow for backend tests | P1 | To Do | S |
 | 14 | Set up basic frontend routing structure | P0 | In Progress | XS |
@@ -95,9 +95,28 @@ Sprint 1 focuses on setting up the basic project infrastructure, including Docke
 - ✅ Added lint and format scripts to package.json
 - ✅ Issue completed: Code formatting and linting are fully configured
 
+### Issue 11 Progress
+- ✅ Added black configuration in pyproject.toml
+- ✅ Added flake8 configuration in .flake8
+- ✅ Added isort configuration for import sorting
+- ✅ Created scripts/check.py for running all quality checks
+- ✅ Added convenience scripts in pyproject.toml
+- ✅ Configured line length and code style rules
+- ✅ Issue completed: Backend code quality tools are configured and ready to use
+
+### Issue 9 Progress
+- ✅ Set up pytest with async support and coverage reporting
+- ✅ Created comprehensive test directory structure
+- ✅ Added shared test fixtures in conftest.py
+- ✅ Created utility functions for common test operations
+- ✅ Added example health check endpoint tests
+- ✅ Added detailed testing documentation in README.md
+- ✅ Added aiosqlite for test database support
+- ✅ Issue completed: Backend testing framework is ready for use
+
 Based on our progress, the next priorities should be:
-1. Code quality tools (Issues 11) - To maintain code quality as we add features
-2. Testing frameworks (Issues 8, 9) - To ensure reliability
-3. CI/CD setup (Issues 12, 13) - To automate testing and deployment
+1. Frontend testing framework (Issue 8) - To ensure frontend reliability
+2. GitHub Actions workflows (Issues 12, 13) - To automate testing
+3. Error handling and logging (Issues 19, 22) - To improve application robustness
 
 Would you like to focus on any of these next steps? 
