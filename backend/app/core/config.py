@@ -37,7 +37,7 @@ class Settings(BaseSettings):
     CORS_ORIGINS: List[str] = ["http://localhost:3000"]
     
     # Database
-    DATABASE_URL: str = "postgresql://postgres:postgres@db:5432/game_night_dev"
+    DATABASE_URL: str = "postgresql+asyncpg://postgres:postgres@localhost:5432/game_night_dev"
     
     class Config:
         """Pydantic configuration."""
