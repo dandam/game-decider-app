@@ -1,0 +1,41 @@
+[tool.black]
+line-length = 88
+target-version = ['py39']
+include = '\.pyi?$'
+extend-exclude = '''
+# A regex preceded with ^/ will apply only to files and directories
+# in the root of the project.
+^/alembic/versions/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q"
+testpaths = [
+    "tests",
+]
+
+[build-system]
+requires = ["setuptools>=42.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["app"]
+
+[project]
+name = "game-decider-app"
+version = "0.1.0"
+description = "Backend for the Game Decider App"
+requires-python = ">=3.9"
+
+[project.scripts]
+format = "black ."
+lint = "flake8 ."
+sort-imports = "isort ."
+test = "pytest"
+check = "python -m scripts.check" 
