@@ -12,14 +12,13 @@ game-night-concierge/
 │   │   └── main.py           # FastAPI app entry point
 │   ├── tests/                # pytest unit and integration tests
 │   └── alembic/              # DB migrations
-├── frontend/                 # React frontend
+├── frontend/                 # Next.js frontend
 │   ├── public/               # Static files
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── styles/
-│   │   └── App.tsx
-│   └── tests/                # React Testing Library + Cypress
+│   ├── components/           # Reusable React components
+│   ├── pages/               # Next.js page components
+│   ├── styles/              # Global styles and Tailwind
+│   ├── utils/               # Utility functions
+│   └── tests/               # Jest + React Testing Library
 ├── docs/                     # Project planning, PRD, architecture
 │   ├── README.md
 │   ├── product-requirements.md

@@ -64,7 +64,7 @@ A containerized full-stack web application using **FastAPI (Python)** + **React 
 
 | Layer            | Tech                            | Notes                              |
 | ---------------- | ------------------------------- | ---------------------------------- |
-| Frontend         | React + Tailwind CSS            | Theming support (light/dark/modes) |
+| Frontend         | Next.js + Tailwind CSS         | SSR-capable, optimized performance |
 | Backend API      | FastAPI                         | Async-ready, modular, type-safe    |
 | Database         | PostgreSQL                      | Rich relational features           |
 | ORM              | SQLAlchemy + Alembic            | Migrations + clean data modeling   |

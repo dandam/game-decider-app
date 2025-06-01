@@ -163,6 +163,71 @@ Each decision should include:
 
 **Status:** Active
 
+### 3. Frontend Framework: Next.js Adoption (2024-03-XX)
+
+**Context:**
+- Project initially planned to use React for frontend
+- During initial setup, Next.js was adopted instead
+- Need to document this architectural decision and its implications
+
+**Options Considered:**
+
+1. **Pure React with React Router**
+   Pros:
+   - Simpler, more lightweight setup
+   - More direct control over routing
+   - Fewer abstractions to learn
+   
+   Cons:
+   - Manual setup for many features
+   - Less optimized out of the box
+   - More boilerplate code needed
+
+2. **Next.js (Current Choice)**
+   Pros:
+   - Built-in routing
+   - Better performance optimization
+   - Server-side rendering capabilities
+   - Excellent TypeScript support
+   - Built-in API routes
+   - Strong developer experience
+   - Active community and support
+   
+   Cons:
+   - Slightly more complex
+   - Some additional abstractions
+   - Might be overkill for simpler apps
+
+**Decision:**
+- Continue using Next.js as the frontend framework
+- Document and standardize Next.js patterns across the codebase
+
+**Rationale:**
+1. Technical benefits:
+   - Built-in performance optimizations
+   - Better TypeScript integration
+   - Future-proof for potential SSR needs
+   - Simplified routing and API integration
+   
+2. Developer experience:
+   - Strong conventions reduce decision fatigue
+   - Excellent documentation and community support
+   - Built-in solutions for common needs
+   
+3. Project fit:
+   - Aligns with our modular architecture
+   - Supports our testing strategy
+   - Provides room for future growth
+
+**Implications:**
+- Need to follow Next.js best practices and patterns
+- Team should familiarize with Next.js concepts
+- Testing setup includes Next.js specific mocks
+- Deployment considers Next.js requirements
+- Documentation updated to reflect Next.js usage
+
+**Status:** Active
+
 ---
 
 ## Template for New Decisions

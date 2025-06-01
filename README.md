@@ -46,7 +46,7 @@ This will start:
 
 ```
 game-decider-app/
-├── frontend/          # React frontend application
+├── frontend/          # Next.js frontend application
 ├── backend/          # FastAPI backend service
 ├── docs/             # Project documentation
 └── docker/           # Docker configuration files
