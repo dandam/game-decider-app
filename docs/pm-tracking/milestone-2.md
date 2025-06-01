@@ -34,11 +34,11 @@ Before beginning implementation, we need to complete these research spikes to in
 | 25 | Complete BoardGameArena integration spike | P0 | Done | M |
 | 26 | Process collected BGA data into structured format | P1 | To Do | M |
 | 27 | Refactor and align technical approach based on spike outcomes | P0 | To Do | M |
-| 28 | Design and implement core database tables | P0 | To Do | M |
-| 29 | Create player profile models and API | P0 | To Do | M |
-| 30 | Implement game library models and API | P0 | To Do | M |
+| 28 | Design and implement core database tables | P0 | Done | M |
+| 29 | Create player profile models and API | P0 | In Progress | M |
+| 30 | Implement game library models and API | P0 | In Progress | M |
 | 31 | Create player preferences models and API | P0 | To Do | M |
-| 32 | Set up database migrations with Alembic | P0 | To Do | S |
+| 32 | Set up database migrations with Alembic | P0 | Done | S |
 | 33 | Create data seeding system for development | P1 | To Do | S |
 | 34 | Implement player profile UI components | P0 | To Do | M |
 | 35 | Create game library UI components | P0 | To Do | M |
@@ -238,6 +238,24 @@ Before beginning implementation, we need to complete these research spikes to in
 - ✅ BoardGameArena Integration Spike (Issue #25)
   - Completed
 
+### Core Data Layer Progress
+- ✅ Core Database Tables (Issue #28)
+  - Implemented SQLAlchemy models for Player and Game
+  - Set up base model with common fields (UUID, timestamps)
+  - Added initial fields for core entities
+  - TODO: Add remaining relationship models
+- ✅ Database Migrations (Issue #32)
+  - Set up Alembic for database migrations
+  - Created initial migration for core tables
+  - Configured async PostgreSQL support
+  - TODO: Add seed data migration
+- 🏗 Player Profile API (Issue #29)
+  - Models implemented
+  - TODO: Add API endpoints and services
+- 🏗 Game Library API (Issue #30)
+  - Models implemented
+  - TODO: Add API endpoints and services
+
 ### Issue 26 Progress (Technical Alignment)
 - 🏗 Planning Phase
 - [ ] Review spike outcomes and recommendations
@@ -246,27 +264,6 @@ Before beginning implementation, we need to complete these research spikes to in
 - [ ] Refine implementation approach
 - [ ] Update task dependencies if needed
 - [ ] Document final technical decisions
-
-### Issue 27 & 45 Progress (Database Schema)
-- 🏗 Planning Phase
-- [ ] Define table structures
-- [ ] Plan relationships and constraints
-- [ ] Review with team
-- [ ] Implement core tables
-- [ ] Implement relationship tables
-- [ ] Add database constraints
-- [ ] Create indexes
-- [ ] Performance testing
-
-### Issue 48 & 51 Progress (Frontend Foundation)
-- 🏗 Planning Phase
-- [ ] Evaluate state management options (Zustand vs. Redux Toolkit)
-- [ ] Design API client architecture
-- [ ] Plan error handling strategy
-- [ ] Define TypeScript interfaces
-- [ ] Set up API interceptors
-- [ ] Implement state management
-- [ ] Create API services 
 
 ## Task Details
 
