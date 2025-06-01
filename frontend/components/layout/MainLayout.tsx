@@ -26,7 +26,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
                 <span className="text-xl font-bold text-indigo-600">Game Night Concierge</span>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                {navItems.map((item) => (
+                {navItems.map(item => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -45,11 +45,9 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         </div>
       </nav>
 
-      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {children}
-      </main>
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">{children}</main>
     </div>
   );
 };
 
-export default MainLayout; 
+export default MainLayout;
