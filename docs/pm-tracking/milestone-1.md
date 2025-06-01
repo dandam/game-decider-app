@@ -17,8 +17,8 @@ Sprint 1 focuses on setting up the basic project infrastructure, including Docke
 | 9 | Set up backend testing framework (pytest) | P1 | Complete | S |
 | 10 | Configure ESLint and Prettier for frontend | P1 | Complete | XS |
 | 11 | Configure black and flake8 for backend | P1 | Complete | XS |
-| 12 | Create GitHub Actions workflow for frontend tests | P1 | To Do | S |
-| 13 | Create GitHub Actions workflow for backend tests | P1 | To Do | S |
+| 12 | Create GitHub Actions workflow for frontend tests | P1 | Complete | S |
+| 13 | Create GitHub Actions workflow for backend tests | P1 | Complete | S |
 | 14 | Set up basic frontend routing structure | P0 | In Progress | XS |
 | 15 | Create minimal homepage component | P0 | Complete | S |
 | 16 | Set up Tailwind CSS configuration | P0 | Complete | XS |
@@ -124,9 +124,33 @@ Sprint 1 focuses on setting up the basic project infrastructure, including Docke
 - ✅ Added aiosqlite for test database support
 - ✅ Issue completed: Backend testing framework is ready for use
 
+### Issues 12 & 13 Progress
+- ✅ Created frontend.yml workflow for frontend CI
+  - Node.js setup and dependency installation
+  - Prettier formatting checks
+  - ESLint checks
+  - Jest tests with coverage reporting
+  - Coverage upload to Codecov
+- ✅ Created backend.yml workflow for backend CI
+  - Python environment setup
+  - PostgreSQL service configuration
+  - Black formatting checks
+  - Flake8 linting
+  - isort import sorting
+  - pytest with coverage reporting
+  - Coverage upload to Codecov
+- ✅ Added Codecov configuration (codecov.yml)
+  - Set up coverage thresholds
+  - Configured PR comments and status checks
+  - Set up component-level reporting
+- ✅ Added comprehensive CI/CD documentation
+  - Created docs/ci-cd.md with detailed workflow descriptions
+  - Added monitoring and troubleshooting guides
+  - Documented best practices
+- ✅ Issues completed: GitHub Actions workflows are fully configured and operational
+
 Based on our progress, the next priorities should be:
-1. GitHub Actions workflows (Issues 12, 13) - To automate testing
-2. Error handling and logging (Issues 19, 22) - To improve application robustness
-3. Basic error handling middleware (Issue 19) - To standardize error responses
+1. Error handling and logging (Issues 19, 22) - To improve application robustness
+2. Basic error handling middleware (Issue 19) - To standardize error responses
 
 Would you like to focus on any of these next steps? 
