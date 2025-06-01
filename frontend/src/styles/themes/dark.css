@@ -1,0 +1,30 @@
+/* Dark Theme Overrides */
+[data-theme="dark"] {
+  /* Adjust primary color for dark mode */
+  --color-primary-l: 60%;
+  
+  /* Surface Colors - Dark Mode */
+  --color-surface-50: hsl(215 25% 9%);
+  --color-surface-100: hsl(215 25% 11%);
+  --color-surface-200: hsl(215 25% 15%);
+  --color-surface-300: hsl(215 25% 20%);
+  --color-surface-400: hsl(215 25% 30%);
+  --color-surface-500: hsl(215 25% 50%);
+  --color-surface-600: hsl(215 25% 60%);
+  --color-surface-700: hsl(215 25% 70%);
+  --color-surface-800: hsl(215 25% 80%);
+  --color-surface-900: hsl(215 25% 90%);
+  
+  /* Shadows for dark mode */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5);
+}
+
+/* Prefers Dark Color Scheme */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Import all dark theme variables */
+    @import url("dark.css");
+  }
+} 
