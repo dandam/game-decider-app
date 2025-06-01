@@ -82,15 +82,15 @@ This is a hobby-scale but technically rigorous project to build a web applicatio
 
 | Area                 | Tool/Tech                                   |
 | -------------------- | ------------------------------------------- |
-| Language             | JavaScript + Python (as needed)             |
-| Frontend             | React or lightweight JS framework           |
-| Backend              | FastAPI (Python) or Express (Node.js)       |
-| Database             | PostgreSQL or SQLite (start small)          |
+| Language             | TypeScript + Python                         |
+| Frontend             | Next.js + Tailwind CSS                      |
+| Backend              | FastAPI (Python)                            |
+| Database             | PostgreSQL                                  |
 | Auth (future)        | Discord OAuth via Auth0 or direct API       |
 | Discord Bot (future) | discord.py or discord.js                    |
 | Hosting              | Cloudways (production)                      |
 | DevOps               | Docker, GitHub, GitHub Actions              |
-| Testing              | Pytest/Jest, Selenium or Playwright for E2E |
+| Testing              | Jest/RTL, pytest, Cypress for E2E           |
 
 ---
 
@@ -136,7 +136,7 @@ GitHub Actions will run:
 
 ## 🥪 Known Spikes
 
-* 🧠 Investigate BoardGameArena’s API/data access rules
+* 🧠 Investigate BoardGameArena's API/data access rules
 * 🤖 Review Discord bot setup and permissions model
 * 🎭 Evaluate best OAuth approach (Discord-only vs hybrid)
 * 🛠 Determine theming strategy (CSS vars vs CSS-in-JS)
