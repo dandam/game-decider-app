@@ -24,7 +24,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app/backend
-      - /app/backend/.venv
+      - backend_venv:/app/backend/.venv
     environment:
       - PYTHONPATH=/app/backend
       - DATABASE_URL=postgresql://postgres:${POSTGRES_PASSWORD:-postgres}@db:5432/game_night_dev
@@ -44,4 +44,5 @@ services:
       - POSTGRES_DB=game_night_dev
 
 volumes:
-  postgres_data: 
+  postgres_data:
+  backend_venv: 
