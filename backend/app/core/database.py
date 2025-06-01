@@ -1,37 +1,41 @@
-"""Database configuration and utilities."""
+"""Database configuration module."""
 from typing import AsyncGenerator
 
-from sqlalchemy.ext.asyncio import (
-    AsyncSession,
-    async_sessionmaker,
-    create_async_engine,
-)
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker
+from sqlalchemy.orm import declarative_base
 
 from app.core.config import settings
 
+# Convert the sync PostgreSQL URL to async
+ASYNC_DATABASE_URL = settings.DATABASE_URL.replace(
+    "postgresql://", "postgresql+asyncpg://"
+)
+
 # Create async engine
 engine = create_async_engine(
-    settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://"),
+    ASYNC_DATABASE_URL,
     echo=settings.DEBUG,
-    pool_pre_ping=True,
+    future=True,
 )
 
 # Create async session factory
-async_session_factory = async_sessionmaker(
+AsyncSessionLocal = async_sessionmaker(
     engine,
     class_=AsyncSession,
     expire_on_commit=False,
 )
 
+# Create declarative base for models
+Base = declarative_base()
+
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
-    """Get database session."""
-    async with async_session_factory() as session:
+    """Dependency for getting async database sessions."""
+    async with AsyncSessionLocal() as session:
         try:
             yield session
             await session.commit()
         except Exception:
             await session.rollback()
-            raise
-        finally:
-            await session.close() 
+            raise 
