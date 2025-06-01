@@ -1,33 +1,38 @@
-from fastapi import FastAPI, HTTPException
+"""Main application module."""
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import create_engine, text
-import os
 
-app = FastAPI(title="Game Night Concierge API")
+from app.core.config import settings
+from app.core.errors import setup_error_handlers
+from app.core.logging import setup_logging
+from app.core.middleware import setup_middleware
+
+# Configure logging first
+setup_logging()
+
+# Create FastAPI application
+app = FastAPI(
+    title=settings.APP_TITLE,
+    description=settings.APP_DESCRIPTION,
+    version=settings.APP_VERSION,
+    docs_url="/docs" if settings.DEBUG else None,
+    redoc_url="/redoc" if settings.DEBUG else None,
+)
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Database configuration
-DATABASE_URL = os.getenv("DATABASE_URL")
-engine = create_engine(DATABASE_URL)
+# Configure middleware and error handlers
+setup_middleware(app)
+setup_error_handlers(app)
 
-@app.get("/")
-async def root():
-    return {"message": "Game Night Concierge API Running"}
+# Import and include routers
+from app.api.v1.router import api_router  # noqa: E402
 
-@app.get("/health/db")
-async def database_health_check():
-    try:
-        # Test database connection
-        with engine.connect() as connection:
-            result = connection.execute(text("SELECT 1"))
-            return {"status": "healthy", "message": "Database connection successful"}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Database connection failed: {str(e)}") 
+app.include_router(api_router, prefix="/api/v1") 
