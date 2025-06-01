@@ -1,0 +1,70 @@
+/* Base Theme Tokens */
+:root {
+  /* Color Palette - using HSL for better color manipulation */
+  --color-primary-h: 215;
+  --color-primary-s: 90%;
+  --color-primary-l: 50%;
+  --color-primary: hsl(
+    var(--color-primary-h)
+    var(--color-primary-s)
+    var(--color-primary-l)
+  );
+  
+  /* Surface Colors */
+  --color-surface-50: hsl(0 0% 98%);
+  --color-surface-100: hsl(0 0% 96%);
+  --color-surface-200: hsl(0 0% 90%);
+  --color-surface-300: hsl(0 0% 83%);
+  --color-surface-400: hsl(0 0% 70%);
+  --color-surface-500: hsl(0 0% 50%);
+  --color-surface-600: hsl(0 0% 40%);
+  --color-surface-700: hsl(0 0% 30%);
+  --color-surface-800: hsl(0 0% 20%);
+  --color-surface-900: hsl(0 0% 10%);
+  
+  /* Typography */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: ui-monospace, monospace;
+  
+  /* Font Sizes - Using Major Third Scale */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.25rem;    /* 20px */
+  --text-xl: 1.563rem;   /* 25px */
+  --text-2xl: 1.953rem;  /* 31px */
+  --text-3xl: 2.441rem;  /* 39px */
+  --text-4xl: 3.052rem;  /* 49px */
+  
+  /* Spacing */
+  --spacing-px: 1px;
+  --spacing-0: 0;
+  --spacing-0-5: 0.125rem;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  
+  /* Component Specific */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  
+  /* Animation */
+  --transition-all: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-colors: color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                      background-color 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                      border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+} 
