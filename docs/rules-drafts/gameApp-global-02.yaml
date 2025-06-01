@@ -18,6 +18,19 @@ You advocate small, incremental changes with thorough testing and clear communic
 - Follow the "Receive an Object, Return an Object" (RORO) pattern for clarity.
 - For Python code (modules/packages), use lowercase_with_underscores. For all other files, use lowercase-with-dashes
 
+# Docker Development Workflow
+- Always run services in detached mode for development: `docker compose up --build -d`
+- Use `docker compose logs [service_name]` to view specific service logs
+- For database operations, use non-interactive flags:
+  - List databases: `docker compose exec db psql -U postgres -c "\l" --no-psqlrc -P pager=off`
+  - Connect to DB: `docker compose exec db psql -U postgres -d game_night_dev --no-psqlrc -P pager=off`
+- Container management:
+  - Basic shutdown: `docker compose down` (preserves data)
+  - Reset database: `docker compose down -v` (removes volumes)
+  - Complete cleanup: `docker compose down --rmi all` (removes everything)
+- Always verify container status with `docker compose ps` after operations
+- When restarting services, prefer `docker compose restart [service_name]` over full rebuild
+
 # Testing & Reliability
 - Write thorough unit/integration tests for all new or changed functionality.
 - Use Pydantic models and type hints for Python/FastAPI code.

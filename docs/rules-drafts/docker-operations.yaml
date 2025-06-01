@@ -1,0 +1,56 @@
+# Docker Operations Rule
+# This rule defines the standard Docker workflow for the Game Night Concierge project.
+
+description: |
+  Standardizes Docker operations across the project to ensure consistent development
+  environment and efficient debugging. These rules are derived from the project's
+  documented decisions (see decisions-log.md #2).
+
+# Development Environment Setup
+development:
+  standard_mode: detached  # Always use detached mode for development
+  startup_command: "docker compose up --build -d"
+  verification_command: "docker compose ps"
+  
+  # Service-specific operations
+  services:
+    logs:
+      command: "docker compose logs [service_name]"
+      when_to_use: "For debugging specific services without interrupting development"
+    
+    database:
+      list_command: "docker compose exec db psql -U postgres -c '\\l' --no-psqlrc -P pager=off"
+      connect_command: "docker compose exec db psql -U postgres -d game_night_dev --no-psqlrc -P pager=off"
+      flags:
+        - "--no-psqlrc": "Prevents loading user's psql configuration"
+        - "-P pager=off": "Disables interactive pagination"
+    
+    restart:
+      preferred: "docker compose restart [service_name]"
+      rationale: "More efficient than full rebuild for most changes"
+
+# Shutdown Procedures
+shutdown:
+  options:
+    basic:
+      command: "docker compose down"
+      preserves: ["volumes", "images"]
+      use_when: "Temporary shutdown, preserving data"
+    
+    reset_db:
+      command: "docker compose down -v"
+      removes: ["containers", "networks", "volumes"]
+      use_when: "Need to reset database state"
+    
+    full_cleanup:
+      command: "docker compose down --rmi all"
+      removes: ["containers", "networks", "volumes", "images"]
+      use_when: "Complete environment reset needed"
+
+# Best Practices
+best_practices:
+  - "Always verify container status after operations"
+  - "Use non-interactive flags for database operations"
+  - "Prefer service-specific restarts over full rebuilds"
+  - "Check logs before assuming container issues"
+  - "Use basic shutdown unless specific cleanup needed" 
