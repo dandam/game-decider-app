@@ -51,7 +51,7 @@ Before beginning implementation, we need to complete these research spikes to in
 | 42 | Add form validation and error handling | P0 | To Do | M |
 | 43 | Create comprehensive API documentation | P1 | To Do | S |
 | 44 | Write player-related integration tests | P0 | To Do | M |
-| 45 | Implement relationship tables and constraints | P0 | To Do | M |
+| 45 | Implement relationship tables and constraints | P0 | Done | M |
 | 46 | Create advanced game matching logic | P0 | To Do | M |
 | 47 | Write game-related integration tests | P0 | To Do | M |
 | 48 | Set up frontend API client and services | P0 | To Do | S |

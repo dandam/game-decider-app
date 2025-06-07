@@ -10,11 +10,21 @@ from app.models.game import Game
 
 
 # Association table for many-to-many relationship between games and tags
-game_tags = Table(
-    "game_tags",
+games_tags = Table(
+    "games_tags",
     Base.metadata,
-    Column("game_id", UUID(as_uuid=True), ForeignKey("games.id", ondelete="CASCADE"), primary_key=True),
-    Column("tag_id", UUID(as_uuid=True), ForeignKey("game_tags.id", ondelete="CASCADE"), primary_key=True),
+    Column(
+        "game_id",
+        UUID(as_uuid=True),
+        ForeignKey("games.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+    Column(
+        "tag_id",
+        UUID(as_uuid=True),
+        ForeignKey("game_tags.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
 )
 
 
@@ -37,6 +47,6 @@ class GameTag(Base):
     
     # Relationship to games
     games: Mapped[List[Game]] = relationship(
-        secondary=game_tags,
+        secondary=games_tags,
         back_populates="tags",
     ) 
