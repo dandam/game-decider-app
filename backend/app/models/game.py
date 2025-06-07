@@ -1,10 +1,13 @@
 """Game model module."""
-from typing import Optional
+from typing import List, Optional
 
-from sqlalchemy import Integer, String, Text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import Integer, String, Text, Float
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
+from app.models.game_category import GameCategory
+from app.models.game_tag import GameTag
+from app.models.player_game_history import PlayerGameHistory
 
 
 class Game(Base):
@@ -35,6 +38,7 @@ class Game(Base):
         nullable=False,
     )
     complexity_rating: Mapped[float] = mapped_column(
+        Float,
         nullable=False,
     )
     
@@ -46,6 +50,16 @@ class Game(Base):
         index=True,
     )
     
-    # Relationships will be added as we implement categories and tags
-    # categories: Mapped[List["GameCategory"]] = relationship(secondary="game_categories", back_populates="games")
-    # tags: Mapped[List["GameTag"]] = relationship(secondary="game_tags", back_populates="games") 
+    # Relationships
+    categories: Mapped[List[GameCategory]] = relationship(
+        secondary="game_categories",
+        back_populates="games",
+    )
+    tags: Mapped[List[GameTag]] = relationship(
+        secondary="game_tags",
+        back_populates="games",
+    )
+    player_history: Mapped[List[PlayerGameHistory]] = relationship(
+        back_populates="game",
+        cascade="all, delete-orphan",
+    ) 
