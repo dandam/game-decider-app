@@ -165,16 +165,127 @@ class PlayerRepository:
 ## Migration Management
 
 ### Alembic Configuration
-- Async migrations support
-- Separate dev/test/prod configurations
-- Data seeding support
-- Rollback support
+- Async migrations support via SQLAlchemy 2.0
+- Environment-specific configurations via `env.py`
+- Standardized naming with timestamp prefix
+- Automatic formatting with Black
+- Comprehensive logging setup
+
+### Migration Structure
+Each migration follows a consistent structure:
+```python
+"""Migration description
+
+Revision ID: unique_id
+Revises: previous_revision
+Create Date: timestamp
+"""
+
+# Upgrade operations
+def upgrade() -> None:
+    # Table creation
+    op.create_table(...)
+    
+    # Index creation
+    op.create_index(...)
+    
+    # Constraints
+    op.create_check_constraint(...)
+
+# Downgrade operations
+def downgrade() -> None:
+    # Reverse operations in correct order
+    op.drop_table(...)
+```
 
 ### Migration Patterns
-- One change per migration
-- Reversible migrations
-- Data migration helpers
-- Constraint handling
+
+1. **Table Creation Order**
+   - Independent tables first (no foreign keys)
+   - Dependent tables following
+   - Association tables last
+   - Reverse order for downgrades
+
+2. **Constraint Types**
+   - Primary Key constraints
+   - Unique constraints
+   - Foreign Key constraints (with CASCADE delete)
+   - Check constraints for business rules
+   - Indexes for performance
+
+3. **Data Validation**
+   - Length constraints on strings
+   - Numeric range validations
+   - Relationship integrity
+   - Business rule enforcement
+
+4. **Naming Conventions**
+   - Descriptive constraint names
+   - Consistent index naming
+   - Clear table naming
+   - Relationship table naming (plural form)
+
+### Example Constraints
+
+1. **Business Rules**
+   ```sql
+   -- Player count validation
+   CHECK (max_players >= min_players)
+   
+   -- Rating range validation
+   CHECK (rating IS NULL OR (rating >= 1.0 AND rating <= 5.0))
+   
+   -- Time preference validation
+   CHECK (
+       (maximum_play_time IS NULL) OR 
+       (minimum_play_time IS NULL) OR 
+       (maximum_play_time >= minimum_play_time)
+   )
+   ```
+
+2. **Relationship Integrity**
+   ```sql
+   -- One-to-One relationship
+   UNIQUE (player_id)
+   FOREIGN KEY (player_id) REFERENCES players(id) ON DELETE CASCADE
+   
+   -- Many-to-Many relationship
+   PRIMARY KEY (game_id, category_id)
+   FOREIGN KEY (game_id) REFERENCES games(id) ON DELETE CASCADE
+   FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+   ```
+
+### Migration Management
+
+1. **Creating Migrations**
+   ```bash
+   # Generate new migration
+   alembic revision --autogenerate -m "description"
+   
+   # Run migrations
+   alembic upgrade head
+   
+   # Rollback one step
+   alembic downgrade -1
+   ```
+
+2. **Version Control**
+   - Migrations are version controlled
+   - Each migration has a unique identifier
+   - Linear history maintained
+   - Dependencies tracked
+
+3. **Testing Strategy**
+   - Test both upgrade and downgrade paths
+   - Verify constraint enforcement
+   - Check data integrity
+   - Validate business rules
+
+4. **Deployment Considerations**
+   - Backward compatible changes
+   - Zero-downtime migrations when possible
+   - Proper backup procedures
+   - Rollback plans
 
 ## Testing Strategy
 
