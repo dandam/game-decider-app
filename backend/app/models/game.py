@@ -5,8 +5,7 @@ from sqlalchemy import Integer, String, Text, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
-from app.models.game_category import GameCategory
-from app.models.game_tag import GameTag
+from app.models.associations import games_categories, games_tags
 from app.models.player_game_history import PlayerGameHistory
 
 
@@ -51,15 +50,17 @@ class Game(Base):
     )
     
     # Relationships
-    categories: Mapped[List[GameCategory]] = relationship(
-        secondary="game_categories",
+    categories: Mapped[List["GameCategory"]] = relationship(
+        "GameCategory",
+        secondary=games_categories,
         back_populates="games",
     )
-    tags: Mapped[List[GameTag]] = relationship(
-        secondary="game_tags",
+    tags: Mapped[List["GameTag"]] = relationship(
+        "GameTag",
+        secondary=games_tags,
         back_populates="games",
     )
-    player_history: Mapped[List[PlayerGameHistory]] = relationship(
+    player_history: Mapped[List["PlayerGameHistory"]] = relationship(
         back_populates="game",
         cascade="all, delete-orphan",
     ) 

@@ -2,13 +2,11 @@
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import ForeignKey, Float, String, DateTime
+from sqlalchemy import String, Float, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
-from app.models.game import Game
-from app.models.player import Player
 
 
 class PlayerGameHistory(Base):
@@ -21,18 +19,15 @@ class PlayerGameHistory(Base):
         UUID(as_uuid=True),
         ForeignKey("players.id", ondelete="CASCADE"),
         nullable=False,
-        index=True,
     )
     game_id: Mapped[UUID] = mapped_column(
         UUID(as_uuid=True),
         ForeignKey("games.id", ondelete="CASCADE"),
         nullable=False,
-        index=True,
     )
     
-    # Play details
+    # Play information
     play_date: Mapped[datetime] = mapped_column(
-        DateTime(timezone=True),
         nullable=False,
     )
     rating: Mapped[Optional[float]] = mapped_column(
@@ -45,9 +40,11 @@ class PlayerGameHistory(Base):
     )
     
     # Relationships
-    player: Mapped[Player] = relationship(
+    player: Mapped["Player"] = relationship(
+        "Player",
         back_populates="game_history",
     )
-    game: Mapped[Game] = relationship(
+    game: Mapped["Game"] = relationship(
+        "Game",
         back_populates="player_history",
     ) 

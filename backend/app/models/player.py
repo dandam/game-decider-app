@@ -26,17 +26,19 @@ class Player(Base):
         nullable=False,
     )
     avatar_url: Mapped[Optional[str]] = mapped_column(
-        String(length=255),
+        String(length=200),
         nullable=True,
     )
     
     # Relationships
-    preferences: Mapped[PlayerPreferences] = relationship(
+    preferences: Mapped["PlayerPreferences"] = relationship(
+        "PlayerPreferences",
         back_populates="player",
         uselist=False,
         cascade="all, delete-orphan",
     )
-    game_history: Mapped[List[PlayerGameHistory]] = relationship(
+    game_history: Mapped[List["PlayerGameHistory"]] = relationship(
+        "PlayerGameHistory",
         back_populates="player",
         cascade="all, delete-orphan",
     )

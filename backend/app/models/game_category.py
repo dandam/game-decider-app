@@ -1,32 +1,11 @@
 """Game category model module."""
 from typing import List
 
-from sqlalchemy import String, Table, Column, ForeignKey
-from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
-from app.models.game import Game
-from app.models.player_preferences import PlayerPreferences
-
-
-# Association table for many-to-many relationship between games and categories
-games_categories = Table(
-    "games_categories",
-    Base.metadata,
-    Column(
-        "game_id",
-        UUID(as_uuid=True),
-        ForeignKey("games.id", ondelete="CASCADE"),
-        primary_key=True,
-    ),
-    Column(
-        "category_id",
-        UUID(as_uuid=True),
-        ForeignKey("game_categories.id", ondelete="CASCADE"),
-        primary_key=True,
-    ),
-)
+from app.models.associations import games_categories, player_preferred_categories
 
 
 class GameCategory(Base):
@@ -47,13 +26,15 @@ class GameCategory(Base):
     )
     
     # Relationship to games
-    games: Mapped[List[Game]] = relationship(
+    games: Mapped[List["Game"]] = relationship(
+        "Game",
         secondary=games_categories,
         back_populates="categories",
     )
     
     # Relationship to player preferences
-    preferring_players: Mapped[List[PlayerPreferences]] = relationship(
-        secondary="player_preferred_categories",
+    preferring_players: Mapped[List["PlayerPreferences"]] = relationship(
+        "PlayerPreferences",
+        secondary=player_preferred_categories,
         back_populates="preferred_categories",
     ) 
