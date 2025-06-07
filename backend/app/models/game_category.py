@@ -7,14 +7,25 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base
 from app.models.game import Game
+from app.models.player_preferences import PlayerPreferences
 
 
 # Association table for many-to-many relationship between games and categories
-game_categories = Table(
-    "game_categories",
+games_categories = Table(
+    "games_categories",
     Base.metadata,
-    Column("game_id", UUID(as_uuid=True), ForeignKey("games.id", ondelete="CASCADE"), primary_key=True),
-    Column("category_id", UUID(as_uuid=True), ForeignKey("game_categories.id", ondelete="CASCADE"), primary_key=True),
+    Column(
+        "game_id",
+        UUID(as_uuid=True),
+        ForeignKey("games.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
+    Column(
+        "category_id",
+        UUID(as_uuid=True),
+        ForeignKey("game_categories.id", ondelete="CASCADE"),
+        primary_key=True,
+    ),
 )
 
 
@@ -37,6 +48,12 @@ class GameCategory(Base):
     
     # Relationship to games
     games: Mapped[List[Game]] = relationship(
-        secondary=game_categories,
+        secondary=games_categories,
         back_populates="categories",
+    )
+    
+    # Relationship to player preferences
+    preferring_players: Mapped[List[PlayerPreferences]] = relationship(
+        secondary="player_preferred_categories",
+        back_populates="preferred_categories",
     ) 
