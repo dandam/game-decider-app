@@ -345,4 +345,103 @@ def downgrade() -> None:
    - Input validation
    - Query parameterization
    - Access control
-   - Audit logging 
+   - Audit logging
+
+## Data Seeding
+
+### Overview
+The application includes a comprehensive seeding system for populating the database with sample data during development. This ensures consistent test data and makes development easier.
+
+### Seeder Structure
+```
+backend/app/seeds/
+├── __init__.py
+├── seed_runner.py
+└── seeders/
+    ├── base.py
+    ├── game_categories.py
+    ├── game_tags.py
+    ├── games.py
+    └── players.py
+```
+
+### Sample Data
+The seeding system provides:
+- Game categories (Strategy, Party, Cooperative, etc.)
+- Game tags (Family Friendly, Quick Play, Heavy Strategy, etc.)
+- Popular board games with relationships to categories and tags
+- Sample players with preferences and game history
+
+### Running Seeds
+
+#### Local Development (Docker)
+```bash
+# Start containers if not running
+docker-compose up -d
+
+# Reset database and seed (recommended for fresh start)
+docker-compose exec backend python -m app.cli seed --reset
+
+# Seed without resetting (preserves existing data)
+docker-compose exec backend python -m app.cli seed
+
+# View seeding logs
+docker-compose logs backend
+```
+
+#### Local Development (Direct)
+```bash
+# From the backend directory
+python -m app.cli seed --reset  # Reset and seed
+python -m app.cli seed         # Just seed
+```
+
+#### Environment Variables
+The seeding system uses these environment variables (automatically set in Docker):
+```
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_DB=game_night_dev
+DATABASE_URL=postgresql://postgres:postgres@db:5432/game_night_dev
+```
+
+### Seeder Implementation
+Each seeder follows a consistent pattern:
+```python
+class GameCategoriesSeeder(BaseSeed):
+    async def run(self) -> None:
+        categories = [GameCategory(**data) for data in SAMPLE_CATEGORIES]
+        self.session.add_all(categories)
+        await self.session.commit()
+```
+
+### Seeding Order
+1. Game Categories (independent)
+2. Game Tags (independent)
+3. Games (depends on categories and tags)
+4. Players (depends on categories for preferences)
+
+### Best Practices
+1. **Data Quality**
+   - Use realistic, varied sample data
+   - Cover edge cases and common scenarios
+   - Include relationships between entities
+   - Use meaningful descriptions
+
+2. **Maintainability**
+   - Keep seed data in separate files
+   - Document data relationships
+   - Use constants for shared values
+   - Follow naming conventions
+
+3. **Performance**
+   - Batch database operations
+   - Use proper transaction management
+   - Handle relationships efficiently
+   - Minimize database roundtrips
+
+4. **Development Support**
+   - Support database reset option
+   - Provide CLI interface
+   - Include logging
+   - Handle errors gracefully 
