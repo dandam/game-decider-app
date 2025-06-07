@@ -66,45 +66,45 @@ Before beginning implementation, we need to complete these research spikes to in
    - #23 Theming strategy
    - #24 Analytics architecture
    - #25 BoardGameArena integration
-   - #26 Technical alignment and refactoring
+   - #26 Process BGA data
+   - #27 Technical alignment and refactoring
 
 1. Core Data Layer (Sprint 2.1)
-   - #27 Core database tables
+   - #28 Core database tables
    - #45 Relationship tables
-   - #52 Validation schemas
-   - #31 Alembic migrations
-   - #32 Data seeding
+   - #52 Pydantic validation schemas
+   - #32 Alembic migrations
+   - #33 Data seeding
 
 2. Backend APIs (Sprint 2.1)
-   - #28 Player profiles API
-   - #29 Game library API
-   - #30 Player preferences API
-   - #41 Form validation
+   - #29 Player profiles API
+   - #30 Game library API
+   - #31 Player preferences API
+   - #42 Form validation and error handling
 
 3. Frontend Foundation (Sprint 2.1)
    - #48 API client setup
-   - #49 Component library
-   - #51 State management
-   - #50 Loading/error states
+   - #49 Frontend component library
+   - #51 Frontend state management
+   - #50 Loading and error states
 
 4. Frontend Features (Sprint 2.2)
-   - #33 Player profile UI
-   - #34 Game library UI
-   - #37 Player preferences UI
-   - #40 Responsive layout
+   - #34 Player profile UI
+   - #35 Game library UI
+   - #38 Player preferences UI
+   - #41 Responsive layout
 
 5. Game Logic (Sprint 2.2)
-   - #35 Basic filtering
-   - #46 Advanced matching
-   - #39 Compatibility indicators
-   - #38 Basic statistics
-   - #36 Game detail view
-   - #44 Search functionality
+   - #36 Basic filtering
+   - #46 Advanced game matching
+   - #40 Game compatibility indicators
+   - #39 Basic game statistics
+   - #37 Game detail view
 
 6. Quality Assurance (Throughout)
-   - #42 API documentation
-   - #43 Player integration tests
-   - #47 Game integration tests
+   - #43 API documentation
+   - #44 Player-related integration tests
+   - #47 Game-related integration tests
 
 ## Database Schema Overview
 
