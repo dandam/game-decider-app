@@ -37,7 +37,7 @@ Before beginning implementation, we need to complete these research spikes to in
 | 28 | Design and implement core database tables | P0 | Done | M |
 | 29 | Create player profile models and API | P0 | Done | M |
 | 30 | Implement game library models and API | P0 | In Done | M |
-| 31 | Create player preferences models and API | P0 | To Do | M |
+| 31 | Create player preferences models and API | P0 | Done | M |
 | 32 | Set up database migrations with Alembic | P0 | Done | S |
 | 33 | Create data seeding system for development | P1 | Done | S |
 | 34 | Implement player profile UI components | P0 | To Do | M |
@@ -79,7 +79,7 @@ Before beginning implementation, we need to complete these research spikes to in
 2. Backend APIs (Sprint 2.1)
    - #29 Player profiles API - Done
    - #30 Game library API - Done
-   - #31 Player preferences API
+   - #31 Player preferences API - Done
    - #42 Form validation and error handling
 
 3. Frontend Foundation (Sprint 2.1)
@@ -255,6 +255,13 @@ Before beginning implementation, we need to complete these research spikes to in
 - 🏗 Game Library API (Issue #30)
   - Models implemented
   - TODO: Add API endpoints and services
+- ✅ Player Preferences API (Issue #31)
+  - Repository layer implemented with CRUD operations
+  - API endpoints added: GET/PUT preferences, GET compatibility
+  - CompatibilityService with sophisticated scoring algorithm
+  - Comprehensive test coverage for all components
+  - Many-to-many category relationships working
+  - All validation and error handling implemented
 
 ### Issue 26 Progress (Technical Alignment)
 - 🏗 Planning Phase
