@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.seeds.seeders.base import BaseSeed
 from app.seeds.seeders.game_categories import GameCategoriesSeeder
+from app.seeds.seeders.game_sessions import GameSessionsSeeder
 from app.seeds.seeders.game_tags import GameTagsSeeder
 from app.seeds.seeders.games import GamesSeeder
 from app.seeds.seeders.players import PlayersSeeder
@@ -19,6 +20,7 @@ SEEDERS: List[Type[BaseSeed]] = [
     GameTagsSeeder,
     GamesSeeder,
     PlayersSeeder,
+    GameSessionsSeeder,  # Run after players are created
 ]
 
 
