@@ -35,11 +35,11 @@ Before beginning implementation, we need to complete these research spikes to in
 | 26 | Process collected BGA data into structured format | P1 | To Do | M |
 | 27 | Refactor and align technical approach based on spike outcomes | P0 | To Do | M |
 | 28 | Design and implement core database tables | P0 | Done | M |
-| 29 | Create player profile models and API | P0 | In Progress | M |
+| 29 | Create player profile models and API | P0 | Done | M |
 | 30 | Implement game library models and API | P0 | In Progress | M |
 | 31 | Create player preferences models and API | P0 | To Do | M |
 | 32 | Set up database migrations with Alembic | P0 | Done | S |
-| 33 | Create data seeding system for development | P1 | To Do | S |
+| 33 | Create data seeding system for development | P1 | Done | S |
 | 34 | Implement player profile UI components | P0 | To Do | M |
 | 35 | Create game library UI components | P0 | To Do | M |
 | 36 | Implement basic game filtering | P0 | To Do | M |
@@ -58,26 +58,26 @@ Before beginning implementation, we need to complete these research spikes to in
 | 49 | Create frontend component library | P1 | To Do | M |
 | 50 | Implement loading and error states | P0 | To Do | M |
 | 51 | Set up frontend state management | P0 | To Do | M |
-| 52 | Create Pydantic validation schemas | P0 | To Do | S |
+| 52 | Create Pydantic validation schemas | P0 | Done | S |
 
 ## Task Dependencies and Sequencing
 
 0. Research Spikes (Sprint 2.0)
-   - #23 Theming strategy
-   - #24 Analytics architecture
-   - #25 BoardGameArena integration
+   - #23 Theming strategy - Done
+   - #24 Analytics architecture 
+   - #25 BoardGameArena integration - Done
    - #26 Process BGA data
    - #27 Technical alignment and refactoring
 
 1. Core Data Layer (Sprint 2.1)
-   - #28 Core database tables
-   - #45 Relationship tables
-   - #52 Pydantic validation schemas
-   - #32 Alembic migrations
-   - #33 Data seeding
+   - #28 Core database tables - Done
+   - #45 Relationship tables - Done
+   - #52 Pydantic validation schemas - Done
+   - #32 Alembic migrations - Done
+   - #33 Data seeding - Done
 
 2. Backend APIs (Sprint 2.1)
-   - #29 Player profiles API
+   - #29 Player profiles API - Done
    - #30 Game library API
    - #31 Player preferences API
    - #42 Form validation and error handling
