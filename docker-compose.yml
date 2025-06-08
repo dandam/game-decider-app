@@ -22,6 +22,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app/backend
+      - ./data:/app/data
       - backend_venv:/app/backend/.venv
     environment:
       - PYTHONPATH=/app/backend
