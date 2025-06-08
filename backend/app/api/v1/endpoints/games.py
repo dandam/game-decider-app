@@ -7,7 +7,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.repositories.game import GameRepository
+from app.repositories.player_preferences import PlayerPreferencesRepository
 from app.schemas.game import GameCreate, GameResponse, GameUpdate
+from app.schemas.compatibility import CompatibilityResponse
+from app.services.compatibility import CompatibilityService
 
 router = APIRouter()
 
@@ -236,4 +239,37 @@ async def get_game_by_bga_id(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Game not found",
         )
-    return GameResponse.model_validate(game) 
+    return GameResponse.model_validate(game)
+
+
+@router.get(
+    "/{game_id}/compatibility",
+    response_model=CompatibilityResponse,
+)
+async def get_game_compatibility(
+    game_id: UUID,
+    player_id: UUID = Query(..., description="Player ID to check compatibility for"),
+    session: AsyncSession = Depends(get_db),
+) -> CompatibilityResponse:
+    """Get game compatibility with player preferences."""
+    # Get game
+    game_repo = GameRepository(session)
+    game = await game_repo.get_by_id(game_id)
+    if not game:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Game not found",
+        )
+    
+    # Get player preferences
+    preferences_repo = PlayerPreferencesRepository(session)
+    preferences = await preferences_repo.get_by_player_id(player_id)
+    if not preferences:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Player preferences not found",
+        )
+    
+    # Calculate compatibility
+    compatibility = CompatibilityService.calculate_compatibility(game, preferences)
+    return compatibility 
