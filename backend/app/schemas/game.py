@@ -67,8 +67,8 @@ class GameTagInDB(GameTagBase):
 class GameBase(BaseModel):
     """Base schema for Game model."""
     
-    name: str = Field(..., min_length=2, max_length=100)
-    description: str = Field(..., min_length=10, max_length=1000)
+    name: str = Field(..., min_length=2, max_length=200)
+    description: Optional[str] = Field(None, max_length=1000)
     min_players: int = Field(..., ge=1, le=10)
     max_players: int = Field(..., ge=1, le=10)
     average_play_time: int = Field(..., ge=5, le=240)  # in minutes
@@ -92,8 +92,8 @@ class GameCreate(GameBase):
 class GameUpdate(BaseModel):
     """Schema for updating a game."""
     
-    name: Optional[str] = Field(None, min_length=2, max_length=100)
-    description: Optional[str] = Field(None, min_length=10, max_length=1000)
+    name: Optional[str] = Field(None, min_length=2, max_length=200)
+    description: Optional[str] = Field(None, max_length=1000)
     min_players: Optional[int] = Field(None, ge=1, le=10)
     max_players: Optional[int] = Field(None, ge=1, le=10)
     average_play_time: Optional[int] = Field(None, ge=5, le=240)
