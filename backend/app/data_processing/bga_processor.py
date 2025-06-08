@@ -12,6 +12,7 @@ from app.models.game import Game
 from app.models.player import Player
 from app.models.player_game_history import PlayerGameHistory
 from app.core.database import get_db
+from app.data_processing.player_stats_parser import process_all_player_stats
 
 
 class BGADataProcessor:
@@ -32,6 +33,7 @@ class BGADataProcessor:
             "games_processed": 0,
             "players_processed": 0,
             "game_history_processed": 0,
+            "player_stats_extracted": 0,
             "errors": 0
         }
         
@@ -40,10 +42,15 @@ class BGADataProcessor:
             games_data = self.extract_games_data()
             results["games_processed"] = await self.import_games(session, games_data)
             
+            # Extract player stats from HTML profiles first
+            print("Extracting player statistics from HTML profiles...")
+            player_stats = process_all_player_stats(self.data_root)
+            results["player_stats_extracted"] = len(player_stats)
+            
             # Process players and their game history
             for player_dir in self.get_player_directories():
                 try:
-                    player_data = self.extract_player_data(player_dir)
+                    player_data = self.extract_player_data(player_dir, player_stats)
                     if player_data:
                         await self.import_player_data(session, player_data)
                         results["players_processed"] += 1
@@ -120,7 +127,7 @@ class BGADataProcessor:
             if d.is_dir() and not d.name.startswith('.')
         ]
     
-    def extract_player_data(self, player_dir: Path) -> Optional[Dict]:
+    def extract_player_data(self, player_dir: Path, player_stats: Optional[Dict] = None) -> Optional[Dict]:
         """Extract player data from profile HTML and stats JSON."""
         player_name = player_dir.name
         
@@ -153,19 +160,57 @@ class BGADataProcessor:
             else:
                 avatar_url = None
             
-            # Look for stats JSON file
-            stats_dir = self.raw_data_path / "player-stats" / player_name
-            stats_file = None
-            
-            if stats_dir.exists():
-                # Find JSON file (may have different naming patterns)
-                json_files = list(stats_dir.glob("*.json"))
-                if json_files:
-                    stats_file = json_files[0]  # Take the first JSON file found
-            
+            # Use extracted player stats if available
             game_history = []
-            if stats_file and stats_file.exists():
-                game_history = self.extract_game_history(stats_file, bga_username)
+            if player_stats and player_name in player_stats:
+                stats_data = player_stats[player_name]
+                # Convert game statistics to game history format
+                # Since we don't have individual play dates, we'll create aggregate entries
+                for game_stat in stats_data.get('game_statistics', []):
+                    if game_stat.get('games_played', 0) > 0:
+                        # Create a synthetic game history entry from stats
+                        # Use current date as placeholder since we don't have actual play dates
+                        from datetime import datetime
+                        placeholder_date = datetime.now()
+                        
+                        # Calculate average rating based on win percentage
+                        win_pct = game_stat.get('win_percentage', 0)
+                        if win_pct >= 70:
+                            avg_rating = 5
+                        elif win_pct >= 50:
+                            avg_rating = 4
+                        elif win_pct >= 30:
+                            avg_rating = 3
+                        elif win_pct >= 15:
+                            avg_rating = 2
+                        else:
+                            avg_rating = 1
+                        
+                        game_history.append({
+                            "bga_game_id": game_stat.get('bga_game_id'),
+                            "game_name": game_stat.get('game_name'),
+                            "play_date": placeholder_date,  # Required field
+                            "rating": avg_rating,  # Calculated from win percentage
+                            "games_played": game_stat.get('games_played', 0),
+                            "victories": game_stat.get('victories', 0),
+                            "win_percentage": game_stat.get('win_percentage', 0),
+                            "elo_rating": game_stat.get('elo_rating'),
+                            "rank_level": game_stat.get('rank_level'),
+                            "notes": f"Aggregate stats: {game_stat.get('games_played', 0)} games, {game_stat.get('victories', 0)} wins ({game_stat.get('win_percentage', 0)}%)"
+                        })
+            else:
+                # Fallback to old JSON file method
+                stats_dir = self.raw_data_path / "player-stats" / player_name
+                stats_file = None
+                
+                if stats_dir.exists():
+                    # Find JSON file (may have different naming patterns)
+                    json_files = list(stats_dir.glob("*.json"))
+                    if json_files:
+                        stats_file = json_files[0]  # Take the first JSON file found
+                
+                if stats_file and stats_file.exists():
+                    game_history = self.extract_game_history(stats_file, bga_username)
             
             return {
                 "username": bga_username,  # Use actual BGA username
@@ -310,11 +355,11 @@ class BGADataProcessor:
                 
                 if game:
                     # Check if this game history already exists
+                    # For aggregate stats, check by player and game only (not date)
                     existing_result = await session.execute(
                         select(PlayerGameHistory).where(
                             PlayerGameHistory.player_id == player.id,
-                            PlayerGameHistory.game_id == game.id,
-                            PlayerGameHistory.play_date == history_item["play_date"]
+                            PlayerGameHistory.game_id == game.id
                         )
                     )
                     
