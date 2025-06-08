@@ -7,7 +7,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
 from app.repositories.player import PlayerRepository
+from app.repositories.player_preferences import PlayerPreferencesRepository
 from app.schemas.player import PlayerCreate, PlayerResponse, PlayerUpdate
+from app.schemas.player_preferences import (
+    PlayerPreferencesCreate,
+    PlayerPreferencesResponse,
+    PlayerPreferencesUpdate,
+)
 
 router = APIRouter()
 
@@ -108,4 +114,73 @@ async def delete_player(
             detail="Player not found",
         )
     
-    await repo.delete(player) 
+    await repo.delete(player)
+
+
+@router.get(
+    "/{player_id}/preferences",
+    response_model=PlayerPreferencesResponse,
+)
+async def get_player_preferences(
+    player_id: UUID,
+    session: AsyncSession = Depends(get_db),
+) -> PlayerPreferencesResponse:
+    """Get player preferences by player ID."""
+    # First verify player exists
+    player_repo = PlayerRepository(session)
+    player = await player_repo.get_by_id(player_id)
+    if not player:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Player not found",
+        )
+    
+    # Get preferences
+    preferences_repo = PlayerPreferencesRepository(session)
+    preferences = await preferences_repo.get_by_player_id(player_id)
+    
+    if not preferences:
+        # Create default empty preferences if none exist
+        default_preferences = PlayerPreferencesCreate(
+            player_id=player_id,
+            preferred_category_ids=[],
+        )
+        preferences = await preferences_repo.create(default_preferences)
+    
+    return PlayerPreferencesResponse.model_validate(preferences)
+
+
+@router.put(
+    "/{player_id}/preferences",
+    response_model=PlayerPreferencesResponse,
+)
+async def update_player_preferences(
+    player_id: UUID,
+    preferences_data: PlayerPreferencesUpdate,
+    session: AsyncSession = Depends(get_db),
+) -> PlayerPreferencesResponse:
+    """Update player preferences."""
+    # First verify player exists
+    player_repo = PlayerRepository(session)
+    player = await player_repo.get_by_id(player_id)
+    if not player:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Player not found",
+        )
+    
+    preferences_repo = PlayerPreferencesRepository(session)
+    preferences = await preferences_repo.get_by_player_id(player_id)
+    
+    if not preferences:
+        # Create new preferences if none exist
+        create_data = PlayerPreferencesCreate(
+            player_id=player_id,
+            **preferences_data.model_dump(exclude_unset=True),
+        )
+        preferences = await preferences_repo.create(create_data)
+    else:
+        # Update existing preferences
+        preferences = await preferences_repo.update(preferences, preferences_data)
+    
+    return PlayerPreferencesResponse.model_validate(preferences) 
