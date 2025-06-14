@@ -54,7 +54,7 @@ Before beginning implementation, we need to complete these research spikes to in
 | 45 | Implement relationship tables and constraints | P0 | Done | M |
 | 46 | Create advanced game matching logic | P0 | To Do | M |
 | 47 | Write game-related integration tests | P0 | To Do | M |
-| 48 | Set up frontend API client and services | P0 | To Do | S |
+| 48 | Set up frontend API client and services | P0 | Done | M |
 | 49 | Create frontend component library | P1 | To Do | M |
 | 50 | Implement loading and error states | P0 | To Do | M |
 | 51 | Set up frontend state management | P0 | To Do | M |
@@ -83,7 +83,7 @@ Before beginning implementation, we need to complete these research spikes to in
    - #42 Form validation and error handling
 
 3. Frontend Foundation (Sprint 2.1)
-   - #48 API client setup
+   - #48 API client setup - Done
    - #49 Frontend component library
    - #51 Frontend state management
    - #50 Loading and error states
