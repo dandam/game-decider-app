@@ -1,102 +1,97 @@
-/**
- * Demo page showcasing the API client functionality.
- * This can be accessed at /api-demo to test the API integration.
- */
+'use client';
 
-import React, { useState, useEffect } from 'react';
-import { 
-  getPlayers, 
-  healthCheck, 
-  getGames,
-  ApiError, 
-  ValidationError, 
-  NetworkError,
+import { useState, useEffect } from 'react';
+import {
+  Players,
+  Games,
+  Health,
   type PlayerResponse,
   type GameResponse,
-  type HealthCheckResponse
+  type HealthCheckResponse,
+  ApiError,
+  ValidationError,
+  NetworkError
 } from '@/lib/api';
 
+type LoadingState = 'idle' | 'loading' | 'success' | 'error';
+
 export default function ApiDemo() {
-  const [players, setPlayers] = useState<PlayerResponse[]>([]);
-  const [games, setGames] = useState<GameResponse[]>([]);
+  // Health check state
+  const [healthLoading, setHealthLoading] = useState<LoadingState>('idle');
+  const [healthError, setHealthError] = useState<string | null>(null);
   const [health, setHealth] = useState<HealthCheckResponse | null>(null);
-  const [loading, setLoading] = useState<Record<string, boolean>>({});
-  const [errors, setErrors] = useState<Record<string, string>>({});
 
-  const setLoadingState = (key: string, value: boolean) => {
-    setLoading(prev => ({ ...prev, [key]: value }));
-  };
+  // Players state
+  const [playersLoading, setPlayersLoading] = useState<LoadingState>('idle');
+  const [playersError, setPlayersError] = useState<string | null>(null);
+  const [playersData, setPlayersData] = useState<PlayerResponse[]>([]);
 
-  const setError = (key: string, error: string) => {
-    setErrors(prev => ({ ...prev, [key]: error }));
-  };
+  // Games state
+  const [gamesLoading, setGamesLoading] = useState<LoadingState>('idle');
+  const [gamesError, setGamesError] = useState<string | null>(null);
+  const [gamesData, setGamesData] = useState<GameResponse[]>([]);
 
-  const clearError = (key: string) => {
-    setErrors(prev => {
-      const { [key]: _, ...rest } = prev;
-      return rest;
-    });
-  };
+  // Auto-run health check on mount
+  useEffect(() => {
+    checkHealth();
+  }, []);
 
-  const handleApiCall = async (
-    key: string,
-    apiCall: () => Promise<any>,
-    onSuccess: (data: any) => void
-  ) => {
-    setLoadingState(key, true);
-    clearError(key);
+  const checkHealth = async () => {
+    setHealthLoading('loading');
+    setHealthError(null);
     
     try {
-      const data = await apiCall();
-      onSuccess(data);
+      const result = await Health.healthCheck();
+      setHealth(result);
+      setHealthLoading('success');
     } catch (error) {
-      let errorMessage = 'Unknown error occurred';
-      
-      if (error instanceof ValidationError) {
-        errorMessage = `Validation Error: ${error.validationErrors.map(e => e.msg).join(', ')}`;
-      } else if (error instanceof ApiError) {
-        errorMessage = `API Error ${error.status}: ${error.message}`;
-      } else if (error instanceof NetworkError) {
-        errorMessage = `Network Error: ${error.message}`;
-      } else if (error instanceof Error) {
-        errorMessage = error.message;
-      }
-      
-      setError(key, errorMessage);
-      console.error(`API call failed (${key}):`, error);
-    } finally {
-      setLoadingState(key, false);
+      const errorMessage = error instanceof ApiError 
+        ? `API Error: ${error.message}` 
+        : error instanceof Error 
+        ? error.message 
+        : 'Unknown error occurred';
+      setHealthError(errorMessage);
+      setHealthLoading('error');
     }
   };
 
-  const fetchPlayers = () => {
-    handleApiCall(
-      'players',
-      () => getPlayers({ limit: 5 }),
-      (data) => setPlayers(data)
-    );
+  const fetchPlayers = async () => {
+    setPlayersLoading('loading');
+    setPlayersError(null);
+    
+    try {
+      const result = await Players.getPlayers();
+      setPlayersData(result);
+      setPlayersLoading('success');
+    } catch (error) {
+      const errorMessage = error instanceof ApiError 
+        ? `API Error: ${error.message}` 
+        : error instanceof Error 
+        ? error.message 
+        : 'Unknown error occurred';
+      setPlayersError(errorMessage);
+      setPlayersLoading('error');
+    }
   };
 
-  const fetchGames = () => {
-    handleApiCall(
-      'games',
-      () => getGames({ limit: 5 }),
-      (data) => setGames(data)
-    );
+  const fetchGames = async () => {
+    setGamesLoading('loading');
+    setGamesError(null);
+    
+    try {
+      const result = await Games.getGames({ limit: 10 });
+      setGamesData(result);
+      setGamesLoading('success');
+    } catch (error) {
+      const errorMessage = error instanceof ApiError 
+        ? `API Error: ${error.message}` 
+        : error instanceof Error 
+        ? error.message 
+        : 'Unknown error occurred';
+      setGamesError(errorMessage);
+      setGamesLoading('error');
+    }
   };
-
-  const checkHealth = () => {
-    handleApiCall(
-      'health',
-      () => healthCheck(),
-      (data) => setHealth(data)
-    );
-  };
-
-  useEffect(() => {
-    // Automatically check health on component mount
-    checkHealth();
-  }, []);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
@@ -105,7 +100,7 @@ export default function ApiDemo() {
           <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
             API Client Demo
           </h1>
-          
+
           <div className="space-y-8">
             {/* Health Check Section */}
             <section>
@@ -115,19 +110,19 @@ export default function ApiDemo() {
                 </h2>
                 <button
                   onClick={checkHealth}
-                  disabled={loading.health}
+                  disabled={healthLoading === 'loading'}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50"
                 >
-                  {loading.health ? 'Checking...' : 'Check Health'}
+                  {healthLoading === 'loading' ? 'Checking...' : 'Check Health'}
                 </button>
               </div>
-              
-              {errors.health && (
+
+              {healthError && (
                 <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                  {errors.health}
+                  <strong>Error:</strong> {healthError}
                 </div>
               )}
-              
+
               {health && (
                 <div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded">
                   <p><strong>Status:</strong> {health.status}</p>
@@ -147,31 +142,31 @@ export default function ApiDemo() {
                 </h2>
                 <button
                   onClick={fetchPlayers}
-                  disabled={loading.players}
+                  disabled={playersLoading === 'loading'}
                   className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 disabled:opacity-50"
                 >
-                  {loading.players ? 'Loading...' : 'Fetch Players'}
+                  {playersLoading === 'loading' ? 'Loading...' : 'Fetch Players'}
                 </button>
               </div>
-              
-              {errors.players && (
+
+              {playersError && (
                 <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                  {errors.players}
+                  <strong>Error:</strong> {playersError}
                 </div>
               )}
-              
-              {players.length > 0 && (
+
+              {playersData.length > 0 && (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {players.map((player) => (
+                  {playersData.map((player) => (
                     <div key={player.id} className="p-4 border border-gray-200 dark:border-gray-600 rounded">
                       <h3 className="font-semibold text-gray-900 dark:text-white">
                         {player.display_name}
                       </h3>
                       <p className="text-gray-600 dark:text-gray-400">@{player.username}</p>
                       {player.avatar_url && (
-                        <img 
-                          src={player.avatar_url} 
-                          alt={`${player.display_name}'s avatar`}
+                        <img
+                          src={player.avatar_url}
+                          alt="Avatar"
                           className="w-8 h-8 rounded-full mt-2"
                         />
                       )}
@@ -185,26 +180,26 @@ export default function ApiDemo() {
             <section>
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Games
+                  Games (Top 10)
                 </h2>
                 <button
                   onClick={fetchGames}
-                  disabled={loading.games}
+                  disabled={gamesLoading === 'loading'}
                   className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50"
                 >
-                  {loading.games ? 'Loading...' : 'Fetch Games'}
+                  {gamesLoading === 'loading' ? 'Loading...' : 'Fetch Games'}
                 </button>
               </div>
-              
-              {errors.games && (
+
+              {gamesError && (
                 <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                  {errors.games}
+                  <strong>Error:</strong> {gamesError}
                 </div>
               )}
-              
-              {games.length > 0 && (
+
+              {gamesData.length > 0 && (
                 <div className="grid gap-4">
-                  {games.map((game) => (
+                  {gamesData.map((game) => (
                     <div key={game.id} className="p-4 border border-gray-200 dark:border-gray-600 rounded">
                       <h3 className="font-semibold text-gray-900 dark:text-white">
                         {game.name}
@@ -219,10 +214,10 @@ export default function ApiDemo() {
                         <span>Time: {game.average_play_time} min</span>
                         <span>Complexity: {game.complexity_rating}/5</span>
                       </div>
-                      {game.categories.length > 0 && (
+                      {game.categories && game.categories.length > 0 && (
                         <div className="mt-2 flex flex-wrap gap-1">
                           {game.categories.map((category) => (
-                            <span 
+                            <span
                               key={category.id}
                               className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded"
                             >
@@ -237,15 +232,14 @@ export default function ApiDemo() {
               )}
             </section>
 
-            {/* API Information */}
+            {/* Info Section */}
             <section>
               <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                API Client Information
+                API Client Features
               </h2>
               <div className="p-4 bg-gray-100 dark:bg-gray-700 rounded">
                 <p className="text-gray-700 dark:text-gray-300">
-                  This demo page showcases the comprehensive API client implementation.
-                  The client includes:
+                  This demo showcases the comprehensive API client implementation:
                 </p>
                 <ul className="mt-2 list-disc list-inside text-gray-600 dark:text-gray-400 space-y-1">
                   <li>Type-safe TypeScript interfaces mirroring backend schemas</li>
@@ -256,7 +250,7 @@ export default function ApiDemo() {
                   <li>Environment-based configuration</li>
                 </ul>
                 <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-                  Check the browser console to see detailed API request/response logging.
+                  Open browser dev tools to see detailed request/response logging in development mode.
                 </p>
               </div>
             </section>
