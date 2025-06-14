@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { handleComponentError, getUserErrorMessage } from '@/lib/errors';
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -31,8 +32,8 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log error for debugging (only essential information)
-    console.error('ErrorBoundary caught an error:', error.message);
+    // Use centralized error handling
+    const appError = handleComponentError(error, errorInfo);
     
     this.setState({
       error,
@@ -78,10 +79,10 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
             <div className="bg-red-100 dark:bg-red-900/50 rounded-md p-4 mb-4">
               <h2 className="text-sm font-medium text-red-800 dark:text-red-200 mb-2">
-                Error Details:
+                What happened:
               </h2>
-              <p className="text-sm text-red-700 dark:text-red-300 font-mono">
-                {error?.message || 'Unknown error'}
+              <p className="text-sm text-red-700 dark:text-red-300">
+                {error ? getUserErrorMessage({ message: error.message, timestamp: new Date(), code: 'COMPONENT_ERROR' }) : 'Unknown error occurred'}
               </p>
             </div>
 
@@ -121,7 +122,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 
 // Hook version for functional components
 export function useErrorHandler() {
-  return React.useCallback((error: Error, errorInfo?: React.ErrorInfo) => {
-    console.error('useErrorHandler:', error.message);
+  return React.useCallback((error: Error, context?: string) => {
+    handleComponentError(error, { context });
   }, []);
 } 
