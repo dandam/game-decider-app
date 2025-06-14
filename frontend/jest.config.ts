@@ -15,14 +15,19 @@ const customJestConfig: Config = {
     '^@/components/(.*)$': '<rootDir>/components/$1',
     '^@/pages/(.*)$': '<rootDir>/pages/$1',
     '^@/utils/(.*)$': '<rootDir>/utils/$1',
+    '^@/lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@/(.*)$': '<rootDir>/src/$1',
   },
   collectCoverage: true,
   collectCoverageFrom: [
     'components/**/*.{ts,tsx}',
     'pages/**/*.{ts,tsx}',
     'utils/**/*.{ts,tsx}',
+    'src/**/*.{ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
+    '!**/__tests__/**',
+    '!**/coverage/**',
   ],
   coverageThreshold: {
     global: {
