@@ -31,20 +31,13 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error);
-    console.error('Error info:', errorInfo);
+    // Log error for debugging (only essential information)
+    console.error('ErrorBoundary caught an error:', error.message);
     
     this.setState({
       error,
       errorInfo,
     });
-
-    // Log to console for debugging
-    console.group('🚨 React Error Boundary');
-    console.error('Error:', error.message);
-    console.error('Stack:', error.stack);
-    console.error('Component Stack:', errorInfo.componentStack);
-    console.groupEnd();
   }
 
   reset = () => {
@@ -129,12 +122,6 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
 // Hook version for functional components
 export function useErrorHandler() {
   return React.useCallback((error: Error, errorInfo?: React.ErrorInfo) => {
-    console.group('🚨 useErrorHandler');
-    console.error('Error:', error.message);
-    console.error('Stack:', error.stack);
-    if (errorInfo) {
-      console.error('Component Stack:', errorInfo.componentStack);
-    }
-    console.groupEnd();
+    console.error('useErrorHandler:', error.message);
   }, []);
 } 
