@@ -84,14 +84,11 @@ let isHydrated = false;
 export const hydrateStore = () => {
   if (!isClient || isHydrated) return;
 
-  console.log('🔄 Starting store hydration...');
-
   try {
     // Hydrate auth state
     const { hydrateAuthState } = require('./slices/auth');
     const authState = hydrateAuthState();
     if (authState) {
-      console.log('✅ Hydrating auth state:', { playerId: authState.currentPlayerId });
       useStore.setState((state) => ({
         auth: { ...state.auth, ...authState }
       }));
@@ -101,10 +98,6 @@ export const hydrateStore = () => {
     const { hydrateGamesPersistentState } = require('./slices/games');
     const gamesState = hydrateGamesPersistentState();
     if (gamesState) {
-      console.log('✅ Hydrating games state:', { 
-        favoriteGames: gamesState.favoriteGames?.length || 0,
-        recentlyViewed: gamesState.recentlyViewed?.length || 0
-      });
       useStore.setState((state) => ({
         games: { 
           ...state.games, 
@@ -118,17 +111,15 @@ export const hydrateStore = () => {
     const { hydrateTheme } = require('./slices/ui');
     const theme = hydrateTheme();
     if (theme) {
-      console.log('✅ Hydrating theme:', theme);
       useStore.setState((state) => ({
         ui: { ...state.ui, theme }
       }));
     }
 
     isHydrated = true;
-    console.log('✅ Store hydration completed');
 
   } catch (error) {
-    console.error('❌ Store hydration failed:', error);
+    console.error('Store hydration failed:', error);
   }
 };
 

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { HydrationErrorLogger } from '@/components/HydrationErrorLogger';
 
 // Simple client-only state demo without Zustand hooks during SSR
 function StateDemoContent() {
@@ -200,7 +199,6 @@ function StateDemoContent() {
 export default function StateDemoPage() {
   return (
     <ErrorBoundary>
-      <HydrationErrorLogger />
       <StateDemoContent />
     </ErrorBoundary>
   );
