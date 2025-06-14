@@ -12,7 +12,16 @@ Implemented a comprehensive, type-safe API client for the Game Decider frontend 
 
 ### Architecture
 
-Created a modular API client following Next.js and TypeScript best practices:
+Created a modular API client following Next.js App Router and TypeScript best practices:
+
+> **⚠️ Important: Next.js App Router vs Pages Router**
+> 
+> This project uses **Next.js App Router** (not Pages Router). When creating pages or components that use the API client:
+> - Create pages in `/app/[route]/page.tsx` (not `/pages/[route].tsx`)
+> - Add `'use client';` directive for client-side features (useState, useEffect, etc.)
+> - Use proper App Router imports and patterns
+> 
+> The API client is designed to work seamlessly with both App Router and Pages Router, but the project structure must be consistent.
 
 ```
 frontend/src/lib/
@@ -253,14 +262,22 @@ const customClient = createApiClient({
 
 ## Demo Implementation
 
-Created a comprehensive demo page (`pages/api-demo.tsx`) showcasing:
-- Health check functionality
-- Player data fetching with error handling
-- Game data fetching with filtering
-- Loading states and user feedback
+Created a comprehensive demo page (`app/api-demo/page.tsx`) showcasing:
+- Health check functionality with automatic execution on page load
+- Player data fetching with error handling and loading states
+- Game data fetching with filtering capabilities
 - Real-time demonstration of all API client features
+- Proper App Router structure with `'use client'` directive
 
-Access the demo at `/api-demo` when the frontend server is running.
+**Access the demo at http://localhost:3000/api-demo when the frontend server is running.**
+
+### Demo Features
+- **Automatic Health Check**: Runs on page load to verify API connectivity
+- **Interactive Buttons**: Fetch players and games data on demand
+- **Error Handling**: Displays user-friendly error messages
+- **Loading States**: Shows loading indicators during API calls
+- **Development Logging**: Check browser console for detailed request/response logs
+- **Responsive Design**: Works on all screen sizes with Tailwind CSS
 
 ## Integration Points
 
@@ -301,8 +318,8 @@ frontend/src/lib/api/
 frontend/src/lib/utils/
 └── http.ts (187 lines)                 # HTTP utilities
 
-frontend/src/pages/
-└── api-demo.tsx (220 lines)            # Demo page
+frontend/src/app/api-demo/
+└── page.tsx (220 lines)                # Demo page (App Router)
 ```
 
 ## Dependencies

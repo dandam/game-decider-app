@@ -2,6 +2,13 @@
 
 A comprehensive, type-safe API client for the Game Decider application built with TypeScript and native fetch API.
 
+> **⚠️ Next.js App Router Compatibility**
+> 
+> This API client is designed for Next.js App Router. When using in components:
+> - Add `'use client';` directive for client-side features (useState, useEffect, etc.)
+> - Import from `@/lib/api` using the configured path alias
+> - Follow App Router patterns for page structure (`app/[route]/page.tsx`)
+
 ## Features
 
 - **Type Safety**: Full TypeScript support with types that mirror backend Pydantic schemas
