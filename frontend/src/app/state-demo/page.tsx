@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Simple client-only state demo without Zustand hooks during SSR
@@ -52,11 +53,18 @@ function StateDemoContent() {
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors">
       <div className="container mx-auto p-8 space-y-8">
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            State Management Demo
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-300">
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-4">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+              State Management Demo
+            </h1>
+            <Link href="/">
+              <button className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+                ← Back to Home
+              </button>
+            </Link>
+          </div>
+          <p className="text-lg text-gray-600 dark:text-gray-300 text-center">
             Simplified client-side state management demonstration
           </p>
         </div>

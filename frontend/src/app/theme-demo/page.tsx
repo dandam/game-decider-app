@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 
@@ -7,7 +8,12 @@ export default function ThemeDemo() {
       <div className="container mx-auto px-4 py-8">
         <header className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold">Theme System Demo</h1>
-          <ThemeToggle />
+          <div className="flex items-center gap-4">
+            <Link href="/">
+              <Button variant="outline">← Back to Home</Button>
+            </Link>
+            <ThemeToggle />
+          </div>
         </header>
 
         <section className="space-y-8">

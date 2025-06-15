@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import {
   Players,
   Games,
@@ -97,9 +98,16 @@ export default function ApiDemo() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-            API Client Demo
-          </h1>
+          <div className="flex items-center justify-between mb-8">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              API Client Demo
+            </h1>
+            <Link href="/">
+              <button className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+                ← Back to Home
+              </button>
+            </Link>
+          </div>
 
           <div className="space-y-8">
             {/* Health Check Section */}

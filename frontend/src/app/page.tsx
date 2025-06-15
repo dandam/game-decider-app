@@ -29,7 +29,7 @@ export default function Home() {
 
             <section>
               <h2 className="text-2xl font-semibold mb-6">Demo Pages</h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <Card>
                   <CardHeader>
                     <CardTitle>Component Library</CardTitle>
@@ -68,6 +68,20 @@ export default function Home() {
                   <CardContent>
                     <Link href="/api-demo">
                       <Button variant="outline" className="w-full">View API</Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Data & Database Demo</CardTitle>
+                    <CardDescription>
+                      Database validation tool with real-time statistics, player profiles, and system health monitoring
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Link href="/data-demo">
+                      <Button variant="default" className="w-full">View Data</Button>
                     </Link>
                   </CardContent>
                 </Card>
