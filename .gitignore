@@ -80,4 +80,12 @@ Thumbs.db
 # Planning docs, if private
 docs/*.private.*
 
+# Data directory - exclude raw data but keep documentation
+data/raw/
+data/processed/
+data/research/
+data/**/*.json
+data/**/*.csv
+data/**/*.db
+
 .cursor/
