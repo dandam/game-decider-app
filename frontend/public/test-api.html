@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .result { margin: 10px 0; padding: 10px; border: 1px solid #ccc; }
+        .error { background-color: #ffebee; }
+        .success { background-color: #e8f5e8; }
+    </style>
+</head>
+<body>
+    <h1>API Test Page</h1>
+    <div id="results"></div>
+
+    <script>
+        const results = document.getElementById('results');
+
+        function addResult(title, data, isError = false) {
+            const div = document.createElement('div');
+            div.className = `result ${isError ? 'error' : 'success'}`;
+            div.innerHTML = `<h3>${title}</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+            results.appendChild(div);
+        }
+
+        // Test health endpoint
+        fetch('/api/health/db')
+            .then(res => res.json())
+            .then(data => addResult('Health Check', data))
+            .catch(error => addResult('Health Check Error', error.message, true));
+
+        // Test players endpoint
+        fetch('/api/players')
+            .then(res => res.json())
+            .then(data => addResult('Players', { count: data.length, sample: data[0] }))
+            .catch(error => addResult('Players Error', error.message, true));
+
+        // Test games endpoint
+        fetch('/api/games?limit=5')
+            .then(res => res.json())
+            .then(data => addResult('Games', { count: data.length, sample: data[0] }))
+            .catch(error => addResult('Games Error', error.message, true));
+
+        // Test comprehensive endpoint
+        fetch('/api/test')
+            .then(res => res.json())
+            .then(data => addResult('Comprehensive Test', data))
+            .catch(error => addResult('Comprehensive Test Error', error.message, true));
+    </script>
+</body>
+</html> 

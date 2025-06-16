@@ -5,7 +5,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.database import get_db
-from app.api.v1.endpoints import players, games
+from app.api.v1.endpoints import players, games, stats
 
 api_router = APIRouter()
 
@@ -19,6 +19,12 @@ api_router.include_router(
     games.router,
     prefix="/games",
     tags=["games"],
+)
+
+api_router.include_router(
+    stats.router,
+    prefix="/stats",
+    tags=["stats"],
 )
 
 

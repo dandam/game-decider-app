@@ -7,6 +7,7 @@ This directory contains all project documentation for the Game Night Concierge a
 - `architecture-overview.md` - High-level system architecture
 - `game-night-concierge-prd.md` - Product Requirements Document
 - `data-layer/` - Database schema and data model documentation
+- `admin-interface/` - **System administration and monitoring interface documentation**
 - `pm-tracking/` - Project management and milestone tracking
 - `spikes/` - Research spike documentation and findings
 - `tasks/` - Individual task specifications and requirements
@@ -34,6 +35,7 @@ This directory contains all project documentation for the Game Night Concierge a
 - [Architecture Overview](architecture-overview.md)
 - [Product Requirements](game-night-concierge-prd.md)
 - [Data Layer Design](data-layer.md)
+- [Admin Interface & System Monitoring](admin-interface/README.md) - **Production-ready monitoring dashboard**
 - [Milestone 2 Tracking](pm-tracking/milestone-2.md)
 
 ## Contributing

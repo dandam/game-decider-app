@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme/ThemeToggle';
 import {
   Button,
@@ -34,14 +35,19 @@ export default function ComponentLibraryDemo() {
     <div className="min-h-screen bg-surface-100 text-surface-900">
       <Container>
         <div className="py-8">
-          <header className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-4xl font-bold mb-2">Component Library</h1>
-              <p className="text-surface-600">
-                Game Night Concierge UI Component Library Demo
-              </p>
+          <header className="mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-4xl font-bold">Component Library</h1>
+              <div className="flex items-center gap-4">
+                <Link href="/">
+                  <Button variant="outline">← Back to Home</Button>
+                </Link>
+                <ThemeToggle />
+              </div>
             </div>
-            <ThemeToggle />
+            <p className="text-surface-600">
+              Game Night Concierge UI Component Library Demo
+            </p>
           </header>
 
           <Stack spacing="xl">
