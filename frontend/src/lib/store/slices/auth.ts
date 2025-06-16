@@ -34,7 +34,7 @@ export const createAuthSlice: StateCreator<
   // =============================================================================
   // INITIAL STATE
   // =============================================================================
-  
+
   isAuthenticated: false,
   currentPlayerId: null,
   sessionToken: null,
@@ -55,30 +55,38 @@ export const createAuthSlice: StateCreator<
    */
   login: async (playerId, token) => {
     const state = get().auth;
-    
+
     // Check if too many login attempts
     if (state.loginAttempts >= MAX_LOGIN_ATTEMPTS) {
-      set((state) => ({
-        auth: {
-          ...state.auth,
-          error: 'Too many login attempts. Please try again later.',
-        },
-      }), false, 'auth/login/too-many-attempts');
+      set(
+        state => ({
+          auth: {
+            ...state.auth,
+            error: 'Too many login attempts. Please try again later.',
+          },
+        }),
+        false,
+        'auth/login/too-many-attempts'
+      );
       return;
     }
 
-    set((state) => ({
-      auth: {
-        ...state.auth,
-        loading: true,
-        error: null,
-      },
-    }), false, 'auth/login/start');
+    set(
+      state => ({
+        auth: {
+          ...state.auth,
+          loading: true,
+          error: null,
+        },
+      }),
+      false,
+      'auth/login/start'
+    );
 
     try {
       // Verify player exists
       const player = await getPlayer(playerId);
-      
+
       if (!player) {
         throw new Error('Player not found');
       }
@@ -95,39 +103,50 @@ export const createAuthSlice: StateCreator<
         localStorage.setItem(STORAGE_KEYS.LAST_ACTIVITY, now.toString());
       }
 
-      set((state) => ({
-        auth: {
-          ...state.auth,
-          isAuthenticated: true,
-          currentPlayerId: playerId,
-          sessionToken,
-          tokenExpiry: expiry,
-          loginAttempts: 0,
-          lastActivity: now,
-          loading: false,
-          error: null,
-        },
-      }), false, 'auth/login/success');
+      set(
+        state => ({
+          auth: {
+            ...state.auth,
+            isAuthenticated: true,
+            currentPlayerId: playerId,
+            sessionToken,
+            tokenExpiry: expiry,
+            loginAttempts: 0,
+            lastActivity: now,
+            loading: false,
+            error: null,
+          },
+        }),
+        false,
+        'auth/login/success'
+      );
 
       // Update current player in player slice
-      set((state) => ({
-        player: {
-          ...state.player,
-          currentPlayer: player,
-        },
-      }), false, 'auth/login/set-current-player');
-
+      set(
+        state => ({
+          player: {
+            ...state.player,
+            currentPlayer: player,
+          },
+        }),
+        false,
+        'auth/login/set-current-player'
+      );
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Login failed';
-      
-      set((state) => ({
-        auth: {
-          ...state.auth,
-          loginAttempts: state.auth.loginAttempts + 1,
-          loading: false,
-          error: errorMessage,
-        },
-      }), false, 'auth/login/error');
+
+      set(
+        state => ({
+          auth: {
+            ...state.auth,
+            loginAttempts: state.auth.loginAttempts + 1,
+            loading: false,
+            error: errorMessage,
+          },
+        }),
+        false,
+        'auth/login/error'
+      );
 
       throw error;
     }
@@ -144,21 +163,25 @@ export const createAuthSlice: StateCreator<
       });
     }
 
-    set((state) => ({
-      auth: {
-        ...state.auth,
-        isAuthenticated: false,
-        currentPlayerId: null,
-        sessionToken: null,
-        tokenExpiry: null,
-        lastActivity: Date.now(),
-        error: null,
-      },
-      player: {
-        ...state.player,
-        currentPlayer: null,
-      },
-    }), false, 'auth/logout');
+    set(
+      state => ({
+        auth: {
+          ...state.auth,
+          isAuthenticated: false,
+          currentPlayerId: null,
+          sessionToken: null,
+          tokenExpiry: null,
+          lastActivity: Date.now(),
+          error: null,
+        },
+        player: {
+          ...state.player,
+          currentPlayer: null,
+        },
+      }),
+      false,
+      'auth/logout'
+    );
   },
 
   /**
@@ -166,22 +189,26 @@ export const createAuthSlice: StateCreator<
    */
   refreshSession: async () => {
     const state = get().auth;
-    
+
     if (!state.isAuthenticated || !state.currentPlayerId) {
       return;
     }
 
-    set((state) => ({
-      auth: {
-        ...state.auth,
-        loading: true,
-      },
-    }), false, 'auth/refresh-session/start');
+    set(
+      state => ({
+        auth: {
+          ...state.auth,
+          loading: true,
+        },
+      }),
+      false,
+      'auth/refresh-session/start'
+    );
 
     try {
       // Verify player still exists
       const player = await getPlayer(state.currentPlayerId);
-      
+
       if (!player) {
         get().auth.logout();
         return;
@@ -196,19 +223,22 @@ export const createAuthSlice: StateCreator<
         localStorage.setItem(STORAGE_KEYS.LAST_ACTIVITY, now.toString());
       }
 
-      set((state) => ({
-        auth: {
-          ...state.auth,
-          tokenExpiry: expiry,
-          lastActivity: now,
-          loading: false,
-        },
-        player: {
-          ...state.player,
-          currentPlayer: player,
-        },
-      }), false, 'auth/refresh-session/success');
-
+      set(
+        state => ({
+          auth: {
+            ...state.auth,
+            tokenExpiry: expiry,
+            lastActivity: now,
+            loading: false,
+          },
+          player: {
+            ...state.player,
+            currentPlayer: player,
+          },
+        }),
+        false,
+        'auth/refresh-session/success'
+      );
     } catch (error) {
       console.error('Session refresh failed:', error);
       get().auth.logout();
@@ -220,29 +250,37 @@ export const createAuthSlice: StateCreator<
    */
   updateActivity: () => {
     const now = Date.now();
-    
+
     if (typeof window !== 'undefined') {
       localStorage.setItem(STORAGE_KEYS.LAST_ACTIVITY, now.toString());
     }
 
-    set((state) => ({
-      auth: {
-        ...state.auth,
-        lastActivity: now,
-      },
-    }), false, 'auth/update-activity');
+    set(
+      state => ({
+        auth: {
+          ...state.auth,
+          lastActivity: now,
+        },
+      }),
+      false,
+      'auth/update-activity'
+    );
   },
 
   /**
    * Clears the current authentication error.
    */
   clearError: () => {
-    set((state) => ({
-      auth: {
-        ...state.auth,
-        error: null,
-      },
-    }), false, 'auth/clear-error');
+    set(
+      state => ({
+        auth: {
+          ...state.auth,
+          error: null,
+        },
+      }),
+      false,
+      'auth/clear-error'
+    );
   },
 
   /**
@@ -251,14 +289,14 @@ export const createAuthSlice: StateCreator<
    */
   checkAuthStatus: () => {
     const state = get().auth;
-    
+
     if (!state.isAuthenticated || !state.tokenExpiry) {
       return false;
     }
 
     const now = Date.now();
     const isExpired = now > state.tokenExpiry;
-    
+
     if (isExpired) {
       get().auth.logout();
       return false;
@@ -330,4 +368,4 @@ export const getRemainingSessionTime = (tokenExpiry: number | null): number => {
   if (!tokenExpiry) return 0;
   const remaining = tokenExpiry - Date.now();
   return Math.max(0, Math.floor(remaining / (1000 * 60)));
-}; 
+};

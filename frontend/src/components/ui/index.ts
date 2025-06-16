@@ -74,4 +74,4 @@ export type {
 } from './overlays/Modal';
 
 // Re-export existing Button component
-export { Button } from './Button'; 
+export { Button } from './Button';

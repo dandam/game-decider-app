@@ -91,16 +91,16 @@ export class ApiClient {
 
     const url = buildUrl(this.config.baseUrl, path, params);
     const requestId = generateRequestId();
-                   const finalRetryConfig: RetryConfig = { 
-        ...this.config.retryConfig, 
-        ...retryConfig 
-      } as RetryConfig;
+    const finalRetryConfig: RetryConfig = {
+      ...this.config.retryConfig,
+      ...retryConfig,
+    } as RetryConfig;
 
     // Request deduplication for GET requests
     if (method === 'GET') {
       const cacheKey = this.getCacheKey(method, url, body);
       const pending = this.pendingRequests.get(cacheKey);
-      
+
       if (pending) {
         return pending.promise;
       }
@@ -109,7 +109,7 @@ export class ApiClient {
     const executeRequest = async (attempt: number = 0): Promise<T> => {
       // Create timeout controller unless external signal provided
       const controller = signal ? new AbortController() : createTimeoutController(timeout);
-      
+
       // If external signal is provided, abort our controller when it aborts
       if (signal) {
         signal.addEventListener('abort', () => controller.abort());
@@ -138,7 +138,7 @@ export class ApiClient {
         if (response.ok) {
           const contentType = response.headers.get('content-type');
           let data: T;
-          
+
           if (contentType?.includes('application/json')) {
             data = await response.json();
           } else {
@@ -153,10 +153,9 @@ export class ApiClient {
 
         // Handle error response
         await processApiError(response);
-        
+
         // This line should never be reached due to processApiError throwing
         throw new Error('Unexpected error processing response');
-        
       } catch (error) {
         // Handle abort errors
         if (error instanceof Error && error.name === 'AbortError') {
@@ -170,19 +169,22 @@ export class ApiClient {
         // Handle network errors
         if (error instanceof TypeError && error.message.includes('fetch')) {
           const networkError = new NetworkError('Network request failed', error);
-          
+
           // Retry logic for retryable errors
           if (retry && isRetryableError(networkError) && attempt < finalRetryConfig.maxRetries) {
             const delay = calculateRetryDelay(attempt, finalRetryConfig);
-            
-            logError(method, url, requestId, 
+
+            logError(
+              method,
+              url,
+              requestId,
               new Error(`Attempt ${attempt + 1} failed, retrying in ${delay}ms: ${error.message}`)
             );
-            
+
             await sleep(delay);
             return executeRequest(attempt + 1);
           }
-          
+
           throw networkError;
         }
 
@@ -198,7 +200,7 @@ export class ApiClient {
     if (method === 'GET') {
       const cacheKey = this.getCacheKey(method, url, body);
       const controller = createTimeoutController(timeout);
-      
+
       const promise = executeRequest().finally(() => {
         // Remove from cache when request completes
         this.pendingRequests.delete(cacheKey);
@@ -214,7 +216,10 @@ export class ApiClient {
   /**
    * Perform GET request.
    */
-  async get<T>(path: string, options?: RequestOptions & { params?: Record<string, any> }): Promise<T> {
+  async get<T>(
+    path: string,
+    options?: RequestOptions & { params?: Record<string, any> }
+  ): Promise<T> {
     return this.request<T>('GET', path, options);
   }
 
@@ -279,8 +284,9 @@ export class ApiClient {
  * Create API client instance with environment-based configuration.
  */
 export function createApiClient(): ApiClient {
-  const baseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-  
+  // In Docker environment, use Next.js API routes instead of direct backend connection
+  const baseUrl = process.env.NEXT_PUBLIC_API_URL || '/api';
+
   return new ApiClient({
     baseUrl,
     timeout: 30000,
@@ -296,4 +302,4 @@ export function createApiClient(): ApiClient {
 /**
  * Default API client instance.
  */
-export const apiClient = createApiClient(); 
+export const apiClient = createApiClient();

@@ -34,7 +34,7 @@ describe('Auth Store', () => {
     // Reset mocks
     jest.clearAllMocks();
     localStorageMock.getItem.mockReturnValue(null);
-    
+
     // Create fresh store for each test
     store = createStore({ enableDevtools: false, enableLogger: false });
   });
@@ -46,7 +46,7 @@ describe('Auth Store', () => {
   describe('Initial State', () => {
     it('should have correct initial state', () => {
       const authState = store.getState().auth;
-      
+
       expect(authState.isAuthenticated).toBe(false);
       expect(authState.currentPlayerId).toBe(null);
       expect(authState.sessionToken).toBe(null);
@@ -74,7 +74,7 @@ describe('Auth Store', () => {
       await authActions.login('player-1');
 
       const authState = store.getState().auth;
-      
+
       expect(authState.isAuthenticated).toBe(true);
       expect(authState.currentPlayerId).toBe('player-1');
       expect(authState.sessionToken).toBeTruthy();
@@ -82,12 +82,9 @@ describe('Auth Store', () => {
       expect(authState.loginAttempts).toBe(0);
       expect(authState.loading).toBe(false);
       expect(authState.error).toBe(null);
-      
+
       // Check localStorage calls
-      expect(localStorageMock.setItem).toHaveBeenCalledWith(
-        'game-decider-player-id',
-        'player-1'
-      );
+      expect(localStorageMock.setItem).toHaveBeenCalledWith('game-decider-player-id', 'player-1');
       expect(localStorageMock.setItem).toHaveBeenCalledWith(
         'game-decider-session-token',
         expect.any(String)
@@ -99,11 +96,11 @@ describe('Auth Store', () => {
       mockGetPlayer.mockRejectedValue(mockError);
 
       const authActions = store.getState().auth;
-      
+
       await expect(authActions.login('invalid-player')).rejects.toThrow('Player not found');
 
       const authState = store.getState().auth;
-      
+
       expect(authState.isAuthenticated).toBe(false);
       expect(authState.loginAttempts).toBe(1);
       expect(authState.loading).toBe(false);
@@ -112,7 +109,7 @@ describe('Auth Store', () => {
 
     it('should prevent login after max attempts', async () => {
       const authActions = store.getState().auth;
-      
+
       // Simulate max login attempts
       for (let i = 0; i < 5; i++) {
         try {
@@ -142,7 +139,7 @@ describe('Auth Store', () => {
         updated_at: '2023-01-01T00:00:00Z',
       };
       mockGetPlayer.mockResolvedValue(mockPlayer);
-      
+
       const authActions = store.getState().auth;
       await authActions.login('player-1');
 
@@ -150,13 +147,13 @@ describe('Auth Store', () => {
       authActions.logout();
 
       const authState = store.getState().auth;
-      
+
       expect(authState.isAuthenticated).toBe(false);
       expect(authState.currentPlayerId).toBe(null);
       expect(authState.sessionToken).toBe(null);
       expect(authState.tokenExpiry).toBe(null);
       expect(authState.error).toBe(null);
-      
+
       // Check localStorage cleanup
       expect(localStorageMock.removeItem).toHaveBeenCalledWith('game-decider-player-id');
       expect(localStorageMock.removeItem).toHaveBeenCalledWith('game-decider-session-token');
@@ -168,12 +165,12 @@ describe('Auth Store', () => {
   describe('Session Management', () => {
     it('should check auth status correctly', () => {
       const authActions = store.getState().auth;
-      
+
       // Not authenticated initially
       expect(authActions.checkAuthStatus()).toBe(false);
-      
+
       // Mock authenticated state
-      store.setState((state) => ({
+      store.setState(state => ({
         ...state,
         auth: {
           ...state.auth,
@@ -181,25 +178,25 @@ describe('Auth Store', () => {
           tokenExpiry: Date.now() + 10000, // 10 seconds in future
         },
       }));
-      
+
       expect(authActions.checkAuthStatus()).toBe(true);
-      
+
       // Mock expired session
-      store.setState((state) => ({
+      store.setState(state => ({
         ...state,
         auth: {
           ...state.auth,
           tokenExpiry: Date.now() - 10000, // 10 seconds in past
         },
       }));
-      
+
       expect(authActions.checkAuthStatus()).toBe(false);
     });
 
     it('should update activity timestamp', () => {
       const authActions = store.getState().auth;
       const initialActivity = store.getState().auth.lastActivity;
-      
+
       // Wait a bit and update activity
       setTimeout(() => {
         authActions.updateActivity();
@@ -219,7 +216,7 @@ describe('Auth Store', () => {
       mockGetPlayer.mockResolvedValue(mockPlayer);
 
       // Setup authenticated state
-      store.setState((state) => ({
+      store.setState(state => ({
         ...state,
         auth: {
           ...state.auth,
@@ -231,9 +228,9 @@ describe('Auth Store', () => {
 
       const authActions = store.getState().auth;
       const initialExpiry = store.getState().auth.tokenExpiry;
-      
+
       await authActions.refreshSession();
-      
+
       const newExpiry = store.getState().auth.tokenExpiry;
       expect(newExpiry).toBeGreaterThan(initialExpiry!);
     });
@@ -242,7 +239,7 @@ describe('Auth Store', () => {
   describe('Error Handling', () => {
     it('should clear errors', () => {
       // Set an error
-      store.setState((state) => ({
+      store.setState(state => ({
         ...state,
         auth: {
           ...state.auth,
@@ -305,4 +302,4 @@ describe('Auth Store', () => {
       expect(hydratedState).toBe(null);
     });
   });
-}); 
+});

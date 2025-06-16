@@ -24,6 +24,7 @@ import { Button, Input, Card } from '@/components/ui';
 ### Form Components
 
 #### Input
+
 Text input with validation states and multiple sizes.
 
 ```tsx
@@ -42,6 +43,7 @@ import { Input } from '@/components/ui';
 ```
 
 #### Textarea
+
 Multi-line text input with consistent styling.
 
 ```tsx
@@ -52,6 +54,7 @@ import { Textarea } from '@/components/ui';
 ```
 
 #### Select
+
 Dropdown selection with custom styling.
 
 ```tsx
@@ -60,10 +63,11 @@ import { Select } from '@/components/ui';
 <Select placeholder="Choose an option">
   <option value="1">Option 1</option>
   <option value="2">Option 2</option>
-</Select>
+</Select>;
 ```
 
 #### Checkbox
+
 Boolean selection with label support.
 
 ```tsx
@@ -74,6 +78,7 @@ import { Checkbox } from '@/components/ui';
 ```
 
 #### RadioGroup
+
 Single selection from multiple options.
 
 ```tsx
@@ -88,29 +93,26 @@ const options = [
   name="selection"
   options={options}
   defaultValue="option1"
-  onValueChange={(value) => console.log(value)}
-/>
+  onValueChange={value => console.log(value)}
+/>;
 ```
 
 #### FormField
+
 Wrapper component for labels, errors, and help text.
 
 ```tsx
 import { FormField, Input } from '@/components/ui';
 
-<FormField
-  label="Email Address"
-  htmlFor="email"
-  error="Please enter a valid email"
-  required
->
+<FormField label="Email Address" htmlFor="email" error="Please enter a valid email" required>
   <Input id="email" type="email" error />
-</FormField>
+</FormField>;
 ```
 
 ### Data Display Components
 
 #### Card
+
 Flexible content container with header, content, and footer sections.
 
 ```tsx
@@ -144,6 +146,7 @@ import {
 ```
 
 #### Badge
+
 Status indicators and tags with multiple variants.
 
 ```tsx
@@ -157,6 +160,7 @@ import { Badge } from '@/components/ui';
 ```
 
 #### Avatar
+
 User profile images with automatic fallback to initials.
 
 ```tsx
@@ -176,6 +180,7 @@ import { Avatar } from '@/components/ui';
 ### Feedback Components
 
 #### Alert
+
 Status messages and notifications with icons.
 
 ```tsx
@@ -197,6 +202,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui';
 ```
 
 #### Loading
+
 Loading states with spinner and dots variants.
 
 ```tsx
@@ -210,6 +216,7 @@ import { Loading } from '@/components/ui';
 ### Layout Components
 
 #### Container
+
 Content width management with responsive breakpoints.
 
 ```tsx
@@ -225,6 +232,7 @@ import { Container } from '@/components/ui';
 ```
 
 #### Stack
+
 Flexible spacing for vertical and horizontal layouts.
 
 ```tsx
@@ -247,6 +255,7 @@ import { Stack } from '@/components/ui';
 ### Overlay Components
 
 #### Modal
+
 Dialog overlays with backdrop and focus management.
 
 ```tsx
@@ -256,7 +265,7 @@ import {
   ModalTitle,
   ModalDescription,
   ModalFooter,
-  Button
+  Button,
 } from '@/components/ui';
 
 const [open, setOpen] = useState(false);
@@ -273,11 +282,9 @@ const [open, setOpen] = useState(false);
     <Button variant="outline" onClick={() => setOpen(false)}>
       Cancel
     </Button>
-    <Button onClick={() => setOpen(false)}>
-      Confirm
-    </Button>
+    <Button onClick={() => setOpen(false)}>Confirm</Button>
   </ModalFooter>
-</Modal>
+</Modal>;
 ```
 
 ## Theming
@@ -334,19 +341,20 @@ npm test -- --testPathPattern="components/ui" --coverage
 import { HTMLAttributes, forwardRef } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const componentVariants = cva(
-  'base-classes',
-  {
-    variants: {
-      variant: { /* variants */ },
-      size: { /* sizes */ },
+const componentVariants = cva('base-classes', {
+  variants: {
+    variant: {
+      /* variants */
     },
-    defaultVariants: {
-      variant: 'default',
-      size: 'default',
+    size: {
+      /* sizes */
     },
-  }
-);
+  },
+  defaultVariants: {
+    variant: 'default',
+    size: 'default',
+  },
+});
 
 export interface ComponentProps
   extends HTMLAttributes<HTMLElement>,
@@ -357,11 +365,7 @@ export interface ComponentProps
 export const Component = forwardRef<HTMLElement, ComponentProps>(
   ({ className, variant, size, ...props }, ref) => {
     return (
-      <element
-        ref={ref}
-        className={componentVariants({ variant, size, className })}
-        {...props}
-      />
+      <element ref={ref} className={componentVariants({ variant, size, className })} {...props} />
     );
   }
 );
@@ -379,6 +383,7 @@ Component.displayName = 'Component';
 ## Browser Support
 
 Components support all modern browsers that support:
+
 - CSS Custom Properties (CSS Variables)
 - ES2018+ JavaScript features
 - React 18+
@@ -391,4 +396,4 @@ When contributing new components:
 2. Ensure accessibility compliance
 3. Add comprehensive tests
 4. Update documentation
-5. Test in both light and dark themes 
+5. Test in both light and dark themes

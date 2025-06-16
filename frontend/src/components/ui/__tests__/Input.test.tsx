@@ -11,24 +11,24 @@ describe('Input', () => {
   it('handles user input', async () => {
     const user = userEvent.setup();
     render(<Input placeholder="Enter text" />);
-    
+
     const input = screen.getByPlaceholderText('Enter text');
     await user.type(input, 'Hello World');
-    
+
     expect(input).toHaveValue('Hello World');
   });
 
   it('applies error variant when error prop is true', () => {
     render(<Input error placeholder="Enter text" />);
     const input = screen.getByPlaceholderText('Enter text');
-    
+
     expect(input).toHaveClass('border-red-500');
   });
 
   it('applies success variant when success prop is true', () => {
     render(<Input success placeholder="Enter text" />);
     const input = screen.getByPlaceholderText('Enter text');
-    
+
     expect(input).toHaveClass('border-green-500');
   });
 
@@ -43,7 +43,7 @@ describe('Input', () => {
   it('is disabled when disabled prop is true', () => {
     render(<Input disabled placeholder="Disabled input" />);
     const input = screen.getByPlaceholderText('Disabled input');
-    
+
     expect(input).toBeDisabled();
     expect(input).toHaveClass('disabled:opacity-50');
   });
@@ -51,14 +51,14 @@ describe('Input', () => {
   it('forwards ref correctly', () => {
     const ref = { current: null };
     render(<Input ref={ref} placeholder="Ref test" />);
-    
+
     expect(ref.current).toBeInstanceOf(HTMLInputElement);
   });
 
   it('supports different input types', () => {
     render(<Input type="email" placeholder="Email" />);
     const input = screen.getByPlaceholderText('Email');
-    
+
     expect(input).toHaveAttribute('type', 'email');
   });
-}); 
+});

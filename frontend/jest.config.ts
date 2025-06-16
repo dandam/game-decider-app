@@ -37,11 +37,8 @@ const customJestConfig: Config = {
       statements: 80,
     },
   },
-  testMatch: [
-    '<rootDir>/**/__tests__/**/*.{ts,tsx}',
-    '<rootDir>/**/*.{spec,test}.{ts,tsx}',
-  ],
+  testMatch: ['<rootDir>/**/__tests__/**/*.{ts,tsx}', '<rootDir>/**/*.{spec,test}.{ts,tsx}'],
 };
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
-export default createJestConfig(customJestConfig); 
+export default createJestConfig(customJestConfig);

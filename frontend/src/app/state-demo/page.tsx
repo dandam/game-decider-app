@@ -16,7 +16,7 @@ function StateDemoContent() {
 
   useEffect(() => {
     setMounted(true);
-    
+
     // Simulate loading state from localStorage
     if (typeof window !== 'undefined') {
       const savedTheme = localStorage.getItem('game-decider-theme') || 'system';
@@ -68,7 +68,7 @@ function StateDemoContent() {
             Simplified client-side state management demonstration
           </p>
         </div>
-        
+
         {/* Auth State Section */}
         <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg">
           <h2 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-white">
@@ -88,7 +88,7 @@ function StateDemoContent() {
               </p>
             </div>
           </div>
-          <button 
+          <button
             onClick={handleToggleAuth}
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
           >
@@ -115,26 +115,26 @@ function StateDemoContent() {
               </p>
             </div>
           </div>
-          
+
           <div className="space-y-4">
             <div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Theme Controls (persisted to localStorage)
               </p>
               <div className="space-x-3">
-                <button 
+                <button
                   onClick={() => handleThemeChange('light')}
                   className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded transition-colors"
                 >
                   ☀️ Light
                 </button>
-                <button 
+                <button
                   onClick={() => handleThemeChange('dark')}
                   className="bg-gray-800 hover:bg-gray-900 text-white px-4 py-2 rounded transition-colors"
                 >
                   🌙 Dark
                 </button>
-                <button 
+                <button
                   onClick={() => handleThemeChange('system')}
                   className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors"
                 >
@@ -142,12 +142,12 @@ function StateDemoContent() {
                 </button>
               </div>
             </div>
-            
+
             <div>
               <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Toast Simulation
               </p>
-              <button 
+              <button
                 onClick={handleAddToast}
                 className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition-colors"
               >
@@ -163,9 +163,7 @@ function StateDemoContent() {
             ✅ SSR Compatibility Status
           </h2>
           <div className="space-y-3 text-green-800 dark:text-green-200">
-            <p className="font-medium">
-              This simplified demo resolves the hydration issues by:
-            </p>
+            <p className="font-medium">This simplified demo resolves the hydration issues by:</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li>Using client-side only state management</li>
               <li>Proper mounting detection with useEffect</li>
@@ -187,14 +185,27 @@ function StateDemoContent() {
             🛠️ Implementation Notes
           </h2>
           <div className="space-y-3 text-blue-800 dark:text-blue-200">
-            <p className="font-medium">
-              For production Zustand implementation, consider:
-            </p>
+            <p className="font-medium">For production Zustand implementation, consider:</p>
             <ul className="list-disc list-inside space-y-2 ml-4">
-              <li>Use <code className="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded">create</code> without SSR-incompatible middleware during store creation</li>
+              <li>
+                Use <code className="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded">create</code>{' '}
+                without SSR-incompatible middleware during store creation
+              </li>
               <li>Implement proper hydration after component mount</li>
-              <li>Use <code className="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded">useSyncExternalStore</code> with consistent server/client snapshots</li>
-              <li>Consider using <code className="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded">zustand/middleware/persist</code> for automatic persistence</li>
+              <li>
+                Use{' '}
+                <code className="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded">
+                  useSyncExternalStore
+                </code>{' '}
+                with consistent server/client snapshots
+              </li>
+              <li>
+                Consider using{' '}
+                <code className="bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded">
+                  zustand/middleware/persist
+                </code>{' '}
+                for automatic persistence
+              </li>
               <li>Implement proper loading states during hydration</li>
             </ul>
           </div>
@@ -210,4 +221,4 @@ export default function StateDemoPage() {
       <StateDemoContent />
     </ErrorBoundary>
   );
-} 
+}

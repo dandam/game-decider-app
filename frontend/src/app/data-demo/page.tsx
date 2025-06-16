@@ -4,7 +4,13 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/Button';
 import { Container } from '@/components/ui/layout/Container';
 import { Stack } from '@/components/ui/layout/Stack';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/data-display/Card';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from '@/components/ui/data-display/Card';
 import { Badge } from '@/components/ui/data-display/Badge';
 import Link from 'next/link';
 
@@ -45,7 +51,9 @@ export default function DataDemoPage() {
   const [games, setGames] = useState<ApiResponse<Game[]>>({ loading: true });
   const [searchResults, setSearchResults] = useState<ApiResponse<Game[]>>({ loading: false });
   const [searchTerm, setSearchTerm] = useState('');
-  const [dbHealth, setDbHealth] = useState<ApiResponse<{ status: string; message: string }>>({ loading: true });
+  const [dbHealth, setDbHealth] = useState<ApiResponse<{ status: string; message: string }>>({
+    loading: true,
+  });
 
   // Fetch database health
   useEffect(() => {
@@ -65,9 +73,9 @@ export default function DataDemoPage() {
             games: data.games,
             players: data.players,
             gameHistory: data.game_history,
-            playerPreferences: data.player_preferences
+            playerPreferences: data.player_preferences,
           },
-          loading: false
+          loading: false,
         });
       })
       .catch(error => setDbStats({ error: error.message, loading: false }));
@@ -91,7 +99,7 @@ export default function DataDemoPage() {
 
   const handleSearch = () => {
     if (!searchTerm.trim()) return;
-    
+
     setSearchResults({ loading: true });
     fetch(`/api/games?search=${encodeURIComponent(searchTerm)}`)
       .then(res => res.json())
@@ -164,7 +172,9 @@ export default function DataDemoPage() {
                       {dbStats.loading ? '...' : dbStats.error ? 'Error' : dbStats.data?.games}
                     </div>
                     <p className="text-sm text-surface-600 mt-1">
-                      {(dbStats.data?.games ?? 0) > 1000 ? 'BGA + seed data' : 'Including seed data'}
+                      {(dbStats.data?.games ?? 0) > 1000
+                        ? 'BGA + seed data'
+                        : 'Including seed data'}
                     </p>
                   </CardContent>
                 </Card>
@@ -191,11 +201,13 @@ export default function DataDemoPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-primary-600">
-                      {dbStats.loading ? '...' : dbStats.error ? 'Error' : dbStats.data?.gameHistory}
+                      {dbStats.loading
+                        ? '...'
+                        : dbStats.error
+                          ? 'Error'
+                          : dbStats.data?.gameHistory}
                     </div>
-                    <p className="text-sm text-surface-600 mt-1">
-                      Player game records
-                    </p>
+                    <p className="text-sm text-surface-600 mt-1">Player game records</p>
                   </CardContent>
                 </Card>
 
@@ -206,11 +218,13 @@ export default function DataDemoPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="text-3xl font-bold text-primary-600">
-                      {dbStats.loading ? '...' : dbStats.error ? 'Error' : dbStats.data?.playerPreferences}
+                      {dbStats.loading
+                        ? '...'
+                        : dbStats.error
+                          ? 'Error'
+                          : dbStats.data?.playerPreferences}
                     </div>
-                    <p className="text-sm text-surface-600 mt-1">
-                      All players configured
-                    </p>
+                    <p className="text-sm text-surface-600 mt-1">All players configured</p>
                   </CardContent>
                 </Card>
               </div>
@@ -233,20 +247,24 @@ export default function DataDemoPage() {
                     <p className="text-red-600">Error: {players.error}</p>
                   ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                      {players.data?.map((player) => (
+                      {players.data?.map(player => (
                         <div key={player.id} className="border rounded-lg p-4">
                           <div className="flex items-center gap-3 mb-2">
                             <div className="w-10 h-10 rounded-full overflow-hidden bg-surface-200 flex items-center justify-center">
                               {player.avatar_url ? (
-                                <img 
-                                  src={player.avatar_url} 
+                                <img
+                                  src={player.avatar_url}
                                   alt={`${player.username} avatar`}
                                   className="w-full h-full object-cover"
-                                  onError={(e) => {
+                                  onError={e => {
                                     // Fallback to chess piece if image fails to load
                                     const target = e.currentTarget as HTMLImageElement;
                                     target.style.display = 'none';
-                                    target.parentElement!.innerHTML = player.avatar_url.startsWith('/avatars/') ? '♛' : '♟';
+                                    target.parentElement!.innerHTML = player.avatar_url.startsWith(
+                                      '/avatars/'
+                                    )
+                                      ? '♛'
+                                      : '♟';
                                   }}
                                 />
                               ) : (
@@ -255,8 +273,16 @@ export default function DataDemoPage() {
                             </div>
                             <div>
                               <h3 className="font-semibold">{player.username}</h3>
-                              <Badge variant={player.avatar_url.startsWith('/avatars/') ? 'default' : 'secondary'}>
-                                {player.avatar_url.startsWith('/avatars/') ? 'BGA Player' : 'Seed Data'}
+                              <Badge
+                                variant={
+                                  player.avatar_url.startsWith('/avatars/')
+                                    ? 'default'
+                                    : 'secondary'
+                                }
+                              >
+                                {player.avatar_url.startsWith('/avatars/')
+                                  ? 'BGA Player'
+                                  : 'Seed Data'}
                               </Badge>
                             </div>
                           </div>
@@ -277,9 +303,7 @@ export default function DataDemoPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Sample Games</CardTitle>
-                  <CardDescription>
-                    First 10 games from the BoardGameArena catalog
-                  </CardDescription>
+                  <CardDescription>First 10 games from the BoardGameArena catalog</CardDescription>
                 </CardHeader>
                 <CardContent>
                   {games.loading ? (
@@ -288,15 +312,15 @@ export default function DataDemoPage() {
                     <p className="text-red-600">Error: {games.error}</p>
                   ) : (
                     <div className="space-y-3">
-                      {games.data?.map((game) => (
+                      {games.data?.map(game => (
                         <div key={game.id} className="border rounded-lg p-4">
                           <div className="flex items-center justify-between">
                             <div>
                               <h3 className="font-semibold">{game.name}</h3>
                               <p className="text-sm text-surface-600">
-                                {game.min_players}-{game.max_players} players • 
-                                {game.average_play_time} min • 
-                                Complexity: {game.complexity_rating}/5
+                                {game.min_players}-{game.max_players} players •
+                                {game.average_play_time} min • Complexity: {game.complexity_rating}
+                                /5
                               </p>
                             </div>
                             <Badge variant="outline">BGA Game</Badge>
@@ -324,10 +348,10 @@ export default function DataDemoPage() {
                     <input
                       type="text"
                       value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onChange={e => setSearchTerm(e.target.value)}
                       placeholder="Search for games (e.g., 'chess', 'catan', 'ticket')"
                       className="flex-1 px-3 py-2 border border-surface-300 rounded-md"
-                      onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                      onKeyPress={e => e.key === 'Enter' && handleSearch()}
                     />
                     <Button onClick={handleSearch} disabled={!searchTerm.trim()}>
                       Search
@@ -344,11 +368,12 @@ export default function DataDemoPage() {
                         Found {searchResults.data.length} games matching "{searchTerm}"
                       </p>
                       <div className="space-y-2">
-                        {searchResults.data.map((game) => (
+                        {searchResults.data.map(game => (
                           <div key={game.id} className="border rounded p-3">
                             <h4 className="font-semibold">{game.name}</h4>
                             <p className="text-sm text-surface-600">
-                              {game.min_players}-{game.max_players} players • {game.average_play_time} min
+                              {game.min_players}-{game.max_players} players •{' '}
+                              {game.average_play_time} min
                             </p>
                           </div>
                         ))}
@@ -365,9 +390,7 @@ export default function DataDemoPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Development Environment Status</CardTitle>
-                  <CardDescription>
-                    Current system state and data quality metrics
-                  </CardDescription>
+                  <CardDescription>Current system state and data quality metrics</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -390,15 +413,17 @@ export default function DataDemoPage() {
                       </ul>
                     </div>
                   </div>
-                  
+
                   <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary">Debug Tool</Badge>
-                      <span className="font-semibold">Use this page to validate system state and test APIs</span>
+                      <span className="font-semibold">
+                        Use this page to validate system state and test APIs
+                      </span>
                     </div>
                     <p className="text-sm text-blue-700 mt-2">
-                      This page provides real-time data from the backend APIs and can be used 
-                      to verify system health, test search functionality, and debug data issues.
+                      This page provides real-time data from the backend APIs and can be used to
+                      verify system health, test search functionality, and debug data issues.
                     </p>
                   </div>
                 </CardContent>
@@ -409,4 +434,4 @@ export default function DataDemoPage() {
       </Container>
     </div>
   );
-} 
+}

@@ -11,9 +11,9 @@ describe('Button', () => {
   it('handles click events', async () => {
     const handleClick = jest.fn();
     const user = userEvent.setup();
-    
+
     render(<Button onClick={handleClick}>Click me</Button>);
-    
+
     await user.click(screen.getByRole('button', { name: 'Click me' }));
     expect(handleClick).toHaveBeenCalledTimes(1);
   });
@@ -40,7 +40,7 @@ describe('Button', () => {
   it('is disabled when disabled prop is true', () => {
     render(<Button disabled>Disabled</Button>);
     const button = screen.getByRole('button');
-    
+
     expect(button).toBeDisabled();
     expect(button).toHaveClass('disabled:opacity-50');
   });
@@ -49,4 +49,4 @@ describe('Button', () => {
     render(<Button className="custom-class">Custom</Button>);
     expect(screen.getByRole('button')).toHaveClass('custom-class');
   });
-}); 
+});

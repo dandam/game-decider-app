@@ -75,8 +75,7 @@ export const Radio = forwardRef<HTMLInputElement, RadioProps>(
 
 Radio.displayName = 'Radio';
 
-export interface RadioGroupProps
-  extends VariantProps<typeof radioGroupVariants> {
+export interface RadioGroupProps extends VariantProps<typeof radioGroupVariants> {
   name: string;
   value?: string;
   defaultValue?: string;
@@ -110,7 +109,7 @@ export function RadioGroup({
           size={size}
           disabled={disabled || option.disabled}
           checked={value ? value === option.value : defaultValue === option.value}
-          onChange={(e) => {
+          onChange={e => {
             if (onValueChange && e.target.checked) {
               onValueChange(option.value);
             }
@@ -119,4 +118,4 @@ export function RadioGroup({
       ))}
     </div>
   );
-} 
+}

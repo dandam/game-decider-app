@@ -14,18 +14,14 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'system'
+  defaultTheme = 'system',
 }: {
   children: React.ReactNode;
   defaultTheme?: Theme;
 }) {
   const themeState = useTheme(defaultTheme);
 
-  return (
-    <ThemeContext.Provider value={themeState}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return <ThemeContext.Provider value={themeState}>{children}</ThemeContext.Provider>;
 }
 
 export function useThemeContext() {
@@ -34,4 +30,4 @@ export function useThemeContext() {
     throw new Error('useThemeContext must be used within a ThemeProvider');
   }
   return context;
-} 
+}

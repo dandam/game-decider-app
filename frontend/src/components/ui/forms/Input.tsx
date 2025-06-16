@@ -9,8 +9,10 @@ const inputVariants = cva(
     variants: {
       variant: {
         default: 'border-surface-300 hover:border-surface-400 focus-visible:border-primary',
-        error: 'border-red-500 hover:border-red-600 focus-visible:border-red-500 focus-visible:ring-red-500',
-        success: 'border-green-500 hover:border-green-600 focus-visible:border-green-500 focus-visible:ring-green-500',
+        error:
+          'border-red-500 hover:border-red-600 focus-visible:border-red-500 focus-visible:ring-red-500',
+        success:
+          'border-green-500 hover:border-green-600 focus-visible:border-green-500 focus-visible:ring-green-500',
       },
       size: {
         sm: 'h-8 px-2 text-xs',
@@ -48,4 +50,4 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   }
 );
 
-Input.displayName = 'Input'; 
+Input.displayName = 'Input';

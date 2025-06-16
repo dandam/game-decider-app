@@ -15,7 +15,7 @@ export const useTheme = (defaultTheme: Theme = 'system') => {
 
   useEffect(() => {
     const root = window.document.documentElement;
-    
+
     if (theme === 'system') {
       root.removeAttribute('data-theme');
       setResolvedTheme(getSystemTheme());
@@ -39,6 +39,6 @@ export const useTheme = (defaultTheme: Theme = 'system') => {
     theme,
     setTheme,
     resolvedTheme,
-    isDark: resolvedTheme === 'dark'
+    isDark: resolvedTheme === 'dark',
   };
-}; 
+};

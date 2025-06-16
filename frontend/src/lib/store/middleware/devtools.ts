@@ -34,43 +34,40 @@ export const createDevToolsMiddleware = (config: DevToolsConfig = {}) => {
     return (f: any) => f;
   }
 
-  return devtools(
-    (set, get, api) => api,
-    {
-      name,
-      serialize: {
-        // Enable serialization for better debugging
-        options: serialize,
-      },
-      // Action sanitizer to clean up sensitive data
-      actionSanitizer: (action: any, id: number) => {
-        // Remove sensitive authentication data from devtools
-        if (action.type?.includes('auth/login')) {
-          return {
-            ...action,
-            // Redact sensitive fields
-            sessionToken: '[REDACTED]',
-          };
-        }
-        return action;
-      },
-      // State sanitizer to prevent logging sensitive data
-      stateSanitizer: (state: RootState) => {
+  return devtools((set, get, api) => api, {
+    name,
+    serialize: {
+      // Enable serialization for better debugging
+      options: serialize,
+    },
+    // Action sanitizer to clean up sensitive data
+    actionSanitizer: (action: any, id: number) => {
+      // Remove sensitive authentication data from devtools
+      if (action.type?.includes('auth/login')) {
         return {
-          ...state,
-          auth: {
-            ...state.auth,
-            // Redact sensitive authentication fields
-            sessionToken: state.auth.sessionToken ? '[REDACTED]' : null,
-          },
+          ...action,
+          // Redact sensitive fields
+          sessionToken: '[REDACTED]',
         };
-      },
-      // Enable action stack traces in development
-      trace: true,
-      // Show action diffs
-      diff: true,
-    }
-  );
+      }
+      return action;
+    },
+    // State sanitizer to prevent logging sensitive data
+    stateSanitizer: (state: RootState) => {
+      return {
+        ...state,
+        auth: {
+          ...state.auth,
+          // Redact sensitive authentication fields
+          sessionToken: state.auth.sessionToken ? '[REDACTED]' : null,
+        },
+      };
+    },
+    // Enable action stack traces in development
+    trace: true,
+    // Show action diffs
+    diff: true,
+  });
 };
 
 /**
@@ -80,4 +77,4 @@ export const defaultDevToolsConfig: DevToolsConfig = {
   name: 'GameDeciderStore',
   enabled: process.env.NODE_ENV === 'development',
   serialize: true,
-}; 
+};

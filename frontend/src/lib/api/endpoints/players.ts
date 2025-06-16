@@ -59,8 +59,8 @@ export async function getPlayerPreferences(id: UUID): Promise<PlayerPreferencesR
  * Update player preferences.
  */
 export async function updatePlayerPreferences(
-  id: UUID, 
+  id: UUID,
   data: PlayerPreferencesUpdate
 ): Promise<PlayerPreferencesResponse> {
   return apiClient.put<PlayerPreferencesResponse>(`/api/v1/players/${id}/preferences`, data);
-} 
+}

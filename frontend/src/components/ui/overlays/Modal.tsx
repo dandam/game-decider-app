@@ -41,9 +41,7 @@ const modalContentVariants = cva(
   }
 );
 
-const modalHeaderVariants = cva(
-  'flex flex-col space-y-1.5 text-center sm:text-left mb-4'
-);
+const modalHeaderVariants = cva('flex flex-col space-y-1.5 text-center sm:text-left mb-4');
 
 const modalFooterVariants = cva(
   'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-6'
@@ -99,13 +97,13 @@ export function Modal({ open, onOpenChange, children, size }: ModalProps) {
         onClick={() => onOpenChange(false)}
         aria-hidden="true"
       />
-      
+
       {/* Content */}
       <div
         className={modalContentVariants({ size, open })}
         role="dialog"
         aria-modal="true"
-        onClick={(e) => e.stopPropagation()}
+        onClick={e => e.stopPropagation()}
       >
         {children}
       </div>
@@ -115,22 +113,14 @@ export function Modal({ open, onOpenChange, children, size }: ModalProps) {
 
 export const ModalContent = forwardRef<HTMLDivElement, ModalContentProps>(
   ({ className, size, open, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={modalContentVariants({ size, open, className })}
-      {...props}
-    />
+    <div ref={ref} className={modalContentVariants({ size, open, className })} {...props} />
   )
 );
 ModalContent.displayName = 'ModalContent';
 
 export const ModalHeader = forwardRef<HTMLDivElement, ModalHeaderProps>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={modalHeaderVariants({ className })}
-      {...props}
-    />
+    <div ref={ref} className={modalHeaderVariants({ className })} {...props} />
   )
 );
 ModalHeader.displayName = 'ModalHeader';
@@ -148,22 +138,14 @@ ModalTitle.displayName = 'ModalTitle';
 
 export const ModalDescription = forwardRef<HTMLParagraphElement, ModalDescriptionProps>(
   ({ className, ...props }, ref) => (
-    <p
-      ref={ref}
-      className={`text-sm text-surface-600 ${className || ''}`}
-      {...props}
-    />
+    <p ref={ref} className={`text-sm text-surface-600 ${className || ''}`} {...props} />
   )
 );
 ModalDescription.displayName = 'ModalDescription';
 
 export const ModalFooter = forwardRef<HTMLDivElement, ModalFooterProps>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={modalFooterVariants({ className })}
-      {...props}
-    />
+    <div ref={ref} className={modalFooterVariants({ className })} {...props} />
   )
 );
-ModalFooter.displayName = 'ModalFooter'; 
+ModalFooter.displayName = 'ModalFooter';

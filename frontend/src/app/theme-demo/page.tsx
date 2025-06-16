@@ -21,11 +21,9 @@ export default function ThemeDemo() {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Color Palette</h2>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-              {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map((weight) => (
+              {[50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(weight => (
                 <div key={weight} className="space-y-2">
-                  <div
-                    className={`h-20 rounded-lg bg-surface-${weight}`}
-                  />
+                  <div className={`h-20 rounded-lg bg-surface-${weight}`} />
                   <p className="text-sm font-mono">surface-{weight}</p>
                 </div>
               ))}
@@ -67,11 +65,8 @@ export default function ThemeDemo() {
           <div>
             <h2 className="text-2xl font-semibold mb-4">Spacing Scale</h2>
             <div className="flex items-end gap-2">
-              {[1, 2, 3, 4, 6, 8, 12, 16].map((space) => (
-                <div
-                  key={space}
-                  className={`w-${space} h-${space} bg-primary rounded`}
-                >
+              {[1, 2, 3, 4, 6, 8, 12, 16].map(space => (
+                <div key={space} className={`w-${space} h-${space} bg-primary rounded`}>
                   <span className="text-xs mt-2 block">{space}</span>
                 </div>
               ))}
@@ -81,4 +76,4 @@ export default function ThemeDemo() {
       </div>
     </div>
   );
-} 
+}

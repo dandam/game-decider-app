@@ -3,8 +3,9 @@
 A comprehensive, type-safe API client for the Game Decider application built with TypeScript and native fetch API.
 
 > **⚠️ Next.js App Router Compatibility**
-> 
+>
 > This API client is designed for Next.js App Router. When using in components:
+>
 > - Add `'use client';` directive for client-side features (useState, useEffect, etc.)
 > - Import from `@/lib/api` using the configured path alias
 > - Follow App Router patterns for page structure (`app/[route]/page.tsx`)
@@ -27,13 +28,13 @@ import { getPlayers, createPlayer, ApiError } from '@/lib/api';
 try {
   // Get all players
   const players = await getPlayers({ limit: 10 });
-  
+
   // Create a new player
   const newPlayer = await createPlayer({
     username: 'alice',
-    display_name: 'Alice'
+    display_name: 'Alice',
   });
-  
+
   console.log('Created player:', newPlayer);
 } catch (error) {
   if (error instanceof ApiError) {
@@ -62,7 +63,7 @@ const customClient = createApiClient({
   retryConfig: {
     maxRetries: 5,
     baseDelay: 2000,
-  }
+  },
 });
 ```
 
@@ -83,12 +84,12 @@ const player = await Players.getPlayer('player-id');
 const newPlayer = await Players.createPlayer({
   username: 'johndoe',
   display_name: 'John Doe',
-  avatar_url: 'https://example.com/avatar.jpg'
+  avatar_url: 'https://example.com/avatar.jpg',
 });
 
 // Update player
 const updatedPlayer = await Players.updatePlayer('player-id', {
-  display_name: 'John Smith'
+  display_name: 'John Smith',
 });
 
 // Delete player
@@ -99,7 +100,7 @@ const preferences = await Players.getPlayerPreferences('player-id');
 const updatedPreferences = await Players.updatePlayerPreferences('player-id', {
   minimum_play_time: 30,
   maximum_play_time: 120,
-  preferred_category_ids: ['category-1', 'category-2']
+  preferred_category_ids: ['category-1', 'category-2'],
 });
 ```
 
@@ -115,7 +116,7 @@ const games = await Games.getGames({
   min_players: 2,
   max_players: 4,
   category_ids: ['strategy', 'euro'],
-  category_filter_mode: 'any'
+  category_filter_mode: 'any',
 });
 
 // Get games count
@@ -143,7 +144,7 @@ const preferences = await Preferences.getPreferences('player-id');
 const updated = await Preferences.updatePreferences('player-id', {
   preferred_complexity_min: 2.0,
   preferred_complexity_max: 4.0,
-  preferred_category_ids: ['strategy']
+  preferred_category_ids: ['strategy'],
 });
 
 // Get compatibility
@@ -167,6 +168,7 @@ const dbHealth = await Health.databaseHealthCheck();
 The API client provides three main error types:
 
 ### ApiError
+
 Standard API errors (4xx, 5xx responses):
 
 ```typescript
@@ -174,14 +176,15 @@ try {
   await getPlayer('nonexistent-id');
 } catch (error) {
   if (error instanceof ApiError) {
-    console.log('Status:', error.status);        // 404
-    console.log('Message:', error.message);      // "Player not found"
-    console.log('Data:', error.data);            // Response data
+    console.log('Status:', error.status); // 404
+    console.log('Message:', error.message); // "Player not found"
+    console.log('Data:', error.data); // Response data
   }
 }
 ```
 
 ### ValidationError
+
 Validation errors (422 responses):
 
 ```typescript
@@ -197,6 +200,7 @@ try {
 ```
 
 ### NetworkError
+
 Network-related errors:
 
 ```typescript
@@ -215,12 +219,12 @@ try {
 All types are exported and can be imported:
 
 ```typescript
-import type { 
-  PlayerResponse, 
-  GameResponse, 
+import type {
+  PlayerResponse,
+  GameResponse,
   PlayerPreferencesUpdate,
   GameFilters,
-  CompatibilityResponse 
+  CompatibilityResponse,
 } from '@/lib/api';
 
 function handlePlayer(player: PlayerResponse) {
@@ -243,7 +247,7 @@ Identical GET requests made simultaneously are automatically deduplicated:
 // These will result in only one network request
 const [players1, players2] = await Promise.all([
   getPlayers({ limit: 10 }),
-  getPlayers({ limit: 10 })
+  getPlayers({ limit: 10 }),
 ]);
 ```
 
@@ -252,8 +256,8 @@ const [players1, players2] = await Promise.all([
 ```typescript
 await apiClient.get('/api/v1/players', {
   headers: {
-    'X-Custom-Header': 'value'
-  }
+    'X-Custom-Header': 'value',
+  },
 });
 ```
 
@@ -263,10 +267,7 @@ await apiClient.get('/api/v1/players', {
 const controller = new AbortController();
 
 try {
-  const players = await getPlayers(
-    { limit: 10 }, 
-    { signal: controller.signal }
-  );
+  const players = await getPlayers({ limit: 10 }, { signal: controller.signal });
 } catch (error) {
   if (error instanceof NetworkError && error.message.includes('cancelled')) {
     console.log('Request was cancelled');
@@ -286,8 +287,8 @@ await apiClient.get('/api/v1/players', {
     maxRetries: 5,
     baseDelay: 1000,
     maxDelay: 10000,
-    backoffFactor: 2
-  }
+    backoffFactor: 2,
+  },
 });
 ```
 
@@ -323,6 +324,7 @@ NODE_ENV=development npm run dev
 ```
 
 This will show console logs for all API requests including:
+
 - Request ID
 - URL and method
 - Request/response data
@@ -344,12 +346,12 @@ When adding new endpoints:
 ### Complete Player Management
 
 ```typescript
-import { 
-  getPlayers, 
-  createPlayer, 
+import {
+  getPlayers,
+  createPlayer,
   updatePlayerPreferences,
   ApiError,
-  ValidationError 
+  ValidationError,
 } from '@/lib/api';
 
 async function managePlayer() {
@@ -357,7 +359,7 @@ async function managePlayer() {
     // Create player
     const player = await createPlayer({
       username: 'gamer123',
-      display_name: 'Epic Gamer'
+      display_name: 'Epic Gamer',
     });
 
     // Set preferences
@@ -366,14 +368,13 @@ async function managePlayer() {
       maximum_play_time: 90,
       preferred_complexity_min: 2.0,
       preferred_complexity_max: 4.0,
-      preferred_category_ids: ['strategy', 'euro-game']
+      preferred_category_ids: ['strategy', 'euro-game'],
     });
 
     // Get all players
     const allPlayers = await getPlayers({ limit: 50 });
-    
+
     return { player, allPlayers };
-    
   } catch (error) {
     if (error instanceof ValidationError) {
       console.error('Validation failed:', error.validationErrors);
@@ -390,36 +391,30 @@ async function managePlayer() {
 ### Game Search and Compatibility
 
 ```typescript
-import { 
-  searchGamesByName, 
-  getGameCompatibility,
-  getGames 
-} from '@/lib/api';
+import { searchGamesByName, getGameCompatibility, getGames } from '@/lib/api';
 
 async function findCompatibleGames(playerId: string) {
   // Search for games
   const searchResults = await searchGamesByName('Wingspan');
-  
+
   // Get strategy games for 2-4 players
   const strategyGames = await getGames({
     min_players: 2,
     max_players: 4,
     category_ids: ['strategy'],
-    limit: 20
+    limit: 20,
   });
 
   // Check compatibility for each game
-  const compatibilityPromises = strategyGames.map(game =>
-    getGameCompatibility(game.id, playerId)
-  );
-  
+  const compatibilityPromises = strategyGames.map(game => getGameCompatibility(game.id, playerId));
+
   const compatibilities = await Promise.all(compatibilityPromises);
-  
+
   // Filter recommended games
-  const recommendedGames = strategyGames.filter((game, index) =>
-    compatibilities[index].recommendation === 'recommended'
+  const recommendedGames = strategyGames.filter(
+    (game, index) => compatibilities[index].recommendation === 'recommended'
   );
 
   return recommendedGames;
 }
-``` 
+```

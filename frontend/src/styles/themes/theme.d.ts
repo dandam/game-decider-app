@@ -60,4 +60,4 @@ declare module 'tailwindcss/tailwind-config' {
       colors: string;
     };
   }
-} 
+}

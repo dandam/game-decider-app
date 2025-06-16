@@ -16,7 +16,7 @@ export function generateRequestId(): string {
  */
 export function buildUrl(baseUrl: string, path: string, params?: Record<string, any>): string {
   const url = new URL(path, baseUrl);
-  
+
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
@@ -29,7 +29,7 @@ export function buildUrl(baseUrl: string, path: string, params?: Record<string, 
       }
     });
   }
-  
+
   return url.toString();
 }
 
@@ -39,7 +39,7 @@ export function buildUrl(baseUrl: string, path: string, params?: Record<string, 
 export async function processApiError(response: Response): Promise<never> {
   const contentType = response.headers.get('content-type');
   let errorData: any;
-  
+
   try {
     if (contentType?.includes('application/json')) {
       errorData = await response.json();
@@ -62,9 +62,10 @@ export async function processApiError(response: Response): Promise<never> {
   }
 
   // Handle other API errors
-  const message = typeof errorData.detail === 'string' 
-    ? errorData.detail 
-    : `HTTP ${response.status}: ${response.statusText}`;
+  const message =
+    typeof errorData.detail === 'string'
+      ? errorData.detail
+      : `HTTP ${response.status}: ${response.statusText}`;
 
   throw new ApiError(message, response.status, response.statusText, errorData);
 }
@@ -79,7 +80,7 @@ export const DEFAULT_TIMEOUT = 30000; // 30 seconds
  */
 export function createTimeoutController(timeoutMs: number = DEFAULT_TIMEOUT): AbortController {
   const controller = new AbortController();
-  
+
   const timeoutId = setTimeout(() => {
     controller.abort();
   }, timeoutMs);
@@ -125,12 +126,12 @@ export function isRetryableError(error: Error): boolean {
   if (error instanceof NetworkError) {
     return true;
   }
-  
+
   if (error instanceof ApiError) {
     // Retry on server errors (5xx) but not client errors (4xx)
     return error.status >= 500;
   }
-  
+
   return false;
 }
 
@@ -144,12 +145,7 @@ export function sleep(ms: number): Promise<void> {
 /**
  * Log request details in development mode.
  */
-export function logRequest(
-  method: string,
-  url: string,
-  requestId: string,
-  body?: any
-): void {
+export function logRequest(method: string, url: string, requestId: string, body?: any): void {
   if (process.env.NODE_ENV === 'development') {
     console.group(`🌐 API Request: ${method} ${url}`);
     console.log(`Request ID: ${requestId}`);
@@ -187,12 +183,7 @@ export function logResponse(
 /**
  * Log error details in development mode.
  */
-export function logError(
-  method: string,
-  url: string,
-  requestId: string,
-  error: Error
-): void {
+export function logError(method: string, url: string, requestId: string, error: Error): void {
   if (process.env.NODE_ENV === 'development') {
     console.group(`❌ API Error: ${method} ${url}`);
     console.log(`Request ID: ${requestId}`);
@@ -201,4 +192,4 @@ export function logError(
     console.error(error);
     console.groupEnd();
   }
-} 
+}

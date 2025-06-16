@@ -1,6 +1,6 @@
 /**
  * Player preferences API endpoints.
- * 
+ *
  * Note: These are also available through the players endpoints,
  * but separated here for clarity and organization.
  */
@@ -24,7 +24,7 @@ export async function getPreferences(playerId: UUID): Promise<PlayerPreferencesR
  * Update player preferences.
  */
 export async function updatePreferences(
-  playerId: UUID, 
+  playerId: UUID,
   data: PlayerPreferencesUpdate
 ): Promise<PlayerPreferencesResponse> {
   return apiClient.put<PlayerPreferencesResponse>(`/api/v1/players/${playerId}/preferences`, data);
@@ -34,10 +34,10 @@ export async function updatePreferences(
  * Get game compatibility for a player.
  */
 export async function getCompatibility(
-  gameId: UUID, 
+  gameId: UUID,
   playerId: UUID
 ): Promise<CompatibilityResponse> {
   return apiClient.get<CompatibilityResponse>(`/api/v1/games/${gameId}/compatibility`, {
-    params: { player_id: playerId }
+    params: { player_id: playerId },
   });
-} 
+}

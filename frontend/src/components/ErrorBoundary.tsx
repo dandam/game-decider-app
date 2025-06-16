@@ -34,7 +34,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
     // Use centralized error handling
     const appError = handleComponentError(error, errorInfo);
-    
+
     this.setState({
       error,
       errorInfo,
@@ -52,7 +52,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   render() {
     if (this.state.hasError) {
       const { error } = this.state;
-      
+
       if (this.props.fallback) {
         const FallbackComponent = this.props.fallback;
         return <FallbackComponent error={error!} reset={this.reset} />;
@@ -63,8 +63,18 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
           <div className="max-w-2xl w-full bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
             <div className="flex items-center mb-4">
               <div className="flex-shrink-0">
-                <svg className="h-8 w-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z" />
+                <svg
+                  className="h-8 w-8 text-red-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.732-.833-2.5 0L4.268 18.5c-.77.833.192 2.5 1.732 2.5z"
+                  />
                 </svg>
               </div>
               <div className="ml-3">
@@ -82,7 +92,13 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
                 What happened:
               </h2>
               <p className="text-sm text-red-700 dark:text-red-300">
-                {error ? getUserErrorMessage({ message: error.message, timestamp: new Date(), code: 'COMPONENT_ERROR' }) : 'Unknown error occurred'}
+                {error
+                  ? getUserErrorMessage({
+                      message: error.message,
+                      timestamp: new Date(),
+                      code: 'COMPONENT_ERROR',
+                    })
+                  : 'Unknown error occurred'}
               </p>
             </div>
 
@@ -125,4 +141,4 @@ export function useErrorHandler() {
   return React.useCallback((error: Error, context?: string) => {
     handleComponentError(error, { context });
   }, []);
-} 
+}

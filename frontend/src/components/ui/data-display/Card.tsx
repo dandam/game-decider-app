@@ -107,11 +107,7 @@ Card.displayName = 'Card';
 
 export const CardHeader = forwardRef<HTMLDivElement, CardHeaderProps>(
   ({ className, padding, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cardHeaderVariants({ padding, className })}
-      {...props}
-    />
+    <div ref={ref} className={cardHeaderVariants({ padding, className })} {...props} />
   )
 );
 CardHeader.displayName = 'CardHeader';
@@ -129,33 +125,21 @@ CardTitle.displayName = 'CardTitle';
 
 export const CardDescription = forwardRef<HTMLParagraphElement, CardDescriptionProps>(
   ({ className, ...props }, ref) => (
-    <p
-      ref={ref}
-      className={`text-sm text-surface-600 ${className || ''}`}
-      {...props}
-    />
+    <p ref={ref} className={`text-sm text-surface-600 ${className || ''}`} {...props} />
   )
 );
 CardDescription.displayName = 'CardDescription';
 
 export const CardContent = forwardRef<HTMLDivElement, CardContentProps>(
   ({ className, padding, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cardContentVariants({ padding, className })}
-      {...props}
-    />
+    <div ref={ref} className={cardContentVariants({ padding, className })} {...props} />
   )
 );
 CardContent.displayName = 'CardContent';
 
 export const CardFooter = forwardRef<HTMLDivElement, CardFooterProps>(
   ({ className, padding, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={cardFooterVariants({ padding, className })}
-      {...props}
-    />
+    <div ref={ref} className={cardFooterVariants({ padding, className })} {...props} />
   )
 );
-CardFooter.displayName = 'CardFooter'; 
+CardFooter.displayName = 'CardFooter';

@@ -21,13 +21,9 @@ const alertVariants = cva(
   }
 );
 
-const alertTitleVariants = cva(
-  'mb-1 font-medium leading-none tracking-tight text-sm'
-);
+const alertTitleVariants = cva('mb-1 font-medium leading-none tracking-tight text-sm');
 
-const alertDescriptionVariants = cva(
-  'text-sm [&_p]:leading-relaxed'
-);
+const alertDescriptionVariants = cva('text-sm [&_p]:leading-relaxed');
 
 export interface AlertProps
   extends HTMLAttributes<HTMLDivElement>,
@@ -42,12 +38,7 @@ export interface AlertDescriptionProps extends HTMLAttributes<HTMLDivElement> {}
 // Default icons for each variant
 const DefaultIcons = {
   default: (
-    <svg
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -57,12 +48,7 @@ const DefaultIcons = {
     </svg>
   ),
   success: (
-    <svg
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -72,12 +58,7 @@ const DefaultIcons = {
     </svg>
   ),
   warning: (
-    <svg
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -87,12 +68,7 @@ const DefaultIcons = {
     </svg>
   ),
   error: (
-    <svg
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -102,12 +78,7 @@ const DefaultIcons = {
     </svg>
   ),
   info: (
-    <svg
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
+    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -120,15 +91,10 @@ const DefaultIcons = {
 
 export const Alert = forwardRef<HTMLDivElement, AlertProps>(
   ({ className, variant = 'default', icon, children, ...props }, ref) => {
-    const displayIcon = icon !== null ? (icon || DefaultIcons[variant || 'default']) : null;
+    const displayIcon = icon !== null ? icon || DefaultIcons[variant || 'default'] : null;
 
     return (
-      <div
-        ref={ref}
-        role="alert"
-        className={alertVariants({ variant, className })}
-        {...props}
-      >
+      <div ref={ref} role="alert" className={alertVariants({ variant, className })} {...props}>
         {displayIcon}
         <div>{children}</div>
       </div>
@@ -139,22 +105,14 @@ Alert.displayName = 'Alert';
 
 export const AlertTitle = forwardRef<HTMLParagraphElement, AlertTitleProps>(
   ({ className, ...props }, ref) => (
-    <h5
-      ref={ref}
-      className={alertTitleVariants({ className })}
-      {...props}
-    />
+    <h5 ref={ref} className={alertTitleVariants({ className })} {...props} />
   )
 );
 AlertTitle.displayName = 'AlertTitle';
 
 export const AlertDescription = forwardRef<HTMLDivElement, AlertDescriptionProps>(
   ({ className, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={alertDescriptionVariants({ className })}
-      {...props}
-    />
+    <div ref={ref} className={alertDescriptionVariants({ className })} {...props} />
   )
 );
-AlertDescription.displayName = 'AlertDescription'; 
+AlertDescription.displayName = 'AlertDescription';

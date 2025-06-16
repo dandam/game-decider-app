@@ -78,10 +78,10 @@ export async function getGameByBgaId(bgaId: string): Promise<GameResponse> {
  * Get game compatibility with player preferences.
  */
 export async function getGameCompatibility(
-  gameId: UUID, 
+  gameId: UUID,
   playerId: UUID
 ): Promise<CompatibilityResponse> {
   return apiClient.get<CompatibilityResponse>(`/api/v1/games/${gameId}/compatibility`, {
-    params: { player_id: playerId }
+    params: { player_id: playerId },
   });
-} 
+}

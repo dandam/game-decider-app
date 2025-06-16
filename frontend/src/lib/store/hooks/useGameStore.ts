@@ -16,7 +16,7 @@ import type { GameSlice } from '../types';
  * @returns Games list with pagination info
  */
 export const useGamesState = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     games: state.games.games.items,
     loading: state.games.games.loading,
     error: state.games.games.error,
@@ -32,7 +32,7 @@ export const useGamesState = () => {
  * @returns Game-related actions
  */
 export const useGameActions = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     fetchGames: state.games.fetchGames,
     searchGames: state.games.searchGames,
     loadMoreGames: state.games.loadMoreGames,
@@ -56,7 +56,7 @@ export const useGameActions = () => {
  * @returns Complete games slice
  */
 export const useGames = () => {
-  return useStore((state) => state.games);
+  return useStore(state => state.games);
 };
 
 // =============================================================================
@@ -68,7 +68,7 @@ export const useGames = () => {
  * @returns Array of games
  */
 export const useGamesList = () => {
-  return useStore((state) => state.games.games.items);
+  return useStore(state => state.games.games.items);
 };
 
 /**
@@ -76,7 +76,7 @@ export const useGamesList = () => {
  * @returns Selected game or null
  */
 export const useSelectedGame = () => {
-  return useStore((state) => state.games.selectedGame);
+  return useStore(state => state.games.selectedGame);
 };
 
 /**
@@ -84,7 +84,7 @@ export const useSelectedGame = () => {
  * @returns Array of favorite game IDs
  */
 export const useFavoriteGames = () => {
-  return useStore((state) => state.games.favoriteGames);
+  return useStore(state => state.games.favoriteGames);
 };
 
 /**
@@ -92,7 +92,7 @@ export const useFavoriteGames = () => {
  * @returns Array of recently viewed game IDs
  */
 export const useRecentlyViewedGames = () => {
-  return useStore((state) => state.games.recentlyViewed);
+  return useStore(state => state.games.recentlyViewed);
 };
 
 /**
@@ -100,7 +100,7 @@ export const useRecentlyViewedGames = () => {
  * @returns Current search query string
  */
 export const useGameSearchQuery = () => {
-  return useStore((state) => state.games.searchQuery);
+  return useStore(state => state.games.searchQuery);
 };
 
 /**
@@ -108,7 +108,7 @@ export const useGameSearchQuery = () => {
  * @returns Current game filters
  */
 export const useGameFilters = () => {
-  return useStore((state) => state.games.filters);
+  return useStore(state => state.games.filters);
 };
 
 /**
@@ -116,7 +116,7 @@ export const useGameFilters = () => {
  * @returns Current sort criteria
  */
 export const useGameSorting = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     sortBy: state.games.sortBy,
     sortOrder: state.games.sortOrder,
   }));
@@ -127,7 +127,7 @@ export const useGameSorting = () => {
  * @returns True if games are loading
  */
 export const useGamesLoading = () => {
-  return useStore((state) => state.games.games.loading);
+  return useStore(state => state.games.games.loading);
 };
 
 /**
@@ -135,7 +135,7 @@ export const useGamesLoading = () => {
  * @returns Current games error or null
  */
 export const useGamesError = () => {
-  return useStore((state) => state.games.games.error);
+  return useStore(state => state.games.games.error);
 };
 
 // =============================================================================
@@ -147,7 +147,7 @@ export const useGamesError = () => {
  * @returns Filtered games array
  */
 export const useFilteredGames = () => {
-  return useStore((state) => state.games.getFilteredGames());
+  return useStore(state => state.games.getFilteredGames());
 };
 
 /**
@@ -156,7 +156,7 @@ export const useFilteredGames = () => {
  * @returns Game object or null
  */
 export const useGameById = (gameId: string | null) => {
-  return useStore((state) => {
+  return useStore(state => {
     if (!gameId) return null;
     return state.games.getGameById(gameId);
   });
@@ -168,7 +168,7 @@ export const useGameById = (gameId: string | null) => {
  * @returns True if game is in favorites
  */
 export const useIsGameFavorited = (gameId: string | null) => {
-  return useStore((state) => {
+  return useStore(state => {
     if (!gameId) return false;
     return state.games.favoriteGames.includes(gameId);
   });
@@ -179,7 +179,7 @@ export const useIsGameFavorited = (gameId: string | null) => {
  * @returns Pagination state
  */
 export const useGamesPagination = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     hasMore: state.games.games.hasMore,
     loading: state.games.games.loading,
     page: state.games.games.page,
@@ -195,7 +195,7 @@ export const useGamesPagination = () => {
  * @returns Compatibility data or null
  */
 export const useGameCompatibility = (gameId: string | null, playerId: string | null) => {
-  return useStore((state) => {
+  return useStore(state => {
     if (!gameId || !playerId) return null;
     return state.games.getCompatibilityForGame(gameId, playerId);
   });
@@ -210,8 +210,8 @@ export const useGameCompatibility = (gameId: string | null, playerId: string | n
  * @returns Fetch games function with error handling
  */
 export const useFetchGames = () => {
-  const fetchGames = useStore((state) => state.games.fetchGames);
-  const addToast = useStore((state) => state.ui.addToast);
+  const fetchGames = useStore(state => state.games.fetchGames);
+  const addToast = useStore(state => state.ui.addToast);
 
   return async (params?: GameFilters) => {
     try {
@@ -232,8 +232,8 @@ export const useFetchGames = () => {
  * @returns Search function with error handling
  */
 export const useSearchGames = () => {
-  const searchGames = useStore((state) => state.games.searchGames);
-  const addToast = useStore((state) => state.ui.addToast);
+  const searchGames = useStore(state => state.games.searchGames);
+  const addToast = useStore(state => state.ui.addToast);
 
   return async (query: string) => {
     try {
@@ -254,17 +254,17 @@ export const useSearchGames = () => {
  * @returns Toggle favorite function with toast notifications
  */
 export const useToggleFavorite = () => {
-  const toggleFavorite = useStore((state) => state.games.toggleFavorite);
-  const favoriteGames = useStore((state) => state.games.favoriteGames);
-  const getGameById = useStore((state) => state.games.getGameById);
-  const addToast = useStore((state) => state.ui.addToast);
+  const toggleFavorite = useStore(state => state.games.toggleFavorite);
+  const favoriteGames = useStore(state => state.games.favoriteGames);
+  const getGameById = useStore(state => state.games.getGameById);
+  const addToast = useStore(state => state.ui.addToast);
 
   return (gameId: string) => {
     const game = getGameById(gameId);
     const isCurrentlyFavorited = favoriteGames.includes(gameId);
-    
+
     toggleFavorite(gameId);
-    
+
     if (game) {
       addToast({
         type: 'success',
@@ -280,8 +280,8 @@ export const useToggleFavorite = () => {
  * @returns Select game function
  */
 export const useSelectGame = () => {
-  const setSelectedGame = useStore((state) => state.games.setSelectedGame);
-  const addToRecentlyViewed = useStore((state) => state.games.addToRecentlyViewed);
+  const setSelectedGame = useStore(state => state.games.setSelectedGame);
+  const addToRecentlyViewed = useStore(state => state.games.addToRecentlyViewed);
 
   return (game: GameResponse | null) => {
     setSelectedGame(game);
@@ -296,8 +296,8 @@ export const useSelectGame = () => {
  * @returns Set filters function with validation
  */
 export const useSetGameFilters = () => {
-  const setFilters = useStore((state) => state.games.setFilters);
-  const addToast = useStore((state) => state.ui.addToast);
+  const setFilters = useStore(state => state.games.setFilters);
+  const addToast = useStore(state => state.ui.addToast);
 
   return (filters: Partial<GameFilters>) => {
     // Basic validation
@@ -310,7 +310,11 @@ export const useSetGameFilters = () => {
       return;
     }
 
-    if (filters.min_play_time && filters.max_play_time && filters.min_play_time > filters.max_play_time) {
+    if (
+      filters.min_play_time &&
+      filters.max_play_time &&
+      filters.min_play_time > filters.max_play_time
+    ) {
       addToast({
         type: 'warning',
         message: 'Invalid filter',
@@ -332,11 +336,11 @@ export const useSetGameFilters = () => {
  * @returns Games statistics object
  */
 export const useGamesStats = () => {
-  return useStore((state) => {
+  return useStore(state => {
     const games = state.games.games.items;
     const favorites = state.games.favoriteGames.length;
     const recentlyViewed = state.games.recentlyViewed.length;
-    
+
     return {
       totalGames: games.length,
       favoritesCount: favorites,
@@ -346,4 +350,4 @@ export const useGamesStats = () => {
       hasRecentlyViewed: recentlyViewed > 0,
     };
   });
-}; 
+};

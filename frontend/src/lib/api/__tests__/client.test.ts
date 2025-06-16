@@ -63,7 +63,7 @@ describe('ApiClient', () => {
       });
 
       const result = await client.get('/api/v1/test');
-      
+
       expect(mockFetch).toHaveBeenCalledWith(
         'http://localhost:8000/api/v1/test',
         expect.objectContaining({
@@ -87,10 +87,10 @@ describe('ApiClient', () => {
         json: () => Promise.resolve(mockData),
       });
 
-      await client.get('/api/v1/players', { 
-        params: { limit: 10, skip: 0 } 
+      await client.get('/api/v1/players', {
+        params: { limit: 10, skip: 0 },
       });
-      
+
       expect(mockFetch).toHaveBeenCalledWith(
         'http://localhost:8000/api/v1/players?limit=10&skip=0',
         expect.any(Object)
@@ -106,10 +106,10 @@ describe('ApiClient', () => {
         json: () => Promise.resolve([]),
       });
 
-      await client.get('/api/v1/games', { 
-        params: { category_ids: ['1', '2', '3'] } 
+      await client.get('/api/v1/games', {
+        params: { category_ids: ['1', '2', '3'] },
       });
-      
+
       expect(mockFetch).toHaveBeenCalledWith(
         'http://localhost:8000/api/v1/games?category_ids=1&category_ids=2&category_ids=3',
         expect.any(Object)
@@ -121,7 +121,7 @@ describe('ApiClient', () => {
     it('should make successful POST request', async () => {
       const requestData = { username: 'test', display_name: 'Test User' };
       const responseData = { id: '1', ...requestData };
-      
+
       mockFetch.mockResolvedValueOnce({
         ok: true,
         status: 201,
@@ -131,7 +131,7 @@ describe('ApiClient', () => {
       });
 
       const result = await client.post('/api/v1/players', requestData);
-      
+
       expect(mockFetch).toHaveBeenCalledWith(
         'http://localhost:8000/api/v1/players',
         expect.objectContaining({
@@ -150,7 +150,7 @@ describe('ApiClient', () => {
     it('should make successful PUT request', async () => {
       const requestData = { display_name: 'Updated Name' };
       const responseData = { id: '1', username: 'test', ...requestData };
-      
+
       mockFetch.mockResolvedValueOnce({
         ok: true,
         status: 200,
@@ -175,7 +175,7 @@ describe('ApiClient', () => {
       });
 
       await client.delete('/api/v1/players/1');
-      
+
       expect(mockFetch).toHaveBeenCalledWith(
         'http://localhost:8000/api/v1/players/1',
         expect.objectContaining({
@@ -197,7 +197,7 @@ describe('ApiClient', () => {
       });
 
       await expect(client.get('/api/v1/players/nonexistent')).rejects.toThrow(ApiError);
-      
+
       try {
         await client.get('/api/v1/players/nonexistent');
       } catch (error) {
@@ -217,7 +217,7 @@ describe('ApiClient', () => {
         },
       ];
       const errorResponse = { detail: validationErrors };
-      
+
       mockFetch.mockResolvedValueOnce({
         ok: false,
         status: 422,
@@ -226,8 +226,10 @@ describe('ApiClient', () => {
         json: () => Promise.resolve(errorResponse),
       });
 
-      await expect(client.post('/api/v1/players', { username: 'ab' })).rejects.toThrow(ValidationError);
-      
+      await expect(client.post('/api/v1/players', { username: 'ab' })).rejects.toThrow(
+        ValidationError
+      );
+
       try {
         await client.post('/api/v1/players', { username: 'ab' });
       } catch (error) {
@@ -269,7 +271,7 @@ describe('ApiClient', () => {
     it('should not deduplicate POST requests', async () => {
       const requestData = { name: 'Test' };
       const responseData = { id: '1', ...requestData };
-      
+
       mockFetch.mockResolvedValue({
         ok: true,
         status: 201,
@@ -295,7 +297,7 @@ describe('ApiClient', () => {
         baseUrl: 'https://new-api.example.com',
         timeout: 15000,
       };
-      
+
       client.updateConfig(newConfig);
       expect(client.getBaseUrl()).toBe('https://new-api.example.com');
     });
@@ -306,4 +308,4 @@ describe('ApiClient', () => {
       expect(spy).toHaveBeenCalled();
     });
   });
-}); 
+});

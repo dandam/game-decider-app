@@ -17,4 +17,4 @@ export async function healthCheck(): Promise<HealthCheckResponse> {
  */
 export async function databaseHealthCheck(): Promise<DatabaseHealthResponse> {
   return apiClient.get<DatabaseHealthResponse>('/api/v1/health/database');
-} 
+}

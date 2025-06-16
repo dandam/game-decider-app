@@ -11,7 +11,7 @@ import {
   type HealthCheckResponse,
   ApiError,
   ValidationError,
-  NetworkError
+  NetworkError,
 } from '@/lib/api';
 
 type LoadingState = 'idle' | 'loading' | 'success' | 'error';
@@ -40,17 +40,18 @@ export default function ApiDemo() {
   const checkHealth = async () => {
     setHealthLoading('loading');
     setHealthError(null);
-    
+
     try {
       const result = await Health.healthCheck();
       setHealth(result);
       setHealthLoading('success');
     } catch (error) {
-      const errorMessage = error instanceof ApiError 
-        ? `API Error: ${error.message}` 
-        : error instanceof Error 
-        ? error.message 
-        : 'Unknown error occurred';
+      const errorMessage =
+        error instanceof ApiError
+          ? `API Error: ${error.message}`
+          : error instanceof Error
+            ? error.message
+            : 'Unknown error occurred';
       setHealthError(errorMessage);
       setHealthLoading('error');
     }
@@ -59,17 +60,18 @@ export default function ApiDemo() {
   const fetchPlayers = async () => {
     setPlayersLoading('loading');
     setPlayersError(null);
-    
+
     try {
       const result = await Players.getPlayers();
       setPlayersData(result);
       setPlayersLoading('success');
     } catch (error) {
-      const errorMessage = error instanceof ApiError 
-        ? `API Error: ${error.message}` 
-        : error instanceof Error 
-        ? error.message 
-        : 'Unknown error occurred';
+      const errorMessage =
+        error instanceof ApiError
+          ? `API Error: ${error.message}`
+          : error instanceof Error
+            ? error.message
+            : 'Unknown error occurred';
       setPlayersError(errorMessage);
       setPlayersLoading('error');
     }
@@ -78,17 +80,18 @@ export default function ApiDemo() {
   const fetchGames = async () => {
     setGamesLoading('loading');
     setGamesError(null);
-    
+
     try {
       const result = await Games.getGames({ limit: 10 });
       setGamesData(result);
       setGamesLoading('success');
     } catch (error) {
-      const errorMessage = error instanceof ApiError 
-        ? `API Error: ${error.message}` 
-        : error instanceof Error 
-        ? error.message 
-        : 'Unknown error occurred';
+      const errorMessage =
+        error instanceof ApiError
+          ? `API Error: ${error.message}`
+          : error instanceof Error
+            ? error.message
+            : 'Unknown error occurred';
       setGamesError(errorMessage);
       setGamesLoading('error');
     }
@@ -99,9 +102,7 @@ export default function ApiDemo() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              API Client Demo
-            </h1>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">API Client Demo</h1>
             <Link href="/">
               <button className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700">
                 ← Back to Home
@@ -133,10 +134,16 @@ export default function ApiDemo() {
 
               {health && (
                 <div className="p-4 bg-green-100 border border-green-400 text-green-700 rounded">
-                  <p><strong>Status:</strong> {health.status}</p>
-                  <p><strong>Service:</strong> {health.service}</p>
+                  <p>
+                    <strong>Status:</strong> {health.status}
+                  </p>
+                  <p>
+                    <strong>Service:</strong> {health.service}
+                  </p>
                   {health.request_id && (
-                    <p><strong>Request ID:</strong> {health.request_id}</p>
+                    <p>
+                      <strong>Request ID:</strong> {health.request_id}
+                    </p>
                   )}
                 </div>
               )}
@@ -145,9 +152,7 @@ export default function ApiDemo() {
             {/* Players Section */}
             <section>
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
-                  Players
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Players</h2>
                 <button
                   onClick={fetchPlayers}
                   disabled={playersLoading === 'loading'}
@@ -165,8 +170,11 @@ export default function ApiDemo() {
 
               {playersData.length > 0 && (
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {playersData.map((player) => (
-                    <div key={player.id} className="p-4 border border-gray-200 dark:border-gray-600 rounded">
+                  {playersData.map(player => (
+                    <div
+                      key={player.id}
+                      className="p-4 border border-gray-200 dark:border-gray-600 rounded"
+                    >
                       <h3 className="font-semibold text-gray-900 dark:text-white">
                         {player.display_name}
                       </h3>
@@ -207,24 +215,25 @@ export default function ApiDemo() {
 
               {gamesData.length > 0 && (
                 <div className="grid gap-4">
-                  {gamesData.map((game) => (
-                    <div key={game.id} className="p-4 border border-gray-200 dark:border-gray-600 rounded">
-                      <h3 className="font-semibold text-gray-900 dark:text-white">
-                        {game.name}
-                      </h3>
+                  {gamesData.map(game => (
+                    <div
+                      key={game.id}
+                      className="p-4 border border-gray-200 dark:border-gray-600 rounded"
+                    >
+                      <h3 className="font-semibold text-gray-900 dark:text-white">{game.name}</h3>
                       {game.description && (
-                        <p className="text-gray-600 dark:text-gray-400 mt-2">
-                          {game.description}
-                        </p>
+                        <p className="text-gray-600 dark:text-gray-400 mt-2">{game.description}</p>
                       )}
                       <div className="mt-3 flex flex-wrap gap-4 text-sm text-gray-500 dark:text-gray-400">
-                        <span>Players: {game.min_players}-{game.max_players}</span>
+                        <span>
+                          Players: {game.min_players}-{game.max_players}
+                        </span>
                         <span>Time: {game.average_play_time} min</span>
                         <span>Complexity: {game.complexity_rating}/5</span>
                       </div>
                       {game.categories && game.categories.length > 0 && (
                         <div className="mt-2 flex flex-wrap gap-1">
-                          {game.categories.map((category) => (
+                          {game.categories.map(category => (
                             <span
                               key={category.id}
                               className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded"
@@ -258,7 +267,8 @@ export default function ApiDemo() {
                   <li>Environment-based configuration</li>
                 </ul>
                 <p className="mt-3 text-sm text-gray-500 dark:text-gray-400">
-                  Open browser dev tools to see detailed request/response logging in development mode.
+                  Open browser dev tools to see detailed request/response logging in development
+                  mode.
                 </p>
               </div>
             </section>
@@ -267,4 +277,4 @@ export default function ApiDemo() {
       </div>
     </div>
   );
-} 
+}

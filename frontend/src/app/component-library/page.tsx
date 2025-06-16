@@ -45,9 +45,7 @@ export default function ComponentLibraryDemo() {
                 <ThemeToggle />
               </div>
             </div>
-            <p className="text-surface-600">
-              Game Night Concierge UI Component Library Demo
-            </p>
+            <p className="text-surface-600">Game Night Concierge UI Component Library Demo</p>
           </header>
 
           <Stack spacing="xl">
@@ -65,15 +63,19 @@ export default function ComponentLibraryDemo() {
                       <FormField label="Default Input" htmlFor="input1">
                         <Input id="input1" placeholder="Enter text..." />
                       </FormField>
-                      
-                      <FormField label="Error State" htmlFor="input2" error="This field is required">
+
+                      <FormField
+                        label="Error State"
+                        htmlFor="input2"
+                        error="This field is required"
+                      >
                         <Input id="input2" error placeholder="Error input..." />
                       </FormField>
-                      
+
                       <FormField label="Success State" htmlFor="input3">
                         <Input id="input3" success placeholder="Success input..." />
                       </FormField>
-                      
+
                       <FormField label="Textarea" htmlFor="textarea1">
                         <Textarea id="textarea1" placeholder="Enter longer text..." />
                       </FormField>
@@ -95,7 +97,7 @@ export default function ComponentLibraryDemo() {
                           <option value="3">Option 3</option>
                         </Select>
                       </FormField>
-                      
+
                       <FormField label="Checkbox Options">
                         <Stack spacing="sm">
                           <Checkbox id="check1" label="Option 1" />
@@ -103,7 +105,7 @@ export default function ComponentLibraryDemo() {
                           <Checkbox id="check3" label="Option 3" disabled />
                         </Stack>
                       </FormField>
-                      
+
                       <FormField label="Radio Group">
                         <RadioGroup
                           name="demo-radio"
@@ -181,30 +183,22 @@ export default function ComponentLibraryDemo() {
               <Stack spacing="default">
                 <Alert>
                   <AlertTitle>Default Alert</AlertTitle>
-                  <AlertDescription>
-                    This is a default alert with an info icon.
-                  </AlertDescription>
+                  <AlertDescription>This is a default alert with an info icon.</AlertDescription>
                 </Alert>
 
                 <Alert variant="success">
                   <AlertTitle>Success!</AlertTitle>
-                  <AlertDescription>
-                    Your action was completed successfully.
-                  </AlertDescription>
+                  <AlertDescription>Your action was completed successfully.</AlertDescription>
                 </Alert>
 
                 <Alert variant="warning">
                   <AlertTitle>Warning</AlertTitle>
-                  <AlertDescription>
-                    Please review your input before proceeding.
-                  </AlertDescription>
+                  <AlertDescription>Please review your input before proceeding.</AlertDescription>
                 </Alert>
 
                 <Alert variant="error">
                   <AlertTitle>Error</AlertTitle>
-                  <AlertDescription>
-                    Something went wrong. Please try again.
-                  </AlertDescription>
+                  <AlertDescription>Something went wrong. Please try again.</AlertDescription>
                 </Alert>
 
                 <Card>
@@ -252,7 +246,7 @@ export default function ComponentLibraryDemo() {
                         <Button disabled>Disabled</Button>
                       </div>
                     </div>
-                    
+
                     <div>
                       <h4 className="font-medium mb-3">Sizes</h4>
                       <div className="flex flex-wrap items-center gap-3">
@@ -284,10 +278,14 @@ export default function ComponentLibraryDemo() {
                         <div className="bg-primary text-white p-2 rounded text-center">Item 3</div>
                       </Stack>
                     </div>
-                    
+
                     <div>
                       <h4 className="font-medium mb-3">Horizontal Stack</h4>
-                      <Stack direction="horizontal" spacing="sm" className="bg-surface-200 p-4 rounded">
+                      <Stack
+                        direction="horizontal"
+                        spacing="sm"
+                        className="bg-surface-200 p-4 rounded"
+                      >
                         <div className="bg-primary text-white p-2 rounded text-center">Item 1</div>
                         <div className="bg-primary text-white p-2 rounded text-center">Item 2</div>
                         <div className="bg-primary text-white p-2 rounded text-center">Item 3</div>
@@ -302,4 +300,4 @@ export default function ComponentLibraryDemo() {
       </Container>
     </div>
   );
-} 
+}

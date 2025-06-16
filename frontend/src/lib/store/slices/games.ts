@@ -5,13 +5,7 @@
 
 import { StateCreator } from 'zustand';
 import { produce } from 'immer';
-import { 
-  getGames, 
-  getGame, 
-  searchGamesByName,
-  getGameCompatibility,
-  ApiError,
-} from '@/lib/api';
+import { getGames, getGame, searchGamesByName, getGameCompatibility, ApiError } from '@/lib/api';
 import type { GameSlice, RootState } from '../types';
 import type { GameResponse, GameFilters, CompatibilityResponse } from '@/lib/api/types';
 
@@ -36,7 +30,7 @@ export const createGameSlice: StateCreator<
   // =============================================================================
   // INITIAL STATE
   // =============================================================================
-  
+
   games: {
     items: [],
     total: 0,
@@ -72,44 +66,55 @@ export const createGameSlice: StateCreator<
     // Merge with current filters
     const filters = { ...currentState.filters, ...params };
 
-    set(produce((state: RootState) => {
-      state.games.games.loading = true;
-      if (isFirstPage) {
-        state.games.games.error = null;
-      }
-    }), false, 'games/fetch-games/start');
+    set(
+      produce((state: RootState) => {
+        state.games.games.loading = true;
+        if (isFirstPage) {
+          state.games.games.error = null;
+        }
+      }),
+      false,
+      'games/fetch-games/start'
+    );
 
     try {
       const games = await getGames({ limit, skip, ...filters });
-      
-      set(produce((state: RootState) => {
-        if (isFirstPage) {
-          state.games.games.items = games;
-          state.games.games.page = 0;
-        } else {
-          state.games.games.items.push(...games);
-          state.games.games.page = Math.floor(skip / limit);
-        }
-        
-        state.games.games.hasMore = games.length === limit;
-        state.games.games.loading = false;
-        state.games.games.lastUpdated = Date.now();
-        
-        // Apply sorting
-        state.games.games.items = sortGames(
-          state.games.games.items, 
-          state.games.sortBy, 
-          state.games.sortOrder
-        );
-      }), false, 'games/fetch-games/success');
 
+      set(
+        produce((state: RootState) => {
+          if (isFirstPage) {
+            state.games.games.items = games;
+            state.games.games.page = 0;
+          } else {
+            state.games.games.items.push(...games);
+            state.games.games.page = Math.floor(skip / limit);
+          }
+
+          state.games.games.hasMore = games.length === limit;
+          state.games.games.loading = false;
+          state.games.games.lastUpdated = Date.now();
+
+          // Apply sorting
+          state.games.games.items = sortGames(
+            state.games.games.items,
+            state.games.sortBy,
+            state.games.sortOrder
+          );
+        }),
+        false,
+        'games/fetch-games/success'
+      );
     } catch (error) {
       const errorMessage = error instanceof ApiError ? error.message : 'Failed to fetch games';
-      
-      set(produce((state: RootState) => {
-        state.games.games.loading = false;
-        state.games.games.error = errorMessage;
-      }), false, 'games/fetch-games/error');
+
+      set(
+        produce((state: RootState) => {
+          state.games.games.loading = false;
+          state.games.games.error = errorMessage;
+        }),
+        false,
+        'games/fetch-games/error'
+      );
 
       throw error;
     }
@@ -119,16 +124,20 @@ export const createGameSlice: StateCreator<
    * Searches games by name.
    * @param query - Search query
    */
-  searchGames: async (query) => {
-    set(produce((state: RootState) => {
-      state.games.searchQuery = query;
-      state.games.games.loading = true;
-      state.games.games.error = null;
-    }), false, 'games/search-games/start');
+  searchGames: async query => {
+    set(
+      produce((state: RootState) => {
+        state.games.searchQuery = query;
+        state.games.games.loading = true;
+        state.games.games.error = null;
+      }),
+      false,
+      'games/search-games/start'
+    );
 
     try {
       let games: GameResponse[];
-      
+
       if (query.trim()) {
         games = await searchGamesByName(query, 50);
       } else {
@@ -136,20 +145,27 @@ export const createGameSlice: StateCreator<
         games = await getGames({ limit: 50, ...get().games.filters });
       }
 
-      set(produce((state: RootState) => {
-        state.games.games.items = sortGames(games, state.games.sortBy, state.games.sortOrder);
-        state.games.games.hasMore = false; // Search results don't support pagination
-        state.games.games.loading = false;
-        state.games.games.lastUpdated = Date.now();
-      }), false, 'games/search-games/success');
-
+      set(
+        produce((state: RootState) => {
+          state.games.games.items = sortGames(games, state.games.sortBy, state.games.sortOrder);
+          state.games.games.hasMore = false; // Search results don't support pagination
+          state.games.games.loading = false;
+          state.games.games.lastUpdated = Date.now();
+        }),
+        false,
+        'games/search-games/success'
+      );
     } catch (error) {
       const errorMessage = error instanceof ApiError ? error.message : 'Search failed';
-      
-      set(produce((state: RootState) => {
-        state.games.games.loading = false;
-        state.games.games.error = errorMessage;
-      }), false, 'games/search-games/error');
+
+      set(
+        produce((state: RootState) => {
+          state.games.games.loading = false;
+          state.games.games.error = errorMessage;
+        }),
+        false,
+        'games/search-games/error'
+      );
 
       throw error;
     }
@@ -160,7 +176,7 @@ export const createGameSlice: StateCreator<
    */
   loadMoreGames: async () => {
     const { games } = get().games;
-    
+
     if (!games.hasMore || games.loading) {
       return;
     }
@@ -184,22 +200,26 @@ export const createGameSlice: StateCreator<
    * Sets the selected game.
    * @param game - The game to select
    */
-  setSelectedGame: (game) => {
-    set(produce((state: RootState) => {
-      state.games.selectedGame = game;
-      
-      // Add to recently viewed if not already there
-      if (game) {
-        get().games.addToRecentlyViewed(game.id);
-      }
-    }), false, 'games/set-selected-game');
+  setSelectedGame: game => {
+    set(
+      produce((state: RootState) => {
+        state.games.selectedGame = game;
+
+        // Add to recently viewed if not already there
+        if (game) {
+          get().games.addToRecentlyViewed(game.id);
+        }
+      }),
+      false,
+      'games/set-selected-game'
+    );
   },
 
   /**
    * Fetches a game by ID and sets it as selected.
    * @param gameId - The game ID to fetch
    */
-  fetchGameById: async (gameId) => {
+  fetchGameById: async gameId => {
     try {
       const game = await getGame(gameId);
       get().games.setSelectedGame(game);
@@ -217,45 +237,56 @@ export const createGameSlice: StateCreator<
    * Adds a game to favorites.
    * @param gameId - The game ID to add
    */
-  addToFavorites: (gameId) => {
-    set(produce((state: RootState) => {
-      if (!state.games.favoriteGames.includes(gameId)) {
-        // Respect maximum favorites limit
-        if (state.games.favoriteGames.length >= MAX_FAVORITES) {
-          state.games.favoriteGames.shift(); // Remove oldest
+  addToFavorites: gameId => {
+    set(
+      produce((state: RootState) => {
+        if (!state.games.favoriteGames.includes(gameId)) {
+          // Respect maximum favorites limit
+          if (state.games.favoriteGames.length >= MAX_FAVORITES) {
+            state.games.favoriteGames.shift(); // Remove oldest
+          }
+          state.games.favoriteGames.push(gameId);
+
+          // Store in localStorage for persistence
+          if (typeof window !== 'undefined') {
+            localStorage.setItem(
+              'game-decider-favorites',
+              JSON.stringify(state.games.favoriteGames)
+            );
+          }
         }
-        state.games.favoriteGames.push(gameId);
-        
-        // Store in localStorage for persistence
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('game-decider-favorites', JSON.stringify(state.games.favoriteGames));
-        }
-      }
-    }), false, 'games/add-to-favorites');
+      }),
+      false,
+      'games/add-to-favorites'
+    );
   },
 
   /**
    * Removes a game from favorites.
    * @param gameId - The game ID to remove
    */
-  removeFromFavorites: (gameId) => {
-    set(produce((state: RootState) => {
-      state.games.favoriteGames = state.games.favoriteGames.filter(id => id !== gameId);
-      
-      // Update localStorage
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('game-decider-favorites', JSON.stringify(state.games.favoriteGames));
-      }
-    }), false, 'games/remove-from-favorites');
+  removeFromFavorites: gameId => {
+    set(
+      produce((state: RootState) => {
+        state.games.favoriteGames = state.games.favoriteGames.filter(id => id !== gameId);
+
+        // Update localStorage
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('game-decider-favorites', JSON.stringify(state.games.favoriteGames));
+        }
+      }),
+      false,
+      'games/remove-from-favorites'
+    );
   },
 
   /**
    * Toggles a game's favorite status.
    * @param gameId - The game ID to toggle
    */
-  toggleFavorite: (gameId) => {
+  toggleFavorite: gameId => {
     const { favoriteGames } = get().games;
-    
+
     if (favoriteGames.includes(gameId)) {
       get().games.removeFromFavorites(gameId);
     } else {
@@ -271,37 +302,48 @@ export const createGameSlice: StateCreator<
    * Adds a game to recently viewed list.
    * @param gameId - The game ID to add
    */
-  addToRecentlyViewed: (gameId) => {
-    set(produce((state: RootState) => {
-      // Remove if already in list
-      state.games.recentlyViewed = state.games.recentlyViewed.filter(id => id !== gameId);
-      
-      // Add to beginning
-      state.games.recentlyViewed.unshift(gameId);
-      
-      // Respect maximum limit
-      if (state.games.recentlyViewed.length > MAX_RECENTLY_VIEWED) {
-        state.games.recentlyViewed = state.games.recentlyViewed.slice(0, MAX_RECENTLY_VIEWED);
-      }
-      
-      // Store in localStorage
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('game-decider-recently-viewed', JSON.stringify(state.games.recentlyViewed));
-      }
-    }), false, 'games/add-to-recently-viewed');
+  addToRecentlyViewed: gameId => {
+    set(
+      produce((state: RootState) => {
+        // Remove if already in list
+        state.games.recentlyViewed = state.games.recentlyViewed.filter(id => id !== gameId);
+
+        // Add to beginning
+        state.games.recentlyViewed.unshift(gameId);
+
+        // Respect maximum limit
+        if (state.games.recentlyViewed.length > MAX_RECENTLY_VIEWED) {
+          state.games.recentlyViewed = state.games.recentlyViewed.slice(0, MAX_RECENTLY_VIEWED);
+        }
+
+        // Store in localStorage
+        if (typeof window !== 'undefined') {
+          localStorage.setItem(
+            'game-decider-recently-viewed',
+            JSON.stringify(state.games.recentlyViewed)
+          );
+        }
+      }),
+      false,
+      'games/add-to-recently-viewed'
+    );
   },
 
   /**
    * Clears the recently viewed list.
    */
   clearRecentlyViewed: () => {
-    set(produce((state: RootState) => {
-      state.games.recentlyViewed = [];
-      
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('game-decider-recently-viewed');
-      }
-    }), false, 'games/clear-recently-viewed');
+    set(
+      produce((state: RootState) => {
+        state.games.recentlyViewed = [];
+
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('game-decider-recently-viewed');
+        }
+      }),
+      false,
+      'games/clear-recently-viewed'
+    );
   },
 
   // =============================================================================
@@ -316,7 +358,7 @@ export const createGameSlice: StateCreator<
   fetchGameCompatibility: async (gameId, playerId) => {
     const cacheKey = `${gameId}-${playerId}`;
     const cached = get().games.gameCompatibility[cacheKey];
-    
+
     // Check if we have a recent cached result
     if (cached && Date.now() - cached.timestamp < COMPATIBILITY_CACHE_EXPIRY) {
       return;
@@ -324,16 +366,22 @@ export const createGameSlice: StateCreator<
 
     try {
       const compatibility = await getGameCompatibility(gameId, playerId);
-      
-      set(produce((state: RootState) => {
-        state.games.gameCompatibility[cacheKey] = {
-          ...compatibility,
-          timestamp: Date.now(),
-        };
-      }), false, 'games/fetch-compatibility/success');
 
+      set(
+        produce((state: RootState) => {
+          state.games.gameCompatibility[cacheKey] = {
+            ...compatibility,
+            timestamp: Date.now(),
+          };
+        }),
+        false,
+        'games/fetch-compatibility/success'
+      );
     } catch (error) {
-      console.error(`Failed to fetch compatibility for game ${gameId} and player ${playerId}:`, error);
+      console.error(
+        `Failed to fetch compatibility for game ${gameId} and player ${playerId}:`,
+        error
+      );
       throw error;
     }
   },
@@ -347,14 +395,14 @@ export const createGameSlice: StateCreator<
   getCompatibilityForGame: (gameId, playerId) => {
     const cacheKey = `${gameId}-${playerId}`;
     const cached = get().games.gameCompatibility[cacheKey];
-    
+
     if (!cached) return null;
-    
+
     // Check if cached data is still valid
     if (Date.now() - cached.timestamp > COMPATIBILITY_CACHE_EXPIRY) {
       return null;
     }
-    
+
     return cached;
   },
 
@@ -366,30 +414,42 @@ export const createGameSlice: StateCreator<
    * Sets the search query.
    * @param query - Search query string
    */
-  setSearchQuery: (query) => {
-    set(produce((state: RootState) => {
-      state.games.searchQuery = query;
-    }), false, 'games/set-search-query');
+  setSearchQuery: query => {
+    set(
+      produce((state: RootState) => {
+        state.games.searchQuery = query;
+      }),
+      false,
+      'games/set-search-query'
+    );
   },
 
   /**
    * Sets game filters.
    * @param filters - Filters to apply
    */
-  setFilters: (filters) => {
-    set(produce((state: RootState) => {
-      state.games.filters = { ...state.games.filters, ...filters };
-    }), false, 'games/set-filters');
+  setFilters: filters => {
+    set(
+      produce((state: RootState) => {
+        state.games.filters = { ...state.games.filters, ...filters };
+      }),
+      false,
+      'games/set-filters'
+    );
   },
 
   /**
    * Clears all filters.
    */
   clearFilters: () => {
-    set(produce((state: RootState) => {
-      state.games.filters = {};
-      state.games.searchQuery = '';
-    }), false, 'games/clear-filters');
+    set(
+      produce((state: RootState) => {
+        state.games.filters = {};
+        state.games.searchQuery = '';
+      }),
+      false,
+      'games/clear-filters'
+    );
   },
 
   /**
@@ -398,13 +458,17 @@ export const createGameSlice: StateCreator<
    * @param sortOrder - Sort order (asc/desc)
    */
   setSorting: (sortBy, sortOrder) => {
-    set(produce((state: RootState) => {
-      state.games.sortBy = sortBy;
-      state.games.sortOrder = sortOrder;
-      
-      // Re-sort current games
-      state.games.games.items = sortGames(state.games.games.items, sortBy, sortOrder);
-    }), false, 'games/set-sorting');
+    set(
+      produce((state: RootState) => {
+        state.games.sortBy = sortBy;
+        state.games.sortOrder = sortOrder;
+
+        // Re-sort current games
+        state.games.games.items = sortGames(state.games.games.items, sortBy, sortOrder);
+      }),
+      false,
+      'games/set-sorting'
+    );
   },
 
   // =============================================================================
@@ -416,14 +480,14 @@ export const createGameSlice: StateCreator<
    * @param gameId - The game ID
    * @returns The game or null if not found
    */
-  getGameById: (gameId) => {
+  getGameById: gameId => {
     const { games, selectedGame } = get().games;
-    
+
     // Check selected game first
     if (selectedGame?.id === gameId) {
       return selectedGame;
     }
-    
+
     // Check in games list
     return games.items.find(game => game.id === gameId) || null;
   },
@@ -439,9 +503,10 @@ export const createGameSlice: StateCreator<
     // Apply search query
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filteredGames = filteredGames.filter(game =>
-        game.name.toLowerCase().includes(query) ||
-        (game.description && game.description.toLowerCase().includes(query))
+      filteredGames = filteredGames.filter(
+        game =>
+          game.name.toLowerCase().includes(query) ||
+          (game.description && game.description.toLowerCase().includes(query))
       );
     }
 
@@ -453,16 +518,24 @@ export const createGameSlice: StateCreator<
       filteredGames = filteredGames.filter(game => game.min_players <= filters.max_players!);
     }
     if (filters.min_play_time) {
-      filteredGames = filteredGames.filter(game => game.average_play_time >= filters.min_play_time!);
+      filteredGames = filteredGames.filter(
+        game => game.average_play_time >= filters.min_play_time!
+      );
     }
     if (filters.max_play_time) {
-      filteredGames = filteredGames.filter(game => game.average_play_time <= filters.max_play_time!);
+      filteredGames = filteredGames.filter(
+        game => game.average_play_time <= filters.max_play_time!
+      );
     }
     if (filters.min_complexity) {
-      filteredGames = filteredGames.filter(game => game.complexity_rating >= filters.min_complexity!);
+      filteredGames = filteredGames.filter(
+        game => game.complexity_rating >= filters.min_complexity!
+      );
     }
     if (filters.max_complexity) {
-      filteredGames = filteredGames.filter(game => game.complexity_rating <= filters.max_complexity!);
+      filteredGames = filteredGames.filter(
+        game => game.complexity_rating <= filters.max_complexity!
+      );
     }
 
     // Apply category filters
@@ -470,7 +543,7 @@ export const createGameSlice: StateCreator<
       const filterMode = filters.category_filter_mode || 'any';
       filteredGames = filteredGames.filter(game => {
         const gameCategoryIds = game.categories.map(cat => cat.id);
-        
+
         if (filterMode === 'all') {
           return filters.category_ids!.every(categoryId => gameCategoryIds.includes(categoryId));
         } else {
@@ -486,9 +559,13 @@ export const createGameSlice: StateCreator<
    * Clears the games error.
    */
   clearError: () => {
-    set(produce((state: RootState) => {
-      state.games.games.error = null;
-    }), false, 'games/clear-error');
+    set(
+      produce((state: RootState) => {
+        state.games.games.error = null;
+      }),
+      false,
+      'games/clear-error'
+    );
   },
 });
 
@@ -504,8 +581,8 @@ export const createGameSlice: StateCreator<
  * @returns Sorted games array
  */
 const sortGames = (
-  games: GameResponse[], 
-  sortBy: GameSlice['sortBy'], 
+  games: GameResponse[],
+  sortBy: GameSlice['sortBy'],
   sortOrder: GameSlice['sortOrder']
 ): GameResponse[] => {
   return [...games].sort((a, b) => {
@@ -581,11 +658,19 @@ export const validateGameFilters = (filters: GameFilters): { valid: boolean; err
     errors.push('Minimum players cannot be greater than maximum players');
   }
 
-  if (filters.min_play_time && filters.max_play_time && filters.min_play_time > filters.max_play_time) {
+  if (
+    filters.min_play_time &&
+    filters.max_play_time &&
+    filters.min_play_time > filters.max_play_time
+  ) {
     errors.push('Minimum play time cannot be greater than maximum play time');
   }
 
-  if (filters.min_complexity && filters.max_complexity && filters.min_complexity > filters.max_complexity) {
+  if (
+    filters.min_complexity &&
+    filters.max_complexity &&
+    filters.min_complexity > filters.max_complexity
+  ) {
     errors.push('Minimum complexity cannot be greater than maximum complexity');
   }
 
@@ -593,4 +678,4 @@ export const validateGameFilters = (filters: GameFilters): { valid: boolean; err
     valid: errors.length === 0,
     errors,
   };
-}; 
+};

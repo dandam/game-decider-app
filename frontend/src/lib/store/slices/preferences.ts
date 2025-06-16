@@ -5,9 +5,9 @@
 
 import { StateCreator } from 'zustand';
 import { produce } from 'immer';
-import { 
-  getPreferences, 
-  updatePreferences, 
+import {
+  getPreferences,
+  updatePreferences,
   getCompatibility,
   ApiError,
   ValidationError,
@@ -27,7 +27,7 @@ export const createPreferencesSlice: StateCreator<
   // =============================================================================
   // INITIAL STATE
   // =============================================================================
-  
+
   playerPreferences: {},
   loading: {},
   errors: {},
@@ -41,30 +41,42 @@ export const createPreferencesSlice: StateCreator<
    * Fetches preferences for a specific player.
    * @param playerId - The player ID
    */
-  fetchPreferences: async (playerId) => {
-    set(produce((state: RootState) => {
-      state.preferences.loading[playerId] = true;
-      state.preferences.errors[playerId] = null;
-    }), false, 'preferences/fetch-preferences/start');
+  fetchPreferences: async playerId => {
+    set(
+      produce((state: RootState) => {
+        state.preferences.loading[playerId] = true;
+        state.preferences.errors[playerId] = null;
+      }),
+      false,
+      'preferences/fetch-preferences/start'
+    );
 
     try {
       const preferences = await getPreferences(playerId);
-      
-      set(produce((state: RootState) => {
-        state.preferences.playerPreferences[playerId] = preferences;
-        state.preferences.loading[playerId] = false;
-        state.preferences.lastUpdated[playerId] = Date.now();
-      }), false, 'preferences/fetch-preferences/success');
+
+      set(
+        produce((state: RootState) => {
+          state.preferences.playerPreferences[playerId] = preferences;
+          state.preferences.loading[playerId] = false;
+          state.preferences.lastUpdated[playerId] = Date.now();
+        }),
+        false,
+        'preferences/fetch-preferences/success'
+      );
 
       return preferences;
-
     } catch (error) {
-      const errorMessage = error instanceof ApiError ? error.message : 'Failed to fetch preferences';
-      
-      set(produce((state: RootState) => {
-        state.preferences.loading[playerId] = false;
-        state.preferences.errors[playerId] = errorMessage;
-      }), false, 'preferences/fetch-preferences/error');
+      const errorMessage =
+        error instanceof ApiError ? error.message : 'Failed to fetch preferences';
+
+      set(
+        produce((state: RootState) => {
+          state.preferences.loading[playerId] = false;
+          state.preferences.errors[playerId] = errorMessage;
+        }),
+        false,
+        'preferences/fetch-preferences/error'
+      );
 
       throw error;
     }
@@ -76,47 +88,62 @@ export const createPreferencesSlice: StateCreator<
    * @param preferences - Preferences to update
    */
   updatePreferences: async (playerId, preferences) => {
-    set(produce((state: RootState) => {
-      state.preferences.loading[playerId] = true;
-      state.preferences.errors[playerId] = null;
-    }), false, 'preferences/update-preferences/start');
+    set(
+      produce((state: RootState) => {
+        state.preferences.loading[playerId] = true;
+        state.preferences.errors[playerId] = null;
+      }),
+      false,
+      'preferences/update-preferences/start'
+    );
 
     try {
       const updatedPreferences = await updatePreferences(playerId, preferences);
-      
-      set(produce((state: RootState) => {
-        state.preferences.playerPreferences[playerId] = updatedPreferences;
-        state.preferences.loading[playerId] = false;
-        state.preferences.lastUpdated[playerId] = Date.now();
-      }), false, 'preferences/update-preferences/success');
+
+      set(
+        produce((state: RootState) => {
+          state.preferences.playerPreferences[playerId] = updatedPreferences;
+          state.preferences.loading[playerId] = false;
+          state.preferences.lastUpdated[playerId] = Date.now();
+        }),
+        false,
+        'preferences/update-preferences/success'
+      );
 
       // Also update in player slice if it exists
       const playerSlice = get().player;
       if (playerSlice.playerPreferences[playerId]) {
-        set(produce((state: RootState) => {
-          state.player.playerPreferences[playerId] = updatedPreferences;
-        }), false, 'preferences/update-preferences/sync-player-slice');
+        set(
+          produce((state: RootState) => {
+            state.player.playerPreferences[playerId] = updatedPreferences;
+          }),
+          false,
+          'preferences/update-preferences/sync-player-slice'
+        );
       }
 
       return updatedPreferences;
-
     } catch (error) {
       let errorMessage = 'Failed to update preferences';
-      
+
       if (error instanceof ValidationError) {
         // Handle validation errors with detailed field information
-        const fieldErrors = error.validationErrors.map(err => 
-          `${err.loc.join('.')}: ${err.msg}`
-        ).join(', ');
+        const fieldErrors = error.validationErrors
+          .map(err => `${err.loc.join('.')}: ${err.msg}`)
+          .join(', ');
         errorMessage = `Validation error: ${fieldErrors}`;
       } else if (error instanceof ApiError) {
         errorMessage = error.message;
       }
-      
-      set(produce((state: RootState) => {
-        state.preferences.loading[playerId] = false;
-        state.preferences.errors[playerId] = errorMessage;
-      }), false, 'preferences/update-preferences/error');
+
+      set(
+        produce((state: RootState) => {
+          state.preferences.loading[playerId] = false;
+          state.preferences.errors[playerId] = errorMessage;
+        }),
+        false,
+        'preferences/update-preferences/error'
+      );
 
       throw error;
     }
@@ -127,7 +154,7 @@ export const createPreferencesSlice: StateCreator<
    * @param playerId - The player ID
    * @returns Preferences or null if not loaded
    */
-  getPreferences: (playerId) => {
+  getPreferences: playerId => {
     return get().preferences.playerPreferences[playerId] || null;
   },
 
@@ -135,23 +162,31 @@ export const createPreferencesSlice: StateCreator<
    * Clears preferences for a specific player.
    * @param playerId - The player ID
    */
-  clearPreferences: (playerId) => {
-    set(produce((state: RootState) => {
-      delete state.preferences.playerPreferences[playerId];
-      delete state.preferences.loading[playerId];
-      delete state.preferences.errors[playerId];
-      delete state.preferences.lastUpdated[playerId];
-    }), false, 'preferences/clear-preferences');
+  clearPreferences: playerId => {
+    set(
+      produce((state: RootState) => {
+        delete state.preferences.playerPreferences[playerId];
+        delete state.preferences.loading[playerId];
+        delete state.preferences.errors[playerId];
+        delete state.preferences.lastUpdated[playerId];
+      }),
+      false,
+      'preferences/clear-preferences'
+    );
   },
 
   /**
    * Clears error for a specific player.
    * @param playerId - The player ID
    */
-  clearError: (playerId) => {
-    set(produce((state: RootState) => {
-      state.preferences.errors[playerId] = null;
-    }), false, 'preferences/clear-error');
+  clearError: playerId => {
+    set(
+      produce((state: RootState) => {
+        state.preferences.errors[playerId] = null;
+      }),
+      false,
+      'preferences/clear-error'
+    );
   },
 });
 
@@ -166,7 +201,7 @@ export const createPreferencesSlice: StateCreator<
  * @returns True if refresh is needed
  */
 export const shouldRefreshPreferences = (
-  lastUpdated: number | undefined, 
+  lastUpdated: number | undefined,
   maxAge: number = 10 * 60 * 1000
 ): boolean => {
   if (!lastUpdated) return true;
@@ -206,12 +241,16 @@ export const validatePreferences = (
   }
 
   // Validate complexity values (typically 1-5 scale)
-  if (preferences.preferred_complexity_min && 
-      (preferences.preferred_complexity_min < 1 || preferences.preferred_complexity_min > 5)) {
+  if (
+    preferences.preferred_complexity_min &&
+    (preferences.preferred_complexity_min < 1 || preferences.preferred_complexity_min > 5)
+  ) {
     errors.push('Minimum complexity must be between 1 and 5');
   }
-  if (preferences.preferred_complexity_max && 
-      (preferences.preferred_complexity_max < 1 || preferences.preferred_complexity_max > 5)) {
+  if (
+    preferences.preferred_complexity_max &&
+    (preferences.preferred_complexity_max < 1 || preferences.preferred_complexity_max > 5)
+  ) {
     errors.push('Maximum complexity must be between 1 and 5');
   }
 
@@ -276,7 +315,7 @@ export const calculatePreferencesCompleteness = (
   if (preferences.preferred_complexity_min || preferences.preferred_complexity_max) score++;
   if (preferences.preferred_player_count) score++;
   if (preferences.preferred_categories.length > 0) score++;
-  
+
   // Check if at least one time preference is set
   if (preferences.minimum_play_time && preferences.maximum_play_time) score++;
 
@@ -296,4 +335,4 @@ export const getDefaultPreferences = (): Partial<PlayerPreferencesResponse> => {
     preferred_complexity_max: 4,
     preferred_categories: [],
   };
-}; 
+};

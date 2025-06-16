@@ -45,11 +45,7 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             stroke="currentColor"
             strokeWidth={3}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-            />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </div>
         {label && (
@@ -65,4 +61,4 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
   }
 );
 
-Checkbox.displayName = 'Checkbox'; 
+Checkbox.displayName = 'Checkbox';

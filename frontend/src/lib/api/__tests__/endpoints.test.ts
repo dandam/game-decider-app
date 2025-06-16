@@ -102,11 +102,11 @@ describe('Players API', () => {
     describe('getPlayerPreferences', () => {
       it('should call GET with correct path', async () => {
         const playerId = '1';
-        const mockResponse = { 
-          id: '1', 
-          player_id: playerId, 
+        const mockResponse = {
+          id: '1',
+          player_id: playerId,
           minimum_play_time: 30,
-          preferred_categories: []
+          preferred_categories: [],
         };
         mockApiClient.get.mockResolvedValue(mockResponse);
 
@@ -120,21 +120,24 @@ describe('Players API', () => {
     describe('updatePlayerPreferences', () => {
       it('should call PUT with correct path and data', async () => {
         const playerId = '1';
-        const preferencesData = { 
+        const preferencesData = {
           minimum_play_time: 45,
-          preferred_category_ids: ['cat1', 'cat2']
+          preferred_category_ids: ['cat1', 'cat2'],
         };
-        const mockResponse = { 
-          id: '1', 
-          player_id: playerId, 
+        const mockResponse = {
+          id: '1',
+          player_id: playerId,
           ...preferencesData,
-          preferred_categories: []
+          preferred_categories: [],
         };
         mockApiClient.put.mockResolvedValue(mockResponse);
 
         const result = await playersApi.updatePlayerPreferences(playerId, preferencesData);
 
-        expect(mockApiClient.put).toHaveBeenCalledWith('/api/v1/players/1/preferences', preferencesData);
+        expect(mockApiClient.put).toHaveBeenCalledWith(
+          '/api/v1/players/1/preferences',
+          preferencesData
+        );
         expect(result).toBe(mockResponse);
       });
     });
@@ -151,12 +154,12 @@ describe('Games API', () => {
       const mockResponse = [{ id: '1', name: 'Test Game' }];
       mockApiClient.get.mockResolvedValue(mockResponse);
 
-      const filters = { 
-        skip: 0, 
-        limit: 10, 
-        min_players: 2, 
+      const filters = {
+        skip: 0,
+        limit: 10,
+        min_players: 2,
         max_players: 4,
-        category_ids: ['cat1', 'cat2']
+        category_ids: ['cat1', 'cat2'],
       };
       const result = await gamesApi.getGames(filters);
 
@@ -185,8 +188,8 @@ describe('Games API', () => {
 
       const result = await gamesApi.searchGamesByName('test', 5);
 
-      expect(mockApiClient.get).toHaveBeenCalledWith('/api/v1/games/search', { 
-        params: { name: 'test', limit: 5 } 
+      expect(mockApiClient.get).toHaveBeenCalledWith('/api/v1/games/search', {
+        params: { name: 'test', limit: 5 },
       });
       expect(result).toBe(mockResponse);
     });
@@ -197,8 +200,8 @@ describe('Games API', () => {
 
       await gamesApi.searchGamesByName('test');
 
-      expect(mockApiClient.get).toHaveBeenCalledWith('/api/v1/games/search', { 
-        params: { name: 'test' } 
+      expect(mockApiClient.get).toHaveBeenCalledWith('/api/v1/games/search', {
+        params: { name: 'test' },
       });
     });
   });
@@ -222,14 +225,14 @@ describe('Games API', () => {
         player_id: 'player1',
         compatibility_score: 0.85,
         recommendation: 'recommended' as const,
-        details: { categories: 'compatible' }
+        details: { categories: 'compatible' },
       };
       mockApiClient.get.mockResolvedValue(mockResponse);
 
       const result = await gamesApi.getGameCompatibility('game1', 'player1');
 
-      expect(mockApiClient.get).toHaveBeenCalledWith('/api/v1/games/game1/compatibility', { 
-        params: { player_id: 'player1' } 
+      expect(mockApiClient.get).toHaveBeenCalledWith('/api/v1/games/game1/compatibility', {
+        params: { player_id: 'player1' },
       });
       expect(result).toBe(mockResponse);
     });
@@ -243,10 +246,10 @@ describe('Preferences API', () => {
 
   describe('getPreferences', () => {
     it('should call GET with correct path', async () => {
-      const mockResponse = { 
-        id: '1', 
+      const mockResponse = {
+        id: '1',
         player_id: 'player1',
-        preferred_categories: []
+        preferred_categories: [],
       };
       mockApiClient.get.mockResolvedValue(mockResponse);
 
@@ -260,17 +263,20 @@ describe('Preferences API', () => {
   describe('updatePreferences', () => {
     it('should call PUT with correct path and data', async () => {
       const preferencesData = { minimum_play_time: 30 };
-      const mockResponse = { 
-        id: '1', 
+      const mockResponse = {
+        id: '1',
         player_id: 'player1',
         ...preferencesData,
-        preferred_categories: []
+        preferred_categories: [],
       };
       mockApiClient.put.mockResolvedValue(mockResponse);
 
       const result = await preferencesApi.updatePreferences('player1', preferencesData);
 
-      expect(mockApiClient.put).toHaveBeenCalledWith('/api/v1/players/player1/preferences', preferencesData);
+      expect(mockApiClient.put).toHaveBeenCalledWith(
+        '/api/v1/players/player1/preferences',
+        preferencesData
+      );
       expect(result).toBe(mockResponse);
     });
   });
@@ -282,14 +288,14 @@ describe('Preferences API', () => {
         player_id: 'player1',
         compatibility_score: 0.75,
         recommendation: 'recommended' as const,
-        details: {}
+        details: {},
       };
       mockApiClient.get.mockResolvedValue(mockResponse);
 
       const result = await preferencesApi.getCompatibility('game1', 'player1');
 
-      expect(mockApiClient.get).toHaveBeenCalledWith('/api/v1/games/game1/compatibility', { 
-        params: { player_id: 'player1' } 
+      expect(mockApiClient.get).toHaveBeenCalledWith('/api/v1/games/game1/compatibility', {
+        params: { player_id: 'player1' },
       });
       expect(result).toBe(mockResponse);
     });
@@ -303,9 +309,9 @@ describe('Health API', () => {
 
   describe('healthCheck', () => {
     it('should call GET health endpoint', async () => {
-      const mockResponse = { 
-        status: 'healthy', 
-        service: 'game-night-api' 
+      const mockResponse = {
+        status: 'healthy',
+        service: 'game-night-api',
       };
       mockApiClient.get.mockResolvedValue(mockResponse);
 
@@ -318,9 +324,9 @@ describe('Health API', () => {
 
   describe('databaseHealthCheck', () => {
     it('should call GET database health endpoint', async () => {
-      const mockResponse = { 
-        status: 'healthy', 
-        database: 'postgresql' 
+      const mockResponse = {
+        status: 'healthy',
+        database: 'postgresql',
       };
       mockApiClient.get.mockResolvedValue(mockResponse);
 
@@ -330,4 +336,4 @@ describe('Health API', () => {
       expect(result).toBe(mockResponse);
     });
   });
-}); 
+});

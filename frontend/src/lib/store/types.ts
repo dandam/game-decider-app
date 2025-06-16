@@ -78,27 +78,30 @@ export interface PlayerActions {
   // Current player management
   setCurrentPlayer: (player: PlayerResponse | null) => void;
   updateCurrentPlayer: (updates: Partial<PlayerResponse>) => Promise<void>;
-  
+
   // All players management
   fetchPlayers: (params?: PaginationParams) => Promise<void>;
   searchPlayers: (query: string) => Promise<void>;
   loadMorePlayers: () => Promise<void>;
   refreshPlayers: () => Promise<void>;
-  
+
   // Player preferences
   fetchPlayerPreferences: (playerId: UUID) => Promise<void>;
-  updatePlayerPreferences: (playerId: UUID, preferences: Partial<PlayerPreferencesResponse>) => Promise<void>;
-  
+  updatePlayerPreferences: (
+    playerId: UUID,
+    preferences: Partial<PlayerPreferencesResponse>
+  ) => Promise<void>;
+
   // Player selection (for group sessions)
   selectPlayer: (playerId: UUID) => void;
   unselectPlayer: (playerId: UUID) => void;
   clearSelectedPlayers: () => void;
-  
+
   // Filters and search
   setSearchQuery: (query: string) => void;
   setFilters: (filters: Partial<PlayerState['filters']>) => void;
   clearFilters: () => void;
-  
+
   // Utilities
   getPlayerById: (playerId: UUID) => PlayerResponse | null;
   clearError: () => void;
@@ -128,30 +131,30 @@ export interface GameActions {
   searchGames: (query: string) => Promise<void>;
   loadMoreGames: () => Promise<void>;
   refreshGames: () => Promise<void>;
-  
+
   // Game selection
   setSelectedGame: (game: GameResponse | null) => void;
   fetchGameById: (gameId: UUID) => Promise<void>;
-  
+
   // Favorites
   addToFavorites: (gameId: UUID) => void;
   removeFromFavorites: (gameId: UUID) => void;
   toggleFavorite: (gameId: UUID) => void;
-  
+
   // Recently viewed
   addToRecentlyViewed: (gameId: UUID) => void;
   clearRecentlyViewed: () => void;
-  
+
   // Compatibility
   fetchGameCompatibility: (gameId: UUID, playerId: UUID) => Promise<void>;
   getCompatibilityForGame: (gameId: UUID, playerId: UUID) => CompatibilityResponse | null;
-  
+
   // Filtering and sorting
   setSearchQuery: (query: string) => void;
   setFilters: (filters: Partial<GameFilters>) => void;
   clearFilters: () => void;
   setSorting: (sortBy: GameState['sortBy'], sortOrder: GameState['sortOrder']) => void;
-  
+
   // Utilities
   getGameById: (gameId: UUID) => GameResponse | null;
   getFilteredGames: () => GameResponse[];
@@ -173,7 +176,10 @@ export interface PreferencesState {
 
 export interface PreferencesActions {
   fetchPreferences: (playerId: UUID) => Promise<PlayerPreferencesResponse>;
-  updatePreferences: (playerId: UUID, preferences: Partial<PlayerPreferencesResponse>) => Promise<PlayerPreferencesResponse>;
+  updatePreferences: (
+    playerId: UUID,
+    preferences: Partial<PlayerPreferencesResponse>
+  ) => Promise<PlayerPreferencesResponse>;
   getPreferences: (playerId: UUID) => PlayerPreferencesResponse | null;
   clearPreferences: (playerId: UUID) => void;
   clearError: (playerId: UUID) => void;
@@ -222,34 +228,34 @@ export interface UIActions {
   // Theme management
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
-  
+
   // Sidebar
   toggleSidebar: () => void;
   setSidebarOpen: (open: boolean) => void;
-  
+
   // Modal management
   openModal: (id: string, modal: Omit<ModalState, 'isOpen'>) => void;
   closeModal: (id: string) => void;
   closeAllModals: () => void;
-  
+
   // Toast management
   addToast: (toast: Omit<ToastState, 'id'>) => string;
   removeToast: (id: string) => void;
   clearToasts: () => void;
-  
+
   // Loading states
   setLoading: (key: string, loading: boolean) => void;
   clearLoading: (key: string) => void;
-  
+
   // Error states
   setError: (key: string, error: string | null) => void;
   clearError: (key: string) => void;
   clearAllErrors: () => void;
-  
+
   // Navigation
   setBreadcrumbs: (breadcrumbs: UIState['breadcrumbs']) => void;
   setPageTitle: (title: string | null) => void;
-  
+
   // Utilities
   isLoading: (key: string) => boolean;
   getError: (key: string) => string | null;
@@ -288,4 +294,4 @@ export interface StoreMiddleware {
     partialize?: (state: RootState) => Partial<RootState>;
   };
   devtools?: boolean;
-} 
+}

@@ -15,7 +15,7 @@ import type { AuthSlice } from '../types';
  * @returns Authentication state object
  */
 export const useAuthState = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     isAuthenticated: state.auth.isAuthenticated,
     currentPlayerId: state.auth.currentPlayerId,
     loading: state.auth.loading,
@@ -31,7 +31,7 @@ export const useAuthState = () => {
  * @returns Authentication actions
  */
 export const useAuthActions = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     login: state.auth.login,
     logout: state.auth.logout,
     refreshSession: state.auth.refreshSession,
@@ -47,7 +47,7 @@ export const useAuthActions = () => {
  * @returns Complete auth slice
  */
 export const useAuth = () => {
-  return useStore((state) => state.auth);
+  return useStore(state => state.auth);
 };
 
 // =============================================================================
@@ -59,7 +59,7 @@ export const useAuth = () => {
  * @returns True if authenticated
  */
 export const useIsAuthenticated = () => {
-  return useStore((state) => state.auth.isAuthenticated);
+  return useStore(state => state.auth.isAuthenticated);
 };
 
 /**
@@ -67,7 +67,7 @@ export const useIsAuthenticated = () => {
  * @returns Current player ID or null
  */
 export const useCurrentPlayerId = () => {
-  return useStore((state) => state.auth.currentPlayerId);
+  return useStore(state => state.auth.currentPlayerId);
 };
 
 /**
@@ -75,7 +75,7 @@ export const useCurrentPlayerId = () => {
  * @returns True if auth operation is in progress
  */
 export const useAuthLoading = () => {
-  return useStore((state) => state.auth.loading);
+  return useStore(state => state.auth.loading);
 };
 
 /**
@@ -83,7 +83,7 @@ export const useAuthLoading = () => {
  * @returns Current auth error or null
  */
 export const useAuthError = () => {
-  return useStore((state) => state.auth.error);
+  return useStore(state => state.auth.error);
 };
 
 /**
@@ -91,7 +91,7 @@ export const useAuthError = () => {
  * @returns True if session is expired
  */
 export const useIsSessionExpired = () => {
-  return useStore((state) => {
+  return useStore(state => {
     if (!state.auth.tokenExpiry) return true;
     return Date.now() > state.auth.tokenExpiry;
   });
@@ -102,7 +102,7 @@ export const useIsSessionExpired = () => {
  * @returns Minutes remaining or 0 if expired
  */
 export const useSessionTimeRemaining = () => {
-  return useStore((state) => {
+  return useStore(state => {
     if (!state.auth.tokenExpiry) return 0;
     const remaining = state.auth.tokenExpiry - Date.now();
     return Math.max(0, Math.floor(remaining / (1000 * 60)));
@@ -118,11 +118,12 @@ export const useSessionTimeRemaining = () => {
  * @returns Object with authentication status information
  */
 export const useAuthStatus = () => {
-  return useStore((state) => {
+  return useStore(state => {
     const isExpired = state.auth.tokenExpiry ? Date.now() > state.auth.tokenExpiry : true;
-    const remaining = state.auth.tokenExpiry ? 
-      Math.max(0, Math.floor((state.auth.tokenExpiry - Date.now()) / (1000 * 60))) : 0;
-    
+    const remaining = state.auth.tokenExpiry
+      ? Math.max(0, Math.floor((state.auth.tokenExpiry - Date.now()) / (1000 * 60)))
+      : 0;
+
     return {
       isAuthenticated: state.auth.isAuthenticated,
       isExpired,
@@ -143,8 +144,8 @@ export const useAuthStatus = () => {
  * @returns Login function with enhanced error handling
  */
 export const useLogin = () => {
-  const login = useStore((state) => state.auth.login);
-  const addToast = useStore((state) => state.ui.addToast);
+  const login = useStore(state => state.auth.login);
+  const addToast = useStore(state => state.ui.addToast);
 
   return async (playerId: string, token?: string) => {
     try {
@@ -171,8 +172,8 @@ export const useLogin = () => {
  * @returns Logout function with toast notification
  */
 export const useLogout = () => {
-  const logout = useStore((state) => state.auth.logout);
-  const addToast = useStore((state) => state.ui.addToast);
+  const logout = useStore(state => state.auth.logout);
+  const addToast = useStore(state => state.ui.addToast);
 
   return () => {
     logout();
@@ -189,8 +190,8 @@ export const useLogout = () => {
  * @returns Refresh function with error handling
  */
 export const useRefreshSession = () => {
-  const refreshSession = useStore((state) => state.auth.refreshSession);
-  const addToast = useStore((state) => state.ui.addToast);
+  const refreshSession = useStore(state => state.auth.refreshSession);
+  const addToast = useStore(state => state.ui.addToast);
 
   return async () => {
     try {
@@ -204,4 +205,4 @@ export const useRefreshSession = () => {
       throw error;
     }
   };
-}; 
+};

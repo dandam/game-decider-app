@@ -255,7 +255,12 @@ export class ApiError extends Error {
 export class ValidationError extends ApiError {
   public validationErrors: ApiErrorDetail[];
 
-  constructor(message: string, status: number, statusText: string, validationErrors: ApiErrorDetail[]) {
+  constructor(
+    message: string,
+    status: number,
+    statusText: string,
+    validationErrors: ApiErrorDetail[]
+  ) {
     super(message, status, statusText, validationErrors);
     this.name = 'ValidationError';
     this.validationErrors = validationErrors;
@@ -263,7 +268,10 @@ export class ValidationError extends ApiError {
 }
 
 export class NetworkError extends Error {
-  constructor(message: string, public originalError?: Error) {
+  constructor(
+    message: string,
+    public originalError?: Error
+  ) {
     super(message);
     this.name = 'NetworkError';
   }
@@ -283,4 +291,4 @@ export interface DatabaseHealthResponse {
   status: string;
   database: string;
   request_id?: string;
-} 
+}

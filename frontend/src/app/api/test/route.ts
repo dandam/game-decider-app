@@ -6,13 +6,13 @@ export async function GET() {
     const [healthRes, statsRes, playersRes] = await Promise.all([
       fetch('http://backend:8000/api/v1/health/db'),
       fetch('http://backend:8000/api/v1/stats/db'),
-      fetch('http://backend:8000/api/v1/players')
+      fetch('http://backend:8000/api/v1/players'),
     ]);
 
     const [health, stats, players] = await Promise.all([
       healthRes.json(),
       statsRes.json(),
-      playersRes.json()
+      playersRes.json(),
     ]);
 
     const bgaPlayers = players.filter((p: any) => p.avatar_url.startsWith('/avatars/'));
@@ -28,7 +28,7 @@ export async function GET() {
       bgaPlayers: bgaPlayers.length,
       seedPlayers: seedPlayers.length,
       sampleBgaPlayer: bgaPlayers[0]?.username,
-      sampleSeedPlayer: seedPlayers[0]?.username
+      sampleSeedPlayer: seedPlayers[0]?.username,
     });
   } catch (error) {
     return NextResponse.json(
@@ -36,4 +36,4 @@ export async function GET() {
       { status: 500 }
     );
   }
-} 
+}

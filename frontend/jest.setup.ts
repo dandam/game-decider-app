@@ -48,4 +48,4 @@ jest.mock('next/image', () => ({
     const React = require('react');
     return React.createElement('img', { ...props, alt: props.alt });
   },
-})); 
+}));

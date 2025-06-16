@@ -33,14 +33,8 @@ export interface ContainerProps
 
 export const Container = forwardRef<HTMLDivElement, ContainerProps>(
   ({ className, size, padding, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={containerVariants({ size, padding, className })}
-        {...props}
-      />
-    );
+    return <div ref={ref} className={containerVariants({ size, padding, className })} {...props} />;
   }
 );
 
-Container.displayName = 'Container'; 
+Container.displayName = 'Container';

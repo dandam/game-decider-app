@@ -48,22 +48,19 @@ const dotsVariants = cva('flex space-x-1', {
   },
 });
 
-const dotVariants = cva(
-  'rounded-full bg-primary animate-pulse',
-  {
-    variants: {
-      size: {
-        sm: 'h-1 w-1',
-        default: 'h-1.5 w-1.5',
-        lg: 'h-2 w-2',
-        xl: 'h-3 w-3',
-      },
+const dotVariants = cva('rounded-full bg-primary animate-pulse', {
+  variants: {
+    size: {
+      sm: 'h-1 w-1',
+      default: 'h-1.5 w-1.5',
+      lg: 'h-2 w-2',
+      xl: 'h-3 w-3',
     },
-    defaultVariants: {
-      size: 'default',
-    },
-  }
-);
+  },
+  defaultVariants: {
+    size: 'default',
+  },
+});
 
 export interface LoadingProps
   extends HTMLAttributes<HTMLDivElement>,
@@ -91,12 +88,10 @@ export const Loading = forwardRef<HTMLDivElement, LoadingProps>(
             </div>
           )}
         </div>
-        {text && (
-          <p className="text-sm text-surface-600 font-medium">{text}</p>
-        )}
+        {text && <p className="text-sm text-surface-600 font-medium">{text}</p>}
       </div>
     );
   }
 );
 
-Loading.displayName = 'Loading'; 
+Loading.displayName = 'Loading';

@@ -88,10 +88,7 @@ export function FormField({
   return (
     <div className={formFieldVariants({ size, className })} {...props}>
       {label && (
-        <label
-          htmlFor={htmlFor}
-          className={labelVariants({ size, required })}
-        >
+        <label htmlFor={htmlFor} className={labelVariants({ size, required })}>
           {label}
         </label>
       )}
@@ -101,9 +98,7 @@ export function FormField({
           {error}
         </p>
       )}
-      {helpText && !error && (
-        <p className={helpTextVariants({ size })}>{helpText}</p>
-      )}
+      {helpText && !error && <p className={helpTextVariants({ size })}>{helpText}</p>}
     </div>
   );
-} 
+}

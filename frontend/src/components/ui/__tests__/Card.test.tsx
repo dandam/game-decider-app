@@ -17,31 +17,47 @@ describe('Card Components', () => {
     });
 
     it('applies different variants correctly', () => {
-      const { rerender } = render(<Card variant="outlined" data-testid="card">Content</Card>);
+      const { rerender } = render(
+        <Card variant="outlined" data-testid="card">
+          Content
+        </Card>
+      );
       expect(screen.getByTestId('card')).toHaveClass('border-surface-300');
 
-      rerender(<Card variant="elevated" data-testid="card">Content</Card>);
+      rerender(
+        <Card variant="elevated" data-testid="card">
+          Content
+        </Card>
+      );
       expect(screen.getByTestId('card')).toHaveClass('shadow-md');
 
-      rerender(<Card variant="ghost" data-testid="card">Content</Card>);
+      rerender(
+        <Card variant="ghost" data-testid="card">
+          Content
+        </Card>
+      );
       expect(screen.getByTestId('card')).toHaveClass('border-transparent');
     });
 
     it('applies interactive styles when interactive prop is true', () => {
-      render(<Card interactive data-testid="card">Interactive card</Card>);
+      render(
+        <Card interactive data-testid="card">
+          Interactive card
+        </Card>
+      );
       expect(screen.getByTestId('card')).toHaveClass('cursor-pointer');
     });
 
     it('handles click events when interactive', async () => {
       const handleClick = jest.fn();
       const user = userEvent.setup();
-      
+
       render(
         <Card interactive onClick={handleClick} data-testid="card">
           Interactive card
         </Card>
       );
-      
+
       await user.click(screen.getByTestId('card'));
       expect(handleClick).toHaveBeenCalledTimes(1);
     });
@@ -108,4 +124,4 @@ describe('Card Components', () => {
       expect(screen.getByRole('button', { name: 'Action' })).toBeInTheDocument();
     });
   });
-}); 
+});

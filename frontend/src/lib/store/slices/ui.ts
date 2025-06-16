@@ -16,16 +16,14 @@ const MAX_TOASTS = 5;
 /**
  * Creates the UI slice with all UI-related state and actions.
  */
-export const createUISlice: StateCreator<
-  RootState,
-  [['zustand/devtools', never]],
-  [],
-  UISlice
-> = (set, get) => ({
+export const createUISlice: StateCreator<RootState, [['zustand/devtools', never]], [], UISlice> = (
+  set,
+  get
+) => ({
   // =============================================================================
   // INITIAL STATE
   // =============================================================================
-  
+
   theme: 'system',
   sidebarOpen: false,
   modals: {},
@@ -43,10 +41,14 @@ export const createUISlice: StateCreator<
    * Sets the application theme.
    * @param theme - Theme to set ('light', 'dark', or 'system')
    */
-  setTheme: (theme) => {
-    set(produce((state: RootState) => {
-      state.ui.theme = theme;
-    }), false, 'ui/set-theme');
+  setTheme: theme => {
+    set(
+      produce((state: RootState) => {
+        state.ui.theme = theme;
+      }),
+      false,
+      'ui/set-theme'
+    );
 
     // Persist theme preference
     if (typeof window !== 'undefined') {
@@ -74,19 +76,27 @@ export const createUISlice: StateCreator<
    * Toggles the sidebar open/closed state.
    */
   toggleSidebar: () => {
-    set(produce((state: RootState) => {
-      state.ui.sidebarOpen = !state.ui.sidebarOpen;
-    }), false, 'ui/toggle-sidebar');
+    set(
+      produce((state: RootState) => {
+        state.ui.sidebarOpen = !state.ui.sidebarOpen;
+      }),
+      false,
+      'ui/toggle-sidebar'
+    );
   },
 
   /**
    * Sets the sidebar open state.
    * @param open - Whether sidebar should be open
    */
-  setSidebarOpen: (open) => {
-    set(produce((state: RootState) => {
-      state.ui.sidebarOpen = open;
-    }), false, 'ui/set-sidebar-open');
+  setSidebarOpen: open => {
+    set(
+      produce((state: RootState) => {
+        state.ui.sidebarOpen = open;
+      }),
+      false,
+      'ui/set-sidebar-open'
+    );
   },
 
   // =============================================================================
@@ -99,30 +109,42 @@ export const createUISlice: StateCreator<
    * @param modal - Modal configuration
    */
   openModal: (id, modal) => {
-    set(produce((state: RootState) => {
-      state.ui.modals[id] = {
-        ...modal,
-        isOpen: true,
-      };
-    }), false, 'ui/open-modal');
+    set(
+      produce((state: RootState) => {
+        state.ui.modals[id] = {
+          ...modal,
+          isOpen: true,
+        };
+      }),
+      false,
+      'ui/open-modal'
+    );
   },
 
   /**
    * Closes a specific modal.
    * @param id - Modal identifier to close
    */
-  closeModal: (id) => {
-    set(produce((state: RootState) => {
-      if (state.ui.modals[id]) {
-        state.ui.modals[id].isOpen = false;
-      }
-    }), false, 'ui/close-modal');
+  closeModal: id => {
+    set(
+      produce((state: RootState) => {
+        if (state.ui.modals[id]) {
+          state.ui.modals[id].isOpen = false;
+        }
+      }),
+      false,
+      'ui/close-modal'
+    );
 
     // Clean up modal after animation time
     setTimeout(() => {
-      set(produce((state: RootState) => {
-        delete state.ui.modals[id];
-      }), false, 'ui/cleanup-modal');
+      set(
+        produce((state: RootState) => {
+          delete state.ui.modals[id];
+        }),
+        false,
+        'ui/cleanup-modal'
+      );
     }, 300); // Match typical modal animation duration
   },
 
@@ -130,19 +152,27 @@ export const createUISlice: StateCreator<
    * Closes all open modals.
    */
   closeAllModals: () => {
-    set(produce((state: RootState) => {
-      Object.keys(state.ui.modals).forEach(id => {
-        if (state.ui.modals[id].isOpen) {
-          state.ui.modals[id].isOpen = false;
-        }
-      });
-    }), false, 'ui/close-all-modals');
+    set(
+      produce((state: RootState) => {
+        Object.keys(state.ui.modals).forEach(id => {
+          if (state.ui.modals[id].isOpen) {
+            state.ui.modals[id].isOpen = false;
+          }
+        });
+      }),
+      false,
+      'ui/close-all-modals'
+    );
 
     // Clean up all modals after animation
     setTimeout(() => {
-      set(produce((state: RootState) => {
-        state.ui.modals = {};
-      }), false, 'ui/cleanup-all-modals');
+      set(
+        produce((state: RootState) => {
+          state.ui.modals = {};
+        }),
+        false,
+        'ui/cleanup-all-modals'
+      );
     }, 300);
   },
 
@@ -155,10 +185,10 @@ export const createUISlice: StateCreator<
    * @param toast - Toast configuration
    * @returns Toast ID for manual removal
    */
-  addToast: (toast) => {
+  addToast: toast => {
     const id = generateToastId();
     const duration = toast.duration ?? DEFAULT_TOAST_DURATION;
-    
+
     const fullToast: ToastState = {
       ...toast,
       id,
@@ -166,15 +196,19 @@ export const createUISlice: StateCreator<
       dismissible: toast.dismissible ?? true,
     };
 
-    set(produce((state: RootState) => {
-      // Add to beginning of array (newest first)
-      state.ui.toasts.unshift(fullToast);
-      
-      // Respect maximum toasts limit
-      if (state.ui.toasts.length > MAX_TOASTS) {
-        state.ui.toasts = state.ui.toasts.slice(0, MAX_TOASTS);
-      }
-    }), false, 'ui/add-toast');
+    set(
+      produce((state: RootState) => {
+        // Add to beginning of array (newest first)
+        state.ui.toasts.unshift(fullToast);
+
+        // Respect maximum toasts limit
+        if (state.ui.toasts.length > MAX_TOASTS) {
+          state.ui.toasts = state.ui.toasts.slice(0, MAX_TOASTS);
+        }
+      }),
+      false,
+      'ui/add-toast'
+    );
 
     // Auto-dismiss if duration is set
     if (duration > 0) {
@@ -190,19 +224,27 @@ export const createUISlice: StateCreator<
    * Removes a specific toast.
    * @param id - Toast ID to remove
    */
-  removeToast: (id) => {
-    set(produce((state: RootState) => {
-      state.ui.toasts = state.ui.toasts.filter(toast => toast.id !== id);
-    }), false, 'ui/remove-toast');
+  removeToast: id => {
+    set(
+      produce((state: RootState) => {
+        state.ui.toasts = state.ui.toasts.filter(toast => toast.id !== id);
+      }),
+      false,
+      'ui/remove-toast'
+    );
   },
 
   /**
    * Clears all toasts.
    */
   clearToasts: () => {
-    set(produce((state: RootState) => {
-      state.ui.toasts = [];
-    }), false, 'ui/clear-toasts');
+    set(
+      produce((state: RootState) => {
+        state.ui.toasts = [];
+      }),
+      false,
+      'ui/clear-toasts'
+    );
   },
 
   // =============================================================================
@@ -215,23 +257,31 @@ export const createUISlice: StateCreator<
    * @param loading - Loading state
    */
   setLoading: (key, loading) => {
-    set(produce((state: RootState) => {
-      if (loading) {
-        state.ui.loading[key] = true;
-      } else {
-        delete state.ui.loading[key];
-      }
-    }), false, 'ui/set-loading');
+    set(
+      produce((state: RootState) => {
+        if (loading) {
+          state.ui.loading[key] = true;
+        } else {
+          delete state.ui.loading[key];
+        }
+      }),
+      false,
+      'ui/set-loading'
+    );
   },
 
   /**
    * Clears loading state for a specific key.
    * @param key - Loading state key to clear
    */
-  clearLoading: (key) => {
-    set(produce((state: RootState) => {
-      delete state.ui.loading[key];
-    }), false, 'ui/clear-loading');
+  clearLoading: key => {
+    set(
+      produce((state: RootState) => {
+        delete state.ui.loading[key];
+      }),
+      false,
+      'ui/clear-loading'
+    );
   },
 
   // =============================================================================
@@ -244,32 +294,44 @@ export const createUISlice: StateCreator<
    * @param error - Error message or null to clear
    */
   setError: (key, error) => {
-    set(produce((state: RootState) => {
-      if (error) {
-        state.ui.errors[key] = error;
-      } else {
-        delete state.ui.errors[key];
-      }
-    }), false, 'ui/set-error');
+    set(
+      produce((state: RootState) => {
+        if (error) {
+          state.ui.errors[key] = error;
+        } else {
+          delete state.ui.errors[key];
+        }
+      }),
+      false,
+      'ui/set-error'
+    );
   },
 
   /**
    * Clears error state for a specific key.
    * @param key - Error state key to clear
    */
-  clearError: (key) => {
-    set(produce((state: RootState) => {
-      delete state.ui.errors[key];
-    }), false, 'ui/clear-error');
+  clearError: key => {
+    set(
+      produce((state: RootState) => {
+        delete state.ui.errors[key];
+      }),
+      false,
+      'ui/clear-error'
+    );
   },
 
   /**
    * Clears all error states.
    */
   clearAllErrors: () => {
-    set(produce((state: RootState) => {
-      state.ui.errors = {};
-    }), false, 'ui/clear-all-errors');
+    set(
+      produce((state: RootState) => {
+        state.ui.errors = {};
+      }),
+      false,
+      'ui/clear-all-errors'
+    );
   },
 
   // =============================================================================
@@ -280,20 +342,28 @@ export const createUISlice: StateCreator<
    * Sets the breadcrumb navigation.
    * @param breadcrumbs - Array of breadcrumb items
    */
-  setBreadcrumbs: (breadcrumbs) => {
-    set(produce((state: RootState) => {
-      state.ui.breadcrumbs = breadcrumbs;
-    }), false, 'ui/set-breadcrumbs');
+  setBreadcrumbs: breadcrumbs => {
+    set(
+      produce((state: RootState) => {
+        state.ui.breadcrumbs = breadcrumbs;
+      }),
+      false,
+      'ui/set-breadcrumbs'
+    );
   },
 
   /**
    * Sets the page title.
    * @param title - Page title or null to clear
    */
-  setPageTitle: (title) => {
-    set(produce((state: RootState) => {
-      state.ui.pageTitle = title;
-    }), false, 'ui/set-page-title');
+  setPageTitle: title => {
+    set(
+      produce((state: RootState) => {
+        state.ui.pageTitle = title;
+      }),
+      false,
+      'ui/set-page-title'
+    );
 
     // Update document title
     if (typeof window !== 'undefined' && title) {
@@ -312,7 +382,7 @@ export const createUISlice: StateCreator<
    * @param key - Loading state key
    * @returns True if loading
    */
-  isLoading: (key) => {
+  isLoading: key => {
     return Boolean(get().ui.loading[key]);
   },
 
@@ -321,7 +391,7 @@ export const createUISlice: StateCreator<
    * @param key - Error state key
    * @returns Error message or null
    */
-  getError: (key) => {
+  getError: key => {
     return get().ui.errors[key] || null;
   },
 });
@@ -346,21 +416,21 @@ const applyThemeToDocument = (theme: Theme): void => {
   if (typeof window === 'undefined') return;
 
   const root = document.documentElement;
-  
+
   // Remove existing theme classes
   root.classList.remove('light', 'dark');
-  
+
   if (theme === 'system') {
     // Use system preference
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     root.classList.add(mediaQuery.matches ? 'dark' : 'light');
-    
+
     // Listen for system theme changes
     const handleSystemThemeChange = (e: MediaQueryListEvent) => {
       root.classList.remove('light', 'dark');
       root.classList.add(e.matches ? 'dark' : 'light');
     };
-    
+
     mediaQuery.addEventListener('change', handleSystemThemeChange);
   } else {
     root.classList.add(theme);
@@ -378,12 +448,12 @@ export const hydrateTheme = (): Theme => {
 
   const savedTheme = localStorage.getItem('game-decider-theme') as Theme;
   const validThemes: Theme[] = ['light', 'dark', 'system'];
-  
+
   if (savedTheme && validThemes.includes(savedTheme)) {
     applyThemeToDocument(savedTheme);
     return savedTheme;
   }
-  
+
   // Default to system preference
   applyThemeToDocument('system');
   return 'system';
@@ -456,4 +526,4 @@ export const addInfoToast = (
     message,
     description,
   });
-}; 
+};

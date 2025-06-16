@@ -36,7 +36,7 @@ const defaultConfig: Required<LoggerConfig> = {
   logDiffs: true,
   logPerformance: true,
   actionFilter: () => true,
-  stateFilter: (state) => state,
+  stateFilter: state => state,
   colors: {
     action: '#2196F3',
     prevState: '#FF9800',
@@ -52,9 +52,7 @@ const defaultConfig: Required<LoggerConfig> = {
  * @param config - Logger configuration options
  * @returns Logger function
  */
-export const logger = <T extends RootState>(
-  config: LoggerConfig = {}
-) => {
+export const logger = <T extends RootState>(config: LoggerConfig = {}) => {
   const finalConfig = { ...defaultConfig, ...config };
 
   return (f: StateCreator<T>): StateCreator<T> => {
@@ -66,10 +64,10 @@ export const logger = <T extends RootState>(
 
         const startTime = performance.now();
         const prevState = get();
-        
+
         // Execute the state update
         const result = set(partial, replace);
-        
+
         const nextState = get();
         const endTime = performance.now();
         const duration = endTime - startTime;
@@ -78,23 +76,23 @@ export const logger = <T extends RootState>(
         if (finalConfig.logState && prevState !== nextState) {
           const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
           console.groupCollapsed(`🔄 State Update @ ${timestamp}`);
-          
+
           if (finalConfig.logDiffs) {
             const diff = calculateStateDiff(prevState as RootState, nextState as RootState);
             if (Object.keys(diff).length > 0) {
               console.log('📊 Changed:', diff);
             }
           }
-          
+
           if (finalConfig.logPerformance) {
             const emoji = duration > 10 ? '🐌' : '⚡';
             console.log(`${emoji} Performance: ${duration.toFixed(2)}ms`);
-            
+
             if (duration > 10) {
               console.warn(`Slow state update detected: ${duration.toFixed(2)}ms`);
             }
           }
-          
+
           console.groupEnd();
         }
 
@@ -116,15 +114,19 @@ function calculateStateDiff(prev: RootState, next: RootState): Partial<RootState
   const diff: any = {};
 
   // Check each slice for changes
-  Object.keys(next).forEach((key) => {
+  Object.keys(next).forEach(key => {
     const sliceKey = key as keyof RootState;
     const prevSlice = prev[sliceKey];
     const nextSlice = next[sliceKey];
 
     if (prevSlice !== nextSlice) {
       // For objects, do a deeper comparison
-      if (typeof nextSlice === 'object' && nextSlice !== null && 
-          typeof prevSlice === 'object' && prevSlice !== null) {
+      if (
+        typeof nextSlice === 'object' &&
+        nextSlice !== null &&
+        typeof prevSlice === 'object' &&
+        prevSlice !== null
+      ) {
         const sliceDiff = calculateObjectDiff(prevSlice, nextSlice);
         if (Object.keys(sliceDiff).length > 0) {
           diff[sliceKey] = sliceDiff;
@@ -151,10 +153,14 @@ function calculateObjectDiff(prev: any, next: any): any {
   const diff: any = {};
 
   // Check for changed or new properties
-  Object.keys(next).forEach((key) => {
+  Object.keys(next).forEach(key => {
     if (prev[key] !== next[key]) {
-      if (typeof next[key] === 'object' && next[key] !== null &&
-          typeof prev[key] === 'object' && prev[key] !== null) {
+      if (
+        typeof next[key] === 'object' &&
+        next[key] !== null &&
+        typeof prev[key] === 'object' &&
+        prev[key] !== null
+      ) {
         const nestedDiff = calculateObjectDiff(prev[key], next[key]);
         if (Object.keys(nestedDiff).length > 0) {
           diff[key] = nestedDiff;
@@ -169,7 +175,7 @@ function calculateObjectDiff(prev: any, next: any): any {
   });
 
   // Check for removed properties
-  Object.keys(prev).forEach((key) => {
+  Object.keys(prev).forEach(key => {
     if (!(key in next)) {
       diff[key] = {
         from: prev[key],
@@ -185,24 +191,24 @@ function calculateObjectDiff(prev: any, next: any): any {
  * Pre-configured logger for authentication actions only.
  */
 export const authLogger = logger({
-  actionFilter: (actionType) => actionType.startsWith('auth/'),
-  stateFilter: (state) => ({ auth: state.auth }),
+  actionFilter: actionType => actionType.startsWith('auth/'),
+  stateFilter: state => ({ auth: state.auth }),
 });
 
 /**
  * Pre-configured logger for game-related actions only.
  */
 export const gameLogger = logger({
-  actionFilter: (actionType) => actionType.startsWith('games/'),
-  stateFilter: (state) => ({ games: state.games }),
+  actionFilter: actionType => actionType.startsWith('games/'),
+  stateFilter: state => ({ games: state.games }),
 });
 
 /**
  * Pre-configured logger for UI actions only.
  */
 export const uiLogger = logger({
-  actionFilter: (actionType) => actionType.startsWith('ui/'),
-  stateFilter: (state) => ({ ui: state.ui }),
+  actionFilter: actionType => actionType.startsWith('ui/'),
+  stateFilter: state => ({ ui: state.ui }),
 });
 
 /**
@@ -212,4 +218,4 @@ export const lightLogger = logger({
   logState: false,
   logDiffs: false,
   logPerformance: true,
-}); 
+});

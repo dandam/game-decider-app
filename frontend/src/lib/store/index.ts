@@ -55,15 +55,9 @@ const createAppStore = () => {
 
   // Apply middleware conditionally
   if (enableDevtools) {
-    return create<RootState>()(
-      subscribeWithSelector(
-        devtools(storeCreator, { name })
-      )
-    );
+    return create<RootState>()(subscribeWithSelector(devtools(storeCreator, { name })));
   } else {
-    return create<RootState>()(
-      subscribeWithSelector(storeCreator)
-    );
+    return create<RootState>()(subscribeWithSelector(storeCreator));
   }
 };
 
@@ -89,8 +83,8 @@ export const hydrateStore = () => {
     const { hydrateAuthState } = require('./slices/auth');
     const authState = hydrateAuthState();
     if (authState) {
-      useStore.setState((state) => ({
-        auth: { ...state.auth, ...authState }
+      useStore.setState(state => ({
+        auth: { ...state.auth, ...authState },
       }));
     }
 
@@ -98,12 +92,12 @@ export const hydrateStore = () => {
     const { hydrateGamesPersistentState } = require('./slices/games');
     const gamesState = hydrateGamesPersistentState();
     if (gamesState) {
-      useStore.setState((state) => ({
-        games: { 
-          ...state.games, 
+      useStore.setState(state => ({
+        games: {
+          ...state.games,
           favoriteGames: gamesState.favoriteGames || [],
           recentlyViewed: gamesState.recentlyViewed || [],
-        }
+        },
       }));
     }
 
@@ -111,13 +105,12 @@ export const hydrateStore = () => {
     const { hydrateTheme } = require('./slices/ui');
     const theme = hydrateTheme();
     if (theme) {
-      useStore.setState((state) => ({
-        ui: { ...state.ui, theme }
+      useStore.setState(state => ({
+        ui: { ...state.ui, theme },
       }));
     }
 
     isHydrated = true;
-
   } catch (error) {
     console.error('Store hydration failed:', error);
   }
@@ -151,11 +144,7 @@ export type {
 } from './types';
 
 // Re-export utility functions
-export {
-  hydrateAuthState,
-  isSessionExpired,
-  getRemainingSessionTime,
-} from './slices/auth';
+export { hydrateAuthState, isSessionExpired, getRemainingSessionTime } from './slices/auth';
 
 export {
   shouldRefreshPlayerList,
@@ -163,10 +152,7 @@ export {
   validatePlayerSelection,
 } from './slices/player';
 
-export {
-  hydrateGamesPersistentState,
-  validateGameFilters,
-} from './slices/games';
+export { hydrateGamesPersistentState, validateGameFilters } from './slices/games';
 
 export {
   shouldRefreshPreferences,
@@ -185,4 +171,4 @@ export {
 } from './slices/ui';
 
 // Default export
-export default useStore; 
+export default useStore;

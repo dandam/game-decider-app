@@ -7,6 +7,7 @@ This is the frontend application for Game Night Concierge, built with Next.js an
 **IMPORTANT**: This application uses Next.js 15 App Router exclusively. All routes are defined in the `src/app/` directory.
 
 ### Route Structure
+
 ```
 src/app/
 ├── page.tsx                    # Root route (/)
@@ -20,17 +21,20 @@ src/app/
 ```
 
 ### Critical Notes
+
 - **NO Pages Router**: Do not create files in `pages/` directory - this will conflict with App Router
 - **Route Conflicts**: Any files in `pages/` will override App Router and cause 404/500 errors
 - **File-based Routing**: Routes are automatically created based on folder structure in `src/app/`
 - **Layout Inheritance**: All pages inherit from `src/app/layout.tsx`
 
 ### Adding New Routes
+
 1. Create a new folder in `src/app/` with the desired route name
 2. Add a `page.tsx` file in that folder
 3. Export a default React component from `page.tsx`
 
 Example:
+
 ```tsx
 // src/app/new-route/page.tsx
 export default function NewRoute() {
@@ -52,6 +56,7 @@ The application uses a CSS variable-based theming system integrated with Tailwin
 ### Theme Structure
 
 The theming system uses CSS variables for:
+
 - Colors (surface, primary, etc.)
 - Typography (font families, sizes)
 - Spacing
@@ -87,11 +92,13 @@ Dark mode is implemented using CSS variables and Tailwind's dark mode feature. T
 ## Development
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
 
 2. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -104,4 +111,4 @@ The frontend is containerized using Docker. To run the frontend in a container:
 
 ```bash
 docker compose up frontend
-``` 
+```

@@ -15,7 +15,7 @@ import type { Theme, ToastState, ModalState } from '../types';
  * @returns Current theme value
  */
 export const useTheme = () => {
-  return useStore((state) => state.ui.theme);
+  return useStore(state => state.ui.theme);
 };
 
 /**
@@ -23,7 +23,7 @@ export const useTheme = () => {
  * @returns Theme-related actions
  */
 export const useThemeActions = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     setTheme: state.ui.setTheme,
     toggleTheme: state.ui.toggleTheme,
   }));
@@ -34,7 +34,7 @@ export const useThemeActions = () => {
  * @returns Toggle theme function
  */
 export const useToggleTheme = () => {
-  return useStore((state) => state.ui.toggleTheme);
+  return useStore(state => state.ui.toggleTheme);
 };
 
 // =============================================================================
@@ -46,7 +46,7 @@ export const useToggleTheme = () => {
  * @returns Array of current toasts
  */
 export const useToasts = () => {
-  return useStore((state) => state.ui.toasts);
+  return useStore(state => state.ui.toasts);
 };
 
 /**
@@ -54,7 +54,7 @@ export const useToasts = () => {
  * @returns Toast-related actions
  */
 export const useToastActions = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     addToast: state.ui.addToast,
     removeToast: state.ui.removeToast,
     clearToasts: state.ui.clearToasts,
@@ -66,7 +66,7 @@ export const useToastActions = () => {
  * @returns Add toast function
  */
 export const useAddToast = () => {
-  return useStore((state) => state.ui.addToast);
+  return useStore(state => state.ui.addToast);
 };
 
 /**
@@ -74,7 +74,7 @@ export const useAddToast = () => {
  * @returns Remove toast function
  */
 export const useRemoveToast = () => {
-  return useStore((state) => state.ui.removeToast);
+  return useStore(state => state.ui.removeToast);
 };
 
 // =============================================================================
@@ -86,7 +86,7 @@ export const useRemoveToast = () => {
  * @returns Current modals object
  */
 export const useModals = () => {
-  return useStore((state) => state.ui.modals);
+  return useStore(state => state.ui.modals);
 };
 
 /**
@@ -94,7 +94,7 @@ export const useModals = () => {
  * @returns Modal-related actions
  */
 export const useModalActions = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     openModal: state.ui.openModal,
     closeModal: state.ui.closeModal,
     closeAllModals: state.ui.closeAllModals,
@@ -107,7 +107,7 @@ export const useModalActions = () => {
  * @returns Modal state or undefined
  */
 export const useModal = (modalId: string) => {
-  return useStore((state) => state.ui.modals[modalId]);
+  return useStore(state => state.ui.modals[modalId]);
 };
 
 /**
@@ -115,9 +115,7 @@ export const useModal = (modalId: string) => {
  * @returns True if any modal is open
  */
 export const useIsAnyModalOpen = () => {
-  return useStore((state) => 
-    Object.values(state.ui.modals).some(modal => modal.isOpen)
-  );
+  return useStore(state => Object.values(state.ui.modals).some(modal => modal.isOpen));
 };
 
 // =============================================================================
@@ -129,7 +127,7 @@ export const useIsAnyModalOpen = () => {
  * @returns Loading states object
  */
 export const useLoadingStates = () => {
-  return useStore((state) => state.ui.loading);
+  return useStore(state => state.ui.loading);
 };
 
 /**
@@ -137,7 +135,7 @@ export const useLoadingStates = () => {
  * @returns Loading state actions
  */
 export const useLoadingActions = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     setLoading: state.ui.setLoading,
     clearLoading: state.ui.clearLoading,
     isLoading: state.ui.isLoading,
@@ -150,7 +148,7 @@ export const useLoadingActions = () => {
  * @returns True if loading
  */
 export const useIsLoading = (key: string) => {
-  return useStore((state) => state.ui.isLoading(key));
+  return useStore(state => state.ui.isLoading(key));
 };
 
 /**
@@ -158,7 +156,7 @@ export const useIsLoading = (key: string) => {
  * @returns True if any loading is active
  */
 export const useIsAnyLoading = () => {
-  return useStore((state) => Object.keys(state.ui.loading).length > 0);
+  return useStore(state => Object.keys(state.ui.loading).length > 0);
 };
 
 // =============================================================================
@@ -170,7 +168,7 @@ export const useIsAnyLoading = () => {
  * @returns Error states object
  */
 export const useErrorStates = () => {
-  return useStore((state) => state.ui.errors);
+  return useStore(state => state.ui.errors);
 };
 
 /**
@@ -178,7 +176,7 @@ export const useErrorStates = () => {
  * @returns Error state actions
  */
 export const useErrorActions = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     setError: state.ui.setError,
     clearError: state.ui.clearError,
     clearAllErrors: state.ui.clearAllErrors,
@@ -192,7 +190,7 @@ export const useErrorActions = () => {
  * @returns Error message or null
  */
 export const useError = (key: string) => {
-  return useStore((state) => state.ui.getError(key));
+  return useStore(state => state.ui.getError(key));
 };
 
 /**
@@ -200,7 +198,7 @@ export const useError = (key: string) => {
  * @returns True if any error is active
  */
 export const useHasAnyError = () => {
-  return useStore((state) => Object.keys(state.ui.errors).length > 0);
+  return useStore(state => Object.keys(state.ui.errors).length > 0);
 };
 
 // =============================================================================
@@ -212,7 +210,7 @@ export const useHasAnyError = () => {
  * @returns Current breadcrumbs array
  */
 export const useBreadcrumbs = () => {
-  return useStore((state) => state.ui.breadcrumbs);
+  return useStore(state => state.ui.breadcrumbs);
 };
 
 /**
@@ -220,7 +218,7 @@ export const useBreadcrumbs = () => {
  * @returns Current page title or null
  */
 export const usePageTitle = () => {
-  return useStore((state) => state.ui.pageTitle);
+  return useStore(state => state.ui.pageTitle);
 };
 
 /**
@@ -228,7 +226,7 @@ export const usePageTitle = () => {
  * @returns Navigation-related actions
  */
 export const useNavigationActions = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     setBreadcrumbs: state.ui.setBreadcrumbs,
     setPageTitle: state.ui.setPageTitle,
   }));
@@ -243,7 +241,7 @@ export const useNavigationActions = () => {
  * @returns True if sidebar is open
  */
 export const useSidebarOpen = () => {
-  return useStore((state) => state.ui.sidebarOpen);
+  return useStore(state => state.ui.sidebarOpen);
 };
 
 /**
@@ -251,7 +249,7 @@ export const useSidebarOpen = () => {
  * @returns Sidebar-related actions
  */
 export const useSidebarActions = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     toggleSidebar: state.ui.toggleSidebar,
     setSidebarOpen: state.ui.setSidebarOpen,
   }));
@@ -262,7 +260,7 @@ export const useSidebarActions = () => {
  * @returns Toggle sidebar function
  */
 export const useToggleSidebar = () => {
-  return useStore((state) => state.ui.toggleSidebar);
+  return useStore(state => state.ui.toggleSidebar);
 };
 
 // =============================================================================
@@ -274,18 +272,18 @@ export const useToggleSidebar = () => {
  * @returns Object with toast helper functions
  */
 export const useToastHelpers = () => {
-  const addToast = useStore((state) => state.ui.addToast);
+  const addToast = useStore(state => state.ui.addToast);
 
   return {
     success: (message: string, description?: string) =>
       addToast({ type: 'success', message, description }),
-    
+
     error: (message: string, description?: string) =>
       addToast({ type: 'error', message, description, duration: 0 }),
-    
+
     warning: (message: string, description?: string) =>
       addToast({ type: 'warning', message, description }),
-    
+
     info: (message: string, description?: string) =>
       addToast({ type: 'info', message, description }),
   };
@@ -297,9 +295,9 @@ export const useToastHelpers = () => {
  * @returns Object with loading state and setter
  */
 export const useLoadingState = (key: string) => {
-  const isLoading = useStore((state) => state.ui.isLoading(key));
-  const setLoading = useStore((state) => state.ui.setLoading);
-  const clearLoading = useStore((state) => state.ui.clearLoading);
+  const isLoading = useStore(state => state.ui.isLoading(key));
+  const setLoading = useStore(state => state.ui.setLoading);
+  const clearLoading = useStore(state => state.ui.clearLoading);
 
   return {
     isLoading,
@@ -314,9 +312,9 @@ export const useLoadingState = (key: string) => {
  * @returns Object with error state and setter
  */
 export const useErrorState = (key: string) => {
-  const error = useStore((state) => state.ui.getError(key));
-  const setError = useStore((state) => state.ui.setError);
-  const clearError = useStore((state) => state.ui.clearError);
+  const error = useStore(state => state.ui.getError(key));
+  const setError = useStore(state => state.ui.setError);
+  const clearError = useStore(state => state.ui.clearError);
 
   return {
     error,
@@ -332,9 +330,9 @@ export const useErrorState = (key: string) => {
  * @returns Object with modal state and actions
  */
 export const useModalState = (modalId: string) => {
-  const modal = useStore((state) => state.ui.modals[modalId]);
-  const openModal = useStore((state) => state.ui.openModal);
-  const closeModal = useStore((state) => state.ui.closeModal);
+  const modal = useStore(state => state.ui.modals[modalId]);
+  const openModal = useStore(state => state.ui.openModal);
+  const closeModal = useStore(state => state.ui.closeModal);
 
   return {
     isOpen: Boolean(modal?.isOpen),
@@ -349,7 +347,7 @@ export const useModalState = (modalId: string) => {
  * @returns UI state summary object
  */
 export const useUIState = () => {
-  return useStore((state) => ({
+  return useStore(state => ({
     theme: state.ui.theme,
     sidebarOpen: state.ui.sidebarOpen,
     hasToasts: state.ui.toasts.length > 0,
@@ -359,4 +357,4 @@ export const useUIState = () => {
     pageTitle: state.ui.pageTitle,
     breadcrumbsCount: state.ui.breadcrumbs.length,
   }));
-}; 
+};

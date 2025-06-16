@@ -3,23 +3,20 @@
 import { HTMLAttributes, forwardRef, useState } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const avatarVariants = cva(
-  'relative flex shrink-0 overflow-hidden rounded-full bg-surface-200',
-  {
-    variants: {
-      size: {
-        sm: 'h-8 w-8',
-        default: 'h-10 w-10',
-        lg: 'h-12 w-12',
-        xl: 'h-16 w-16',
-        '2xl': 'h-20 w-20',
-      },
+const avatarVariants = cva('relative flex shrink-0 overflow-hidden rounded-full bg-surface-200', {
+  variants: {
+    size: {
+      sm: 'h-8 w-8',
+      default: 'h-10 w-10',
+      lg: 'h-12 w-12',
+      xl: 'h-16 w-16',
+      '2xl': 'h-20 w-20',
     },
-    defaultVariants: {
-      size: 'default',
-    },
-  }
-);
+  },
+  defaultVariants: {
+    size: 'default',
+  },
+});
 
 const avatarImageVariants = cva('aspect-square h-full w-full object-cover');
 
@@ -75,18 +72,14 @@ export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
     const getInitials = (text: string) => {
       return text
         .split(' ')
-        .map((word) => word.charAt(0))
+        .map(word => word.charAt(0))
         .join('')
         .toUpperCase()
         .slice(0, 2);
     };
 
     return (
-      <div
-        ref={ref}
-        className={avatarVariants({ size, className })}
-        {...props}
-      >
+      <div ref={ref} className={avatarVariants({ size, className })} {...props}>
         {src && !imageError ? (
           <img
             src={src}
@@ -109,22 +102,14 @@ Avatar.displayName = 'Avatar';
 
 export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
   ({ className, ...props }, ref) => (
-    <img
-      ref={ref}
-      className={avatarImageVariants({ className })}
-      {...props}
-    />
+    <img ref={ref} className={avatarImageVariants({ className })} {...props} />
   )
 );
 AvatarImage.displayName = 'AvatarImage';
 
 export const AvatarFallback = forwardRef<HTMLDivElement, AvatarFallbackProps>(
   ({ className, size, ...props }, ref) => (
-    <div
-      ref={ref}
-      className={avatarFallbackVariants({ size, className })}
-      {...props}
-    />
+    <div ref={ref} className={avatarFallbackVariants({ size, className })} {...props} />
   )
 );
-AvatarFallback.displayName = 'AvatarFallback'; 
+AvatarFallback.displayName = 'AvatarFallback';

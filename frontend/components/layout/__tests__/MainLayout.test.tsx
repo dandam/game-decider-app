@@ -54,4 +54,4 @@ describe('MainLayout', () => {
     // Mobile menu should be hidden again
     expect(mobileMenu).not.toBeVisible();
   });
-}); 
+});
