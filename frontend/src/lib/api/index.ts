@@ -122,6 +122,9 @@ export {
 export {
   getGames,
   getGamesCount,
+  getCuratedGames,
+  getCuratedGamesCount,
+  getPlayedGames,
   getGame,
   createGame,
   updateGame,
