@@ -41,7 +41,7 @@ Before beginning implementation, we need to complete these research spikes to in
 | 32 | Set up database migrations with Alembic | P0 | Done | S |
 | 33 | Create data seeding system for development | P1 | Done | S |
 | 34 | Implement player profile UI components | P0 | To Do | M |
-| 35 | Create game library UI components | P0 | To Do | M |
+| 35 | Create game library UI components | P0 | In Progress | M |
 | 36 | Implement basic game filtering | P0 | To Do | M |
 | 37 | Create game detail view | P1 | To Do | M |
 | 38 | Implement player preferences UI | P0 | To Do | M |

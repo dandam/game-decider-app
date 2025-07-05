@@ -124,6 +124,7 @@ export {
   getGamesCount,
   getCuratedGames,
   getCuratedGamesCount,
+  getCuratedGamesWithPlayers,
   getPlayedGames,
   getGame,
   createGame,

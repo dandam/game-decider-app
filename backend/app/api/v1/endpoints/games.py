@@ -297,6 +297,55 @@ async def get_curated_games(
 
 
 @router.get(
+    "/curated/with-players",
+    response_model=List[dict],
+)
+async def get_curated_games_with_players(
+    skip: int = Query(0, ge=0, description="Number of games to skip"),
+    limit: int = Query(50, ge=1, le=500, description="Number of games to return"),
+    session: AsyncSession = Depends(get_db),
+) -> List[dict]:
+    """Get curated games with player information showing who has played each game."""
+    
+    # Get games with the players who have played them
+    games_with_players_query = (
+        select(
+            Game.id,
+            Game.name,
+            Game.min_players,
+            Game.max_players,
+            Game.average_play_time,
+            Game.complexity_rating,
+            func.array_agg(Player.username).label('players_who_played')
+        )
+        .join(PlayerGameHistory, Game.id == PlayerGameHistory.game_id)
+        .join(Player, PlayerGameHistory.player_id == Player.id)
+        .where(Player.username.in_(REAL_PLAYERS))
+        .group_by(Game.id, Game.name, Game.min_players, Game.max_players, Game.average_play_time, Game.complexity_rating)
+        .order_by(Game.name)
+        .offset(skip)
+        .limit(limit)
+    )
+    
+    result = await session.execute(games_with_players_query)
+    games_data = result.all()
+    
+    # Format the response to include player information
+    games_with_players = []
+    for row in games_data:
+        # Get the full game data using the repository
+        repo = GameRepository(session)
+        game = await repo.get_by_id(row[0])
+        
+        if game:
+            game_dict = GameResponse.model_validate(game).model_dump()
+            game_dict['players_who_played'] = row[6] if row[6] else []
+            games_with_players.append(game_dict)
+    
+    return games_with_players
+
+
+@router.get(
     "/curated/count",
     response_model=dict,
 )

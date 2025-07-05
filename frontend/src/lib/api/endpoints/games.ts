@@ -57,6 +57,13 @@ export async function getPlayedGames(
 }
 
 /**
+ * Get curated games with player information showing who has played each game.
+ */
+export async function getCuratedGamesWithPlayers(filters: GameFilters = {}): Promise<Array<GameResponse & { players_who_played: string[] }>> {
+  return apiClient.get<Array<GameResponse & { players_who_played: string[] }>>('/api/games/curated/with-players', { params: filters });
+}
+
+/**
  * Get a specific game by ID.
  */
 export async function getGame(gameId: UUID): Promise<GameResponse> {

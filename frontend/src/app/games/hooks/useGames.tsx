@@ -43,8 +43,6 @@ export function useGames(options: UseGamesOptions = {}): UseGamesReturn {
           getPlayedGames(undefined, { ...filters, limit: 10000 }).then(games => games.length), // Get total count
         ]);
         
-
-        
         gamesResult = playedGames;
         countResult = playedCount;
       } else if (useCurated) {
@@ -54,8 +52,6 @@ export function useGames(options: UseGamesOptions = {}): UseGamesReturn {
           getCuratedGamesCount(),
         ]);
         
-
-        
         gamesResult = curatedGames;
         countResult = curatedCount.total_curated;
       } else {
@@ -64,8 +60,6 @@ export function useGames(options: UseGamesOptions = {}): UseGamesReturn {
           getGames(filters),
           getGamesCount(filters),
         ]);
-        
-        
         
         gamesResult = regularGames;
         countResult = regularCount;
@@ -88,12 +82,11 @@ export function useGames(options: UseGamesOptions = {}): UseGamesReturn {
           ? `Failed to load games: ${err.message}`
           : 'An unexpected error occurred while loading games';
 
-
       setError(errorMessage);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [useCurated, usePlayedOnly]);
 
   const loadMore = useCallback(() => {
     if (loading || !hasNextPage) return;

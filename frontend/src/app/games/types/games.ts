@@ -59,7 +59,7 @@ export interface CuratedGameSet {
 
 // Component prop interfaces
 export interface GameCardProps {
-  game: GameResponse;
+  game: GameResponse & { players_who_played?: string[] };
   showCompatibility?: boolean;
   onGameClick?: (game: GameResponse) => void;
   className?: string;
